@@ -2,12 +2,12 @@
 	/// <summary>
 	/// View in the MTConnect Model browser <seealso href="https://model.mtconnect.org/#Enumeration__{{ enumeration.id }}">model.mtconnect.org</seealso>
 	/// </summary>
-	public enum {{ to_upper_snake_code enumeration.name }} {
+	public enum {{ to_pascal_case enumeration.name }} {
 	{{~ for item in enumeration.items ~}}
 		/// <summary>
 		/// {{ ((to_summary item?.comment?.body) ?? "<c>No Summary Content</c>") | regex.replace "(\r\n|\n|\r)" " " }}
 		/// </summary>
-		{{ to_upper_snake_code item.name }},
+		{{ item.name }},
 	{{~ end ~}}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using MtconnectCore.Contracts.Enums;
 
-namespace {{ class_model.namespace }} {
+namespace {{ to_pascal_code class_model.namespace }} {
 	/// <summary>
 	/// View in the MTConnect Model browser <seealso href="https://model.mtconnect.org/#Structure__{{ class_model.class.id }}">model.mtconnect.org</seealso>
 	/// </summary>

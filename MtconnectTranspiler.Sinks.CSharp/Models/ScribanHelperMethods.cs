@@ -36,8 +36,11 @@ namespace MtconnectTranspiler.Sinks.CSharp.Models
             return output;
         }
 
-        static private IEnumerable<char> InvalidCharacters = System.IO.Path.GetInvalidFileNameChars().Concat(new char[] { ' ' });
-        static private Regex ReplaceInvalidChars = new Regex(String.Join("|", InvalidCharacters), RegexOptions.Compiled);
+        public static char[] InvalidCharacters { get; set; } = System.IO.Path
+            .GetInvalidFileNameChars()
+            .Concat(new char[] { ' ' })
+            .ToArray();
+        public static Regex ReplaceInvalidChars { get; set; } = new Regex(@"\" + String.Join(@"|\", InvalidCharacters), RegexOptions.Compiled);
         public static string ToCodeSafe(string input, string replaceBy = "_") => ReplaceInvalidChars.Replace(input, replaceBy);
 
         public static string ToUpperCase(string input) => input.ToUpper();

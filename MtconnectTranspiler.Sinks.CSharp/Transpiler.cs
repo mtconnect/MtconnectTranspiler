@@ -65,11 +65,6 @@ namespace MtconnectTranspiler.Sinks.CSharp
                     "class_model",
                     o => $"{o.Class.Name}.cs"
                 );
-                //foreach (var @class in model.Classes)
-                //{
-                //    string csharp = renderTemplateWithModel("class_model", new { @Class = @class, Namespace = @namespace + "." + model.Name }, classTemplate);
-                //    XmiTranspilerExtensions.WriteToFile(Path.Combine(ProjectPath, "Standard", model.Name, $"{@class.Name}.cs"), csharp);
-                //}
             }
 
             if (model.SubModels != null && model.SubModels.Any())
