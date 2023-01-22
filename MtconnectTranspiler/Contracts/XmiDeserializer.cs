@@ -1,10 +1,10 @@
-﻿using MtconnectTranspiler.Contracts.Attributes;
+﻿using Microsoft.Extensions.Logging;
+using MtconnectTranspiler.Contracts.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -12,21 +12,29 @@ namespace MtconnectTranspiler.Contracts
 {
     internal class XmiDeserializer
     {
-        public string Filepath { get; private set; }
-
+        private ILogger<XmiDeserializer>? _logger;
         private XmlDocument xDoc;
         private XmlNamespaceManager nsmgr;
 
-        public XmiDeserializer(string filepath)
+        public XmiDeserializer(XmlDocument xmlDocument, ILogger<XmiDeserializer>? logger = null)
         {
-            Filepath = filepath;
+            _logger = logger;
 
-            xDoc = new XmlDocument();
-            xDoc.Load(filepath);
-
+            xDoc = xmlDocument;
             nsmgr = new XmlNamespaceManager(xDoc.NameTable);
             nsmgr.AddNamespace("xmi", XmlHelper.XmiNamespace);
             nsmgr.AddNamespace("uml", XmlHelper.UmlNamespace);
+            nsmgr.AddNamespace("Profile", XmlHelper.ProfileNamespace);
+            nsmgr.AddNamespace("StandardProfile", XmlHelper.StandardProfileNamespace);
+            nsmgr.AddNamespace("Validation_Profile", XmlHelper.Validation_ProfileNamespace);
+            nsmgr.AddNamespace("Dependency_Matrix_Profile", XmlHelper.Dependency_Matrix_ProfileNamespace);
+            nsmgr.AddNamespace("Concept_Modeling_Profile", XmlHelper.Concept_Modeling_ProfileNamespace);
+            nsmgr.AddNamespace("DSL_Customization", XmlHelper.DSL_CustomizationNamespace);
+            nsmgr.AddNamespace("sysml", XmlHelper.SysMlNamespace);
+            nsmgr.AddNamespace("MagicDraw_Profile", XmlHelper.MagicDraw_ProfileNamespace);
+            nsmgr.AddNamespace("CCM_Internal_Implementation_Profile", XmlHelper.Ccm_Internal_Implementation_ProfileNamespace);
+            nsmgr.AddNamespace("MD_Customization_for_SysML__additional_stereotypes", XmlHelper.Md_Customization_for_SysML__additional_stereotypesNamespace);
+            nsmgr.AddNamespace("SimulationProfile", XmlHelper.SimulationProfileNamespace);
         }
 
         /// <summary>
@@ -38,17 +46,29 @@ namespace MtconnectTranspiler.Contracts
         public T? Deserialize<T>(string predicatePath, CancellationToken cancellationToken) where T : class, new()
         {
             XmlNode? xPredicate = xDoc.SelectSingleNode(predicatePath, nsmgr);
-            if (xPredicate == null) return null;
+            if (xPredicate == null)
+            {
+                _logger?.LogError("Could not find XmlNode from predicatePath '{predicatePath}'", predicatePath);
+                return null;
+            }
 
             var result = unwrapObject(xPredicate, typeof(T), cancellationToken);
-            if (result == null) return null;
+            if (result == null)
+            {
+                _logger?.LogError("Unable to deserialize type starting from predicatePath '{predicatePath}'", predicatePath);
+                return null;
+            }
 
             return (T)result;
         }
 
         private object? unwrapObject(XmlNode xNode, Type targetType, CancellationToken cancellationToken)
         {
-            if (cancellationToken.IsCancellationRequested) return null;
+            if (cancellationToken.IsCancellationRequested)
+            {
+                _logger?.LogInformation("Deserialization aborting due to cancellation");
+                return null;
+            }
 
             object? result = null;
 
@@ -68,45 +88,71 @@ namespace MtconnectTranspiler.Contracts
             }
 
 
-            System.Reflection.PropertyInfo[]? properties = targetType.GetProperties();
+            System.Reflection.PropertyInfo[]? properties = targetType
+                .GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
 
             Type attrXPath = typeof(XPathAttribute);
             foreach (var property in properties)
             {
-                XPathAttribute? xpathAttribute = ((XPathAttribute[])property.GetCustomAttributes(attrXPath, true)).FirstOrDefault();
-                if (xpathAttribute != null)
+                XPathAttribute[] xpathAttributes = ((XPathAttribute[])property.GetCustomAttributes(attrXPath, true));
+                foreach (var xpathAttribute in xpathAttributes)
                 {
                     if (property.PropertyType.IsArray)
                     {
+                        _logger?.LogTrace("Deserializing array property '{PropertyName}' in '{TargetType}'", property.Name, targetType.FullName);
                         XmlNodeList? xPropertyNodes = xNode.SelectNodes(xpathAttribute.Path, nsmgr);
                         if (xPropertyNodes != null)
                         {
                             Type? elementType = property.PropertyType.GetElementType();
+                            Type? resultType = xpathAttribute.Type ?? elementType;
                             List<object> collection = new List<object>();
                             foreach (XmlNode xChild in xPropertyNodes)
                             {
-                                var childObject = unwrapObject(xChild, elementType, cancellationToken);
+                                var childObject = unwrapObject(xChild, resultType, cancellationToken);
                                 if (childObject != null)
                                 {
                                     collection.Add(childObject);
                                 }
                             }
+                            object[]? existingArray = property.GetValue(result) as object[];
+                            if (existingArray?.Length > 0)
+                            {
+                                collection.InsertRange(0, existingArray);
+                            }
                             Array typedArray = Array.CreateInstance(elementType, collection.Count);
                             Array.Copy(collection.ToArray(), typedArray, collection.Count);
                             property.SetValue(result, typedArray);
                         }
-                    } else
+                    }
+                    else
                     {
+                        _logger?.LogTrace("Deserializing property '{PropertyName}' in '{TargetType}'", property.Name, targetType.FullName);
                         XmlNode? xPropertyNode = xNode.SelectSingleNode(xpathAttribute.Path, nsmgr);
                         if (xPropertyNode != null)
                         {
-                            property.SetValue(result, unwrapObject(xPropertyNode, property.PropertyType, cancellationToken));
+                            property.SetValue(result, unwrapObject(xPropertyNode, xpathAttribute.Type ?? property.PropertyType, cancellationToken));
                         }
                     }
                 }
             }
 
             return result;
+        }
+    
+        public static XmiDeserializer FromFile(string filename, ILogger<XmiDeserializer>? logger = null)
+        {
+            var xDoc = new XmlDocument();
+            xDoc.Load(filename);
+
+            return new XmiDeserializer(xDoc, logger);
+        }
+
+        public static XmiDeserializer FromXml(string xml, ILogger<XmiDeserializer>? logger = null)
+        {
+            var xDoc = new XmlDocument();
+            xDoc.LoadXml(xml);
+
+            return new XmiDeserializer(xDoc, logger);
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using MtconnectTranspiler.Contracts;
+using System;
 using System.Xml.Serialization;
 
 namespace MtconnectTranspiler.Xmi
 {
-    [XmlRoot(ElementName = XmlHelper.XmiStructure.OWNED_OPERATION, Namespace = "")]
+    [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.OWNED_OPERATION, Namespace = "")]
     public class OwnedOperation : XmiElement
     {
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.visibility, Namespace = "")]

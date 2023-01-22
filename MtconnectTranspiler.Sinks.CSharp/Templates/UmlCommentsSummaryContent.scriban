@@ -1,0 +1,5 @@
+﻿{{~ if $1 ~}}
+	{{~ for comment in $1 ~}}
+/// {{ ((to_summary comment.body) ?? "<c>No Summary Content</c>") | regex.replace "(\r\n|\n|\r)" " " }}
+	{{~ end ~}}
+{{~ end ~}}

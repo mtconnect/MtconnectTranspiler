@@ -7,9 +7,14 @@ namespace MtconnectTranspiler.Sinks.CSharp.Models
 {
     public class ScribanHelperMethods : ScriptObject
     {
-        public static string ToSummary(string input)
+        /// <summary>
+        /// Converts Markdown into C# <c>&lt;summary /&gt;</c> formatted text.
+        /// </summary>
+        /// <param name="markdown">Markdown text</param>
+        /// <returns><c>&lt;summary /&gt; formatted text.</c></returns>
+        public static string ToSummary(string markdown)
         {
-            if (string.IsNullOrEmpty(input)) return input;
+            if (string.IsNullOrEmpty(markdown)) return markdown;
 
             Dictionary<Regex, Func<string, string>> rules = new Dictionary<Regex, Func<string, string>>()
             {
@@ -20,7 +25,7 @@ namespace MtconnectTranspiler.Sinks.CSharp.Models
                 { new Regex(@"(.*?)(?<block>\*(?<contents>.*?)\*)(.*?)"), (string s) => $"<i>{s}</i>" }
             };
 
-            string output = input;
+            string output = markdown;
 
             foreach (var rule in rules)
             {

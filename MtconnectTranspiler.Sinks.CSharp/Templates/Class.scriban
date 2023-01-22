@@ -1,32 +1,32 @@
 ﻿using MtconnectCore.Contracts.Enums;
+using MtconnectCore.Standard.Contracts.Enums;
+using System;
 
 namespace {{ to_pascal_code class_model.namespace }} {
 	/// <summary>
 	/// View in the MTConnect Model browser <seealso href="https://model.mtconnect.org/#Structure__{{ class_model.class.id }}">model.mtconnect.org</seealso>
+	{{ include 'UmlCommentsSummaryContent.scriban' class_model?.class?.comments }}
 	/// </summary>
+	{{ include 'MTConnectVersionApplicability.scriban' class_model.class.id }}
+	{{ include 'GeneratedCodeAttribute.scriban' }}
 	public{{ if class_model.class.is_abstract }} abstract{{ end }} class {{ to_pascal_code class_model.class.name }} {
 	{{~ for item in class_model.class.properties ~}}
 		/// <summary>
-		{{~ if item?.comments ~}}
-			{{~ for comment in item.comments ~}}
-		/// {{ ((to_summary comment.body) ?? "<c>No Summary Content</c>") | regex.replace "(\r\n|\n|\r)" " " }}
-			{{~ end ~}}
-		{{~ else ~}}
-		/// <c>No Summary Content</c>
-		{{~ end ~}}
+		{{ include 'UmlCommentsSummaryContent.scriban' item?.comments }}
 		/// </summary>
 		/// <remarks>Original Name: {{ item.name }}</remarks>
-		public object {{ to_pascal_code item.name }} { get; set; }
+		{{ include 'MTConnectVersionApplicability.scriban' item.id }}
+		{{ item.visibility ?? "public" }} {{ lookup_csharp_data_type model item }} {{ to_pascal_code item.name }} { get; set; }
 	{{~ end ~}}
 
 		# region Rules
-	{{~ for rule in class_model.class.rules ~}}
+	{{~ for constraint in class_model.class.constraints ~}}
 		/// <summary>
-		/// {{ rule.name }}
+		/// {{ constraint.name }}
 		/// </summary>
-		/// <remarks>Specification Language: <c>{{ rule?.specification?.language ?? "Unspecified" }}</c></remarks>
+		/// <remarks>Specification Language: <c>{{ constraint?.specification?.language ?? "Unspecified" }}</c></remarks>
 		/*
-		{{ rule?.specification?.body ?? "No Content" }}
+		{{ constraint?.specification?.body ?? "No Content" }}
 		*/
 	{{~ end ~}}
 		# endregion

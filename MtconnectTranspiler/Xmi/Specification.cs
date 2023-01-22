@@ -1,9 +1,10 @@
 ﻿using MtconnectTranspiler.Contracts;
+using System;
 using System.Xml.Serialization;
 
 namespace MtconnectTranspiler.Xmi
 {
-    [XmlRoot(ElementName = XmlHelper.XmiStructure.SPECIFICATION, Namespace = "")]
+    [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.SPECIFICATION, Namespace = "")]
     public class Specification : XmiElement
     {
         [XmlElement(ElementName = XmlHelper.XmiStructure.BODY)]

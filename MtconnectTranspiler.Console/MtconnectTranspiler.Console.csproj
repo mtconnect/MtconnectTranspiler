@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Consoul" Version="1.5.14" />
+    <PackageReference Include="Consoul" Version="1.6.1" />
   </ItemGroup>
 
   <ItemGroup>

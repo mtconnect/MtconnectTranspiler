@@ -1,12 +1,20 @@
-﻿namespace MtconnectCore.Contracts.Enums {
+﻿using MtconnectCore.Contracts.Enums;
+using MtconnectCore.Standard.Contracts.Enums;
+using System;
+
+namespace MtconnectCore.Contracts.Enums {
 	/// <summary>
 	/// View in the MTConnect Model browser <seealso href="https://model.mtconnect.org/#Enumeration__{{ enumeration.id }}">model.mtconnect.org</seealso>
+	{{ include 'UmlCommentsSummaryContent.scriban' item?.comments }}
 	/// </summary>
+	{{ include 'MTConnectVersionApplicability.scriban' enumeration.id }}
+	{{ include 'GeneratedCodeAttribute.scriban' }}
 	public enum {{ to_pascal_case enumeration.name }} {
 	{{~ for item in enumeration.items ~}}
 		/// <summary>
-		/// {{ ((to_summary item?.comment?.body) ?? "<c>No Summary Content</c>") | regex.replace "(\r\n|\n|\r)" " " }}
+		{{ include 'UmlCommentsSummaryContent.scriban' item?.comments }}
 		/// </summary>
+		{{ include 'MTConnectVersionApplicability.scriban' item.id }}
 		{{ item.name }},
 	{{~ end ~}}
 	}

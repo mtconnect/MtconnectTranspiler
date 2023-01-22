@@ -1,7 +1,9 @@
 ﻿using MtconnectTranspiler.Contracts;
+using MtconnectTranspiler.Xmi;
+using MtconnectTranspiler.Xmi.UML;
 using System.Xml.Serialization;
 
-namespace MtconnectTranspiler.Xmi.Model
+namespace MtconnectTranspiler.Model
 {
     public abstract class ResponseDocument : PackagedElement
     {
@@ -14,11 +16,11 @@ namespace MtconnectTranspiler.Xmi.Model
         /// <summary>
         /// Reference to the Response Document's root element
         /// </summary>
-        public virtual UmlClass Root { get; set; }
+        public virtual UmlClass? Root { get; set; }
 
         /// <summary>
         /// Reference to the Response Document's header element
         /// </summary>
-        public virtual UmlClass Header { get; set; }
+        public virtual UmlClass? Header { get; set; }
     }
 }

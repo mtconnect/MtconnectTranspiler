@@ -1,4 +1,5 @@
 ﻿using MtconnectTranspiler.Contracts;
+using System;
 using System.Xml.Serialization;
 
 namespace MtconnectTranspiler.Xmi
@@ -6,7 +7,7 @@ namespace MtconnectTranspiler.Xmi
     /// <summary>
     /// The abstract for a <c>&lt;ownedComment /&gt;</c>.
     /// </summary>
-    [XmlRoot(ElementName = XmlHelper.XmiStructure.OWNED_COMMENT, Namespace = "")]
+    [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.OWNED_COMMENT, Namespace = "")]
     public class OwnedComment : XmiElement {
         /// <summary>
         /// Markdown contents of the comment.

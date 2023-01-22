@@ -1,0 +1,6 @@
+﻿{{
+normative = lookup_normative model $1
+deprecated = lookup_deprecated model $1
+normativeVersion = lookup_mtconnect_versions normative?.version
+deprecatedVersion = lookup_mtconnect_versions deprecated?.version ~}}
+{{~ if normativeVersion ~}}[MTConnectVersionApplicability({{ normativeVersion }}, "https://model.mtconnect.org/"{{~ if deprecatedVersion ~}}, {{ deprecatedVersion }}{{~ end ~}})]{{~ end ~}}

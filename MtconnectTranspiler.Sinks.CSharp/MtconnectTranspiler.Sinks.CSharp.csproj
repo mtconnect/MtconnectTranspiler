@@ -9,9 +9,21 @@
   <ItemGroup>
     <None Remove="Templates\Class.scriban" />
     <None Remove="Templates\Enum.scriban" />
+    <None Remove="Templates\GeneratedCodeAttribute.scriban" />
+    <None Remove="Templates\MTConnectVersionApplicability.scriban" />
+    <None Remove="Templates\UmlCommentsSummaryContent.scriban" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Templates\GeneratedCodeAttribute.scriban">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\UmlCommentsSummaryContent.scriban">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\MTConnectVersionApplicability.scriban">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Templates\Class.scriban">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -26,7 +38,7 @@
 
   <ItemGroup>
     <PackageReference Include="CaseExtensions" Version="1.1.0" />
-    <PackageReference Include="Scriban" Version="5.5.0" />
+    <PackageReference Include="Scriban" Version="5.5.2" />
     <PackageReference Include="System.CodeDom" Version="6.0.0" />
   </ItemGroup>
 

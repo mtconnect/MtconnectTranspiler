@@ -1,15 +1,35 @@
 ﻿using MtconnectTranspiler.Contracts;
+using MtconnectTranspiler.Model;
 using MtconnectTranspiler.Sinks.CSharp.Models;
-using MtconnectTranspiler.Xmi.Model;
+using MtconnectTranspiler.Xmi.UML;
 using Scriban;
+using Scriban.Parsing;
 using Scriban.Runtime;
-using System;
 using System.Data;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace MtconnectTranspiler.Sinks.CSharp
 {
+    public class IncludeSharedTemplates : ITemplateLoader
+    {
+        public string GetPath(TemplateContext context, SourceSpan callerSpan, string templateName)
+        {
+            return Path.Combine("Templates", templateName);
+        }
+
+        public string Load(TemplateContext context, SourceSpan callerSpan, string templatePath)
+        {
+            var mtconnectFunctions = new MTConnectHelperMethods();
+            context.PushGlobal(mtconnectFunctions);
+            return File.ReadAllText(templatePath);
+        }
+
+        public async ValueTask<string> LoadAsync(TemplateContext context, SourceSpan callerSpan, string templatePath)
+        {
+            var mtconnectFunctions = new MTConnectHelperMethods();
+            context.PushGlobal(mtconnectFunctions);
+            return await File.ReadAllTextAsync(templatePath);
+        }
+    }
     public class Transpiler : ITranspilerSink
     {
         /// <summary>
@@ -25,9 +45,14 @@ namespace MtconnectTranspiler.Sinks.CSharp
             ProjectPath = projectPath;
 
             TemplateContext = new TemplateContext();
+            TemplateContext.TemplateLoader = new IncludeSharedTemplates();
 
             var helperFunctions = new ScribanHelperMethods();
             TemplateContext.PushGlobal(helperFunctions);
+
+            var mtconnectFunctions = new MTConnectHelperMethods();
+            TemplateContext.PushGlobal(mtconnectFunctions);
+
 
             Model = new ScriptObject();
             TemplateContext.PushGlobal(Model);
@@ -37,10 +62,11 @@ namespace MtconnectTranspiler.Sinks.CSharp
         public Task<string> Transpile(MTConnectModel model)
         {
             Model.SetValue("model", model, true);
+            Model.SetValue("version", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString(), true);
 
             // Process Enums
             processTemplate(
-                model?.Profile?.ProfileDataTypes?.Enumerations,
+                model?.Profile?.ProfileDataTypes?.Elements?.Where(o => o is UmlEnumeration),
                 getTemplate(@"Templates\Enum.scriban"),
                 Path.Combine(ProjectPath, "Contracts", "Enums"),
                 "enumeration",
@@ -52,7 +78,7 @@ namespace MtconnectTranspiler.Sinks.CSharp
             return Task.FromResult("");
         }
 
-        private void processDeviceModel(DeviceModel model, Template classTemplate, string @namespace = "MtconnectCore.Standard")
+        private void processDeviceModel(MTConnectDeviceInformationModel model, Template classTemplate, string @namespace = "MtconnectCore.Standard")
         {
             if (model == null) return;
 
@@ -81,7 +107,7 @@ namespace MtconnectTranspiler.Sinks.CSharp
         {
             string templateContent = File.ReadAllText(filepath);
             var template = Template.Parse(templateContent);
-
+            
             return template;
         }
         private string renderTemplateWithModel(string modelName, object model, Template template)

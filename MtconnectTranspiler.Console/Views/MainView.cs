@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ConsoulLibrary;
 using ConsoulLibrary.Views;
 using MtconnectTranspiler;
+using MtconnectTranspiler.Contracts;
 
 namespace MtconnectTranspiler.Console.Views
 {
@@ -20,16 +21,18 @@ namespace MtconnectTranspiler.Console.Views
         public void TranspileToCSharp()
         {
             string projectPath = Consoul.PromptForFilepath("Provide a project folder path", true);
-            string xmiPath = Consoul.PromptForFilepath("Provide the path to the MTConnect SysML Model", true);
+
+            var gitUrl = MTConnectHelper.BuildModelUri(MTConnectVersions.v2_1);
+            Consoul.Write($"Pulling the latest XMI from {gitUrl}");
+
             var options = new TranspilerOptions();
             options.Transpilers.Add(new MtconnectTranspiler.Sinks.CSharp.Transpiler(Path.Combine(projectPath, "CSharp")));
 
             var cancelToken = new CancellationTokenSource();
-            using (var transpiler = new XmiTranspiler(xmiPath, options))
+            using (var transpiler = new XmiTranspiler(options))
             {
                 Consoul.Write("Press any key to cancel...");
-
-                var task = transpiler.TranspileAsync(cancelToken.Token);
+                var task = transpiler.TranspileAsync(gitUrl, cancelToken.Token);
 
                 while (!task.IsCompleted)
                 {
@@ -50,6 +53,7 @@ namespace MtconnectTranspiler.Console.Views
                     }
                 }
             }
+            Consoul.Alert("Done!", ConsoleColor.Green);
             Consoul.Wait();
         }
     }

@@ -1,5 +1,5 @@
-﻿using MtconnectTranspiler.Xmi;
-using MtconnectTranspiler.Xmi.Model;
+﻿using MtconnectTranspiler.Model;
+using MtconnectTranspiler.Xmi;
 using System;
 using System.Collections.Generic;
 using System.IO;
