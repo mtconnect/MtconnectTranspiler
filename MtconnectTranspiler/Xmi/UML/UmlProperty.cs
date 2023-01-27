@@ -13,6 +13,8 @@ namespace MtconnectTranspiler.Xmi.UML
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.association, Namespace = "")]
         public string _association { get; set; }
         public string Association => _association;
+        // TODO: Lookup the uml:Association[@name] to determine the expected Property Name
+        // TODO: Figure out how to determine if the associated type is an array. Possibly just a reference to the lowerValue/upperValue elements
 
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.aggregation, Namespace = "")]
         public string _aggregation { get; set; }
