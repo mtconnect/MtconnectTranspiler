@@ -22,6 +22,6 @@ jobs:
         dotnet-version: '5.0.x'
     - name: Build and pack NuGet package
       run: dotnet pack -c Release -o ./artifacts
-      working-directory: ./MyProject
+      working-directory: MtconnectTranspiler
     - name: Publish NuGet package
       run: dotnet nuget push ./artifacts/*.nupkg --source ${{ env.NUGET_REGISTRY }}${{ env.NUGET_NAMESPACE }} --api-key ${{ env.NUGET_API_KEY }}
