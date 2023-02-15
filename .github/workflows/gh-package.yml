@@ -1,0 +1,27 @@
+name: Publish NuGet Package
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+env:
+  NUGET_REGISTRY: https://nuget.pkg.github.com/
+  NUGET_NAMESPACE: mtconnect
+  NUGET_API_KEY: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.x'
+    - name: Build and pack NuGet package
+      run: dotnet pack -c Release -o ./artifacts
+      working-directory: ./MyProject
+    - name: Publish NuGet package
+      run: dotnet nuget push ./artifacts/*.nupkg --source ${{ env.NUGET_REGISTRY }}${{ env.NUGET_NAMESPACE }} --api-key ${{ env.NUGET_API_KEY }}
