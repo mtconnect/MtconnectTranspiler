@@ -25,6 +25,11 @@ jobs:
     - name: Build with dotnet
       run: dotnet build "${{ env.VS_PROJECT }}\${{ env.VS_PROJECT }}.csproj" --configuration Release
     - name: Pack NuGet package
-      run: dotnet pack "${{ env.VS_PROJECT }}\${{ env.VS_PROJECT }}.csproj" -c Release -o ./artifacts --no-build
+      run: dotnet pack "${{ env.VS_PROJECT }}\${{ env.VS_PROJECT }}.csproj" -c Release -o artifacts --no-build
+    - name: Publish Artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: nupkg
+        path: artifacts
     - name: Publish NuGet package to GitHub Packages
-      run: dotnet nuget push ./artifacts/*.nupkg --source ${{ env.NUGET_REGISTRY }}${{ env.NUGET_NAMESPACE }} --api-key ${{ env.NUGET_API_KEY }}
+      run: dotnet nuget push artifacts\*.nupkg --source ${{ env.NUGET_REGISTRY }}${{ env.NUGET_NAMESPACE }} --api-key ${{ env.NUGET_API_KEY }}
