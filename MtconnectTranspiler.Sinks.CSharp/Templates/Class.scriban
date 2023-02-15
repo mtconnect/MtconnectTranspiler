@@ -2,31 +2,31 @@
 using MtconnectCore.Standard.Contracts.Enums;
 using System;
 
-namespace {{ to_pascal_code class_model.namespace }} {
+namespace {{ to_pascal_code source.namespace }} {
 	/// <summary>
-	/// View in the MTConnect Model browser <seealso href="https://model.mtconnect.org/#Structure__{{ class_model.class.id }}">model.mtconnect.org</seealso>
-	{{ include 'UmlCommentsSummaryContent.scriban' class_model?.class?.comments }}
+	/// View in the MTConnect Model browser <seealso href="https://model.mtconnect.org/#Structure__{{ source.id }}">model.mtconnect.org</seealso>
+	{{ source?.summary }}
 	/// </summary>
-	{{ include 'MTConnectVersionApplicability.scriban' class_model.class.id }}
+	{{ include 'MTConnectVersionApplicability.scriban' source }}
 	{{ include 'GeneratedCodeAttribute.scriban' }}
-	public{{ if class_model.class.is_abstract }} abstract{{ end }} class {{ to_pascal_code class_model.class.name }} {
-	{{~ for item in class_model.class.properties ~}}
+	public {{ source.modifier }} class {{ source.name }} {
+	{{~ for item in source.items ~}}
 		/// <summary>
-		{{ include 'UmlCommentsSummaryContent.scriban' item?.comments }}
+		{{ item?.summary }}
 		/// </summary>
 		/// <remarks>Original Name: {{ item.name }}</remarks>
-		{{ include 'MTConnectVersionApplicability.scriban' item.id }}
-		{{ item.visibility ?? "public" }} {{ lookup_csharp_data_type model item }} {{ to_pascal_code item.name }} { get; set; }
+		{{ include 'MTConnectVersionApplicability.scriban' item }}
+		{{ item.access_modifier }} {{ item.type }} {{ item.name }} { get; set; }
 	{{~ end ~}}
 
 		# region Rules
-	{{~ for constraint in class_model.class.constraints ~}}
+	{{~ for constraint in source.constraints ~}}
 		/// <summary>
 		/// {{ constraint.name }}
 		/// </summary>
 		/// <remarks>Specification Language: <c>{{ constraint?.specification?.language ?? "Unspecified" }}</c></remarks>
 		/*
-		{{ constraint?.specification?.body ?? "No Content" }}
+		{{ constraint?.raw_script ?? "No Content" }}
 		*/
 	{{~ end ~}}
 		# endregion

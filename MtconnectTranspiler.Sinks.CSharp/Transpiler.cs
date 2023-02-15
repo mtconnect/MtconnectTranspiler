@@ -1,11 +1,14 @@
 ﻿using MtconnectTranspiler.Contracts;
 using MtconnectTranspiler.Model;
+using MtconnectTranspiler.Sinks.CSharp.Attributes;
 using MtconnectTranspiler.Sinks.CSharp.Models;
+using MtconnectTranspiler.Xmi;
 using MtconnectTranspiler.Xmi.UML;
 using Scriban;
 using Scriban.Parsing;
 using Scriban.Runtime;
 using System.Data;
+using System.Reflection;
 
 namespace MtconnectTranspiler.Sinks.CSharp
 {
@@ -66,30 +69,25 @@ namespace MtconnectTranspiler.Sinks.CSharp
 
             // Process Enums
             processTemplate(
-                model?.Profile?.ProfileDataTypes?.Elements?.Where(o => o is UmlEnumeration),
-                getTemplate(@"Templates\Enum.scriban"),
-                Path.Combine(ProjectPath, "Contracts", "Enums"),
-                "enumeration",
-                o => o.Name + ".cs"
-            );
+                model?.Profile?.ProfileDataTypes?.Elements
+                ?.Where(o => o is UmlEnumeration)
+                ?.Select(o => new Models.Enum(model, o as UmlEnumeration)),
+                Path.Combine(ProjectPath, "Enums"));
 
-            processDeviceModel(model.DeviceModel, getTemplate(@"Templates\Class.scriban"));
+            processDeviceModel(model.DeviceModel);
 
             return Task.FromResult("");
         }
 
-        private void processDeviceModel(MTConnectDeviceInformationModel model, Template classTemplate, string @namespace = "MtconnectCore.Standard")
+        private void processDeviceModel(MTConnectDeviceInformationModel model, string @namespace = "MtconnectCore.Standard")
         {
             if (model == null) return;
 
             if (model.Classes != null && model.Classes.Any())
             {
                 processTemplate(
-                    model.Classes.Select(o => new { @Class = o, Namespace = $"{@namespace}.{o.Name}" }),
-                    classTemplate,
-                    Path.Combine(ProjectPath, "Standard", model.Name),
-                    "class_model",
-                    o => $"{o.Class.Name}.cs"
+                    model.Classes.Select(o => new Class(Model["model"] as MTConnectModel, o) { Namespace = $"{@namespace}.{o.Name}" }),
+                    ProjectPath//Path.Combine(ProjectPath, value.Name),
                 );
             }
 
@@ -98,41 +96,71 @@ namespace MtconnectTranspiler.Sinks.CSharp
                 // Recursively build sub-class structure
                 foreach (var subModel in model.SubModels)
                 {
-                    processDeviceModel(subModel, classTemplate, $"{@namespace}.{model.Name}");
+                    if (subModel.Name == "Component Types")
+                    {
+                        // Convert Component Classes into Enums
+                        // Process Enums
+                        processTemplate(
+                            new Models.Enum(Model["model"] as MTConnectModel, subModel),
+                            Path.Combine(ProjectPath, "Enums"));
+                    } else
+                    {
+                        processDeviceModel(subModel, $"{@namespace}.{model.Name}");
+                    }
                 }
             }
         }
 
+        private Dictionary<string, Template> templateCache = new Dictionary<string, Template>();
         private Template getTemplate(string filepath)
         {
-            string templateContent = File.ReadAllText(filepath);
-            var template = Template.Parse(templateContent);
-            
-            return template;
-        }
-        private string renderTemplateWithModel(string modelName, object model, Template template)
-        {
-            if (model == null) return String.Empty;
+            if (templateCache.TryGetValue(filepath, out Template template)) return template;
 
-            Model.SetValue(modelName, model, true);
+            string templateContent = File.ReadAllText(filepath);
+            template = Template.Parse(templateContent);
+
+            if (template != null && templateCache.TryAdd(filepath, template))
+            {
+                return template;
+            }
+
+            throw new InvalidOperationException();
+        }
+        private string renderTemplateWithModel(string member, object value, Template template)
+        {
+            if (value == null) return String.Empty;
+            if (Model.Contains(member))
+            {
+                Model.Remove(member);
+            }
+            Model.SetValue(member, value, true);
             string csharp = template.Render(TemplateContext);
 
-            Model.Remove(modelName);
+            Model.Remove(member);
 
             return csharp;
         }
-        private void processTemplate<T>(IEnumerable<T>? items, Template template, string folderPath, string modelName, Func<T, string> filenameGenerator)
+        private void processTemplate<T>(IEnumerable<T>? items, string folderPath) where T : IFileSource
         {
-            if (modelName.Equals("model", StringComparison.OrdinalIgnoreCase))
-                throw new DuplicateNameException("Scriban Template Context already has a member name 'model' associated with the context.");
-
             if (items == null || items.Any() == false) return;
 
-            foreach (var item in items)
+            foreach (var item in items) processTemplate(item, folderPath);
+        }
+        private void processTemplate<T>(T? item, string folderPath) where T : IFileSource
+        {
+            if (item == null) return;
+
+            System.Type type = typeof(T);
+            ScribanTemplateAttribute attr = type.GetCustomAttribute<ScribanTemplateAttribute>();
+
+            Template template = getTemplate($"Templates\\{attr.Filename}");
+            if (template == null)
             {
-                string csharp = renderTemplateWithModel(modelName, item, template);
-                XmiTranspilerExtensions.WriteToFile(Path.Combine(folderPath, filenameGenerator(item)), csharp);
+                throw new FileNotFoundException();
             }
+
+            string csharp = renderTemplateWithModel("source", item, template);
+            XmiTranspilerExtensions.WriteToFile(Path.Combine(folderPath, item.Filename), csharp);
         }
     }
 

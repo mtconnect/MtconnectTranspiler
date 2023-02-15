@@ -14,6 +14,16 @@ namespace MtconnectTranspiler
             string folder = Path.GetDirectoryName(filepath);
             if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
 
+            int copyCount = 0;
+            do
+            {
+                if (File.Exists(filepath))
+                {
+                    copyCount += 1;
+                    int extensionIndex = filepath.LastIndexOf(".");
+                    filepath = $"{filepath.Substring(0, extensionIndex)}_{copyCount}{filepath.Substring(extensionIndex)}";
+                }
+            } while (File.Exists(filepath));
             File.WriteAllText(filepath, contents);
         }
     }
