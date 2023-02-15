@@ -17,7 +17,6 @@
 	  <PackageReleaseNotes>This is a pre-release version.</PackageReleaseNotes>
 	  <IncludeSymbols>True</IncludeSymbols>
 	  <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-	  <PackageReadmeFile>README.md</PackageReadmeFile>
 	  <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
