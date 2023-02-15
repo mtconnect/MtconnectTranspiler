@@ -11,13 +11,13 @@
 	  <Company>MTConnect Institute; TAMS;</Company>
 	  <Description>A library capable of parsing an XMI for the MTConnect Standard and passing it to an implemented transpiler.</Description>
 	  <PackageProjectUrl>https://github.com/mtconnect/MtconnectTranspiler</PackageProjectUrl>
-	  <PackageReadmeFile>README.md</PackageReadmeFile>
 	  <RepositoryUrl>https://github.com/mtconnect/MtconnectTranspiler</RepositoryUrl>
 	  <RepositoryType>git</RepositoryType>
 	  <PackageTags>MTConnect;Transpiler;CI;</PackageTags>
 	  <PackageReleaseNotes>This is a pre-release version.</PackageReleaseNotes>
 	  <IncludeSymbols>True</IncludeSymbols>
 	  <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,5 +30,4 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
-
 </Project>
