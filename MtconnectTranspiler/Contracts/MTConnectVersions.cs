@@ -49,5 +49,9 @@
         /// Refers to Version 2.1 of MTConnect
         /// </summary>
         v2_1,
+        /// <summary>
+        /// Refers to Version 2.2 of MTConnect
+        /// </summary>
+        v2_2
     }
 }

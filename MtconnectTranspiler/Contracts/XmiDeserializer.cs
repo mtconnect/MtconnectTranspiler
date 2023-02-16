@@ -9,12 +9,20 @@ using System.Xml.Serialization;
 
 namespace MtconnectTranspiler.Contracts
 {
+    /// <summary>
+    /// A class that can deserialize a XMI document into an object-oriented form.
+    /// </summary>
     public sealed class XmiDeserializer
     {
         private ILogger<XmiDeserializer>? _logger;
         private XmlDocument xDoc;
         private XmlNamespaceManager nsmgr;
 
+        /// <summary>
+        /// Constructs a new instance of the deserializer with a reference to the source document.
+        /// </summary>
+        /// <param name="xmlDocument">A source of XMI to deserialize</param>
+        /// <param name="logger"><inheritdoc cref="ILogger" path="/summary"/></param>
         public XmiDeserializer(XmlDocument xmlDocument, ILogger<XmiDeserializer>? logger = null)
         {
             _logger = logger;
@@ -41,7 +49,7 @@ namespace MtconnectTranspiler.Contracts
         /// </summary>
         /// <typeparam name="T">Generic type to deserialize the XML document into.</typeparam>
         /// <param name="predicatePath">Predicate XPath to start deserializing from.</param>
-        /// <returns></returns>
+        /// <returns>The deserialized object as <typeparamref name="T"/>.</returns>
         public T? Deserialize<T>(string predicatePath, CancellationToken cancellationToken) where T : class, new()
         {
             XmlNode? xPredicate = xDoc.SelectSingleNode(predicatePath, nsmgr);
@@ -138,6 +146,12 @@ namespace MtconnectTranspiler.Contracts
             return result;
         }
     
+        /// <summary>
+        /// Creates a <see cref="XmiDeserializer"/> from a reference to the filepath of a XMI document.
+        /// </summary>
+        /// <param name="filename">Filepath to a XMI-formatted XML document.</param>
+        /// <param name="logger"><inheritdoc cref="ILogger" path="/summary"/></param>
+        /// <returns><inheritdoc cref="XmiDeserializer" path="/summary"/></returns>
         public static XmiDeserializer FromFile(string filename, ILogger<XmiDeserializer>? logger = null)
         {
             var xDoc = new XmlDocument();
@@ -146,6 +160,12 @@ namespace MtconnectTranspiler.Contracts
             return new XmiDeserializer(xDoc, logger);
         }
 
+        /// <summary>
+        /// Creates a <see cref="XmiDeserializer"/> from raw XML.
+        /// </summary>
+        /// <param name="xml">Raw XML string</param>
+        /// <param name="logger"><inheritdoc cref="ILogger" path="/summary"/></param>
+        /// <returns><inheritdoc cref="XmiDeserializer" path="/summary"/></returns>
         public static XmiDeserializer FromXml(string xml, ILogger<XmiDeserializer>? logger = null)
         {
             var xDoc = new XmlDocument();

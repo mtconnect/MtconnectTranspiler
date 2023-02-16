@@ -25,7 +25,7 @@ namespace MtconnectTranspiler
         /// </summary>
         public TranspilerDispatcherOptions Options { get; private set; }
 
-        public TranspilerDispatcher(TranspilerDispatcherOptions options, ILogger<TranspilerDispatcher>? logger = null)
+        public TranspilerDispatcher(TranspilerDispatcherOptions options, ILogger<TranspilerDispatcher>? logger = default)
         {
             _logger = logger;
             Options = options;
