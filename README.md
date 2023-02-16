@@ -1,3 +1,5 @@
+[![Publish NuGet Package](https://github.com/mtconnect/MtconnectTranspiler/actions/workflows/gh-package.yml/badge.svg)](https://github.com/mtconnect/MtconnectTranspiler/actions/workflows/gh-package.yml)
+
 MtconnectTranspiler
 ======
 
