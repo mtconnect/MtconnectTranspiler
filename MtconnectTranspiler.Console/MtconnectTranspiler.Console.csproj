@@ -12,8 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MtconnectTranspiler.Sinks.CSharp\MtconnectTranspiler.Sinks.CSharp.csproj" />
-    <ProjectReference Include="..\MtconnectTranspiler.Sinks.JavaScript\MtconnectTranspiler.Sinks.JavaScript.csproj" />
     <ProjectReference Include="..\MtconnectTranspiler\MtconnectTranspiler.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,5 @@
 ﻿using MtconnectTranspiler.Model;
-using MtconnectTranspiler.Xmi;
 using MtconnectTranspiler.Xmi.Profile;
-using MtconnectTranspiler.Xmi.UML;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,45 +36,23 @@ namespace MtconnectTranspiler.Contracts
         public static Uri BuildModelUri(MTConnectVersions version)
         {
             if (!VersionGitTags.TryGetValue(version, out string tag)) throw new KeyNotFoundException();
-            return new Uri($"https://github.com/mtconnect/mtconnect_sysml_model/releases/download/{tag}/Model.xml");
+            return BuildModelUri(tag);
         }
-    
+
+        /// <summary>
+        /// Builds the reference address for a released version of the SysML model on GitHub.
+        /// </summary>
+        /// <param name="tag">The raw tag name of the released version on GitHub.</param>
+        /// <returns><inheritdoc cref="BuildModelUri(MTConnectVersions)" path="/returns"/></returns>
+        public static Uri BuildModelUri(string tag)
+            => tag.Equals("latest", StringComparison.OrdinalIgnoreCase)
+            ? new Uri($"https://github.com/mtconnect/mtconnect_sysml_model/releases/latest/download/Model.xml")
+            : new Uri($"https://github.com/mtconnect/mtconnect_sysml_model/releases/download/{tag}/Model.xml");
+
         public static Normative? LookupNormative(MTConnectModel model, string id)
             => model.NormativeReferences.FirstOrDefault(o => o.BaseElement == id);
         public static Deprecated? LookupDeprecated(MTConnectModel model, string id)
             => model.DeprecatedReferences.FirstOrDefault(o => o.BaseElement == id);
 
-        public static UmlDataType? LookupDataType(MTConnectModel model, UmlProperty property)
-        {
-            var dataTypes = model?.AllDataTypes;
-            return dataTypes
-                ?.Where(o => o.Id == property?.PropertyType)
-                ?.FirstOrDefault();
-        }
-
-        public static Dictionary<string, System.Type> UmlToCsharpDataTypes = new Dictionary<string, System.Type>()
-        {
-            { "boolean", typeof(bool) },
-            { "ID", typeof(string) },
-            { "string", typeof(string) },
-            { "float", typeof(float) },
-            { "datetime", typeof(DateTime) },
-            { "integer", typeof(int) },
-            { "xlinktype", typeof(string) },
-            { "xslang", typeof(string) },
-            { "SECOND", typeof(float) },
-            { "IDREF", typeof(string) },
-            { "xlinkhref", typeof(string) },
-            { "MILLIMETER", typeof(float) },
-            { "DEGREE", typeof(float) },
-            { "x509", typeof(string) },
-            { "unit", typeof(float) },
-            { "CUBIC_MILLIMETER", typeof(float) },
-            { "int32", typeof(int) },
-            { "int64", typeof(long) },
-            { "version", typeof(string) },
-            { "uint32", typeof(uint) },
-            { "uint64", typeof(ulong) },
-        };
     }
 }

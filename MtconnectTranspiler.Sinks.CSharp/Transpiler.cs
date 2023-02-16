@@ -1,5 +1,4 @@
-﻿using MtconnectTranspiler.Contracts;
-using MtconnectTranspiler.Model;
+﻿using MtconnectTranspiler.Model;
 using MtconnectTranspiler.Sinks.CSharp.Attributes;
 using MtconnectTranspiler.Sinks.CSharp.Models;
 using MtconnectTranspiler.Xmi;
