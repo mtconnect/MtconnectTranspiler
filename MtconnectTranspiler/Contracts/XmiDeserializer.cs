@@ -2,7 +2,6 @@
 using MtconnectTranspiler.Contracts.Attributes;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Xml;
@@ -10,7 +9,7 @@ using System.Xml.Serialization;
 
 namespace MtconnectTranspiler.Contracts
 {
-    internal class XmiDeserializer
+    public sealed class XmiDeserializer
     {
         private ILogger<XmiDeserializer>? _logger;
         private XmlDocument xDoc;
