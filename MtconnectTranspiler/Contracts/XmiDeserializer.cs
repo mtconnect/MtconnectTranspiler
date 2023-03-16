@@ -98,54 +98,76 @@ namespace MtconnectTranspiler.Contracts
             System.Reflection.PropertyInfo[]? properties = targetType
                 .GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
 
-            Type attrXPath = typeof(XPathAttribute);
             foreach (var property in properties)
             {
-                XPathAttribute[] xpathAttributes = ((XPathAttribute[])property.GetCustomAttributes(attrXPath, true));
-                foreach (var xpathAttribute in xpathAttributes)
-                {
-                    if (property.PropertyType.IsArray)
-                    {
-                        _logger?.LogTrace("Deserializing array property '{PropertyName}' in '{TargetType}'", property.Name, targetType.FullName);
-                        XmlNodeList? xPropertyNodes = xNode.SelectNodes(xpathAttribute.Path, nsmgr);
-                        if (xPropertyNodes != null)
-                        {
-                            Type? elementType = property.PropertyType.GetElementType();
-                            Type? resultType = xpathAttribute.Type ?? elementType;
-                            List<object> collection = new List<object>();
-                            foreach (XmlNode xChild in xPropertyNodes)
-                            {
-                                var childObject = unwrapObject(xChild, resultType, cancellationToken);
-                                if (childObject != null)
-                                {
-                                    collection.Add(childObject);
-                                }
-                            }
-                            object[]? existingArray = property.GetValue(result) as object[];
-                            if (existingArray?.Length > 0)
-                            {
-                                collection.InsertRange(0, existingArray);
-                            }
-                            Array typedArray = Array.CreateInstance(elementType, collection.Count);
-                            Array.Copy(collection.ToArray(), typedArray, collection.Count);
-                            property.SetValue(result, typedArray);
-                        }
-                    }
-                    else
-                    {
-                        _logger?.LogTrace("Deserializing property '{PropertyName}' in '{TargetType}'", property.Name, targetType.FullName);
-                        XmlNode? xPropertyNode = xNode.SelectSingleNode(xpathAttribute.Path, nsmgr);
-                        if (xPropertyNode != null)
-                        {
-                            property.SetValue(result, unwrapObject(xPropertyNode, xpathAttribute.Type ?? property.PropertyType, cancellationToken));
-                        }
-                    }
-                }
+                ParseXPathAttribute(xNode, targetType, result, property, cancellationToken);
+                ParseXmlAttributeAttribute(xNode, targetType, result, property, cancellationToken);
             }
 
             return result;
         }
-    
+
+        private Type XPathAttributeType = typeof(XPathAttribute);
+        private void ParseXPathAttribute(XmlNode xNode, Type targetType, object? result, PropertyInfo property, CancellationToken cancellationToken)
+        {
+            XPathAttribute[] xpathAttributes = ((XPathAttribute[])property.GetCustomAttributes(XPathAttributeType, true));
+            foreach (var xpathAttribute in xpathAttributes)
+            {
+                if (property.PropertyType.IsArray)
+                {
+                    _logger?.LogTrace("Deserializing array property '{PropertyName}' in '{TargetType}'", property.Name, targetType.FullName);
+                    XmlNodeList? xPropertyNodes = xNode.SelectNodes(xpathAttribute.Path, nsmgr);
+                    if (xPropertyNodes != null)
+                    {
+                        Type? elementType = property.PropertyType.GetElementType();
+                        Type? resultType = xpathAttribute.Type ?? elementType;
+                        List<object> collection = new List<object>();
+                        foreach (XmlNode xChild in xPropertyNodes)
+                        {
+                            var childObject = unwrapObject(xChild, resultType, cancellationToken);
+                            if (childObject != null)
+                            {
+                                collection.Add(childObject);
+                            }
+                        }
+                        object[]? existingArray = property.GetValue(result) as object[];
+                        if (existingArray?.Length > 0)
+                        {
+                            collection.InsertRange(0, existingArray);
+                        }
+                        Array typedArray = Array.CreateInstance(elementType, collection.Count);
+                        Array.Copy(collection.ToArray(), typedArray, collection.Count);
+                        property.SetValue(result, typedArray);
+                    }
+                }
+                else
+                {
+                    _logger?.LogTrace("Deserializing property '{PropertyName}' in '{TargetType}'", property.Name, targetType.FullName);
+                    XmlNode? xPropertyNode = xNode.SelectSingleNode(xpathAttribute.Path, nsmgr);
+                    if (xPropertyNode != null)
+                    {
+                        property.SetValue(result, unwrapObject(xPropertyNode, xpathAttribute.Type ?? property.PropertyType, cancellationToken));
+                    }
+                }
+            }
+        }
+
+        private Type XmlAttributeType = typeof(XmlAttributeAttribute);
+        private void ParseXmlAttributeAttribute(XmlNode xNode, Type targetType, object? result, PropertyInfo property, CancellationToken cancellationToken)
+        {
+            XmlAttributeAttribute[] xAttributes = ((XmlAttributeAttribute[])property.GetCustomAttributes(XmlAttributeType, true));
+            foreach (var xAttribute in xAttributes)
+            {
+                _logger?.LogTrace("Deserializing property '{PropertyName}' in '{TargetType}'", property.Name, targetType.FullName);
+                XmlAttribute? xProperty = xNode.Attributes[xAttribute.AttributeName, xAttribute.Namespace];
+
+                if (xProperty != null)
+                {
+                    property.SetValue(result, xProperty.Value);
+                }
+            }
+        }
+
         /// <summary>
         /// Creates a <see cref="XmiDeserializer"/> from a reference to the filepath of a XMI document.
         /// </summary>

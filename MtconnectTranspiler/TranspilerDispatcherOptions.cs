@@ -11,6 +11,6 @@ namespace MtconnectTranspiler
         /// Returns an instance of <see cref="XmiDeserializer"/> that has a copy of the SysML model in memory.
         /// </summary>
         /// <returns>Instance of <see cref="XmiDeserializer"/></returns>
-        internal abstract XmiDeserializer GetDeserializer();
+        public abstract XmiDeserializer GetDeserializer();
     }
 }
