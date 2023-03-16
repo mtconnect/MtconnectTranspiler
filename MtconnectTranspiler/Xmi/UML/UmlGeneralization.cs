@@ -10,6 +10,9 @@ namespace MtconnectTranspiler.Xmi.UML
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.GENERALIZATION, Namespace = "")]
     public class UmlGeneralization : Generalization
     {
+        /// <summary>
+        /// Represents the <c>general</c> attribute in a <c>&lt;generalization xmi:type='uml:Generalization' /&gt;</c> element.
+        /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.GENERAL)]
         public string General { get; set; }
     }

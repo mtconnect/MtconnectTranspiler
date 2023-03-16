@@ -11,6 +11,9 @@ namespace MtconnectTranspiler.Xmi.UML
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.PACKAGED_ELEMENT, Namespace = "")]
     public class UmlProfile : PackagedElement
     {
+        /// <summary>
+        /// Represents the <c>&lt;ownedComment xmi:type='uml:Comment' /&gt;</c> element(s).
+        /// </summary>
         [XPath("./ownedComments[@xmi:type='uml:Comment']")]
         public UmlComment[]? Comments { get; set; }
 

@@ -11,11 +11,14 @@ namespace MtconnectTranspiler.Xmi.UML
     public class UmlDataType : PackagedElement
     {
         /// <summary>
-        /// Description content in Cameo
+        /// Represents the <c>&lt;ownedComment xmi:type='uml:Comment' /&gt;</c> element(s).
         /// </summary>
         [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_COMMENT)]
         public UmlComment[]? Comments { get; set; }
 
+        /// <summary>
+        /// Represents the <c>&lt;generalization xmi:type='uml:Generalization' /&gt;</c> element(s).
+        /// </summary>
         [XmlElement(ElementName = XmlHelper.XmiStructure.GENERALIZATION)]
         public UmlGeneralization[]? Generalization { get; set; }
     }

@@ -11,9 +11,15 @@ namespace MtconnectTranspiler.Xmi.UML
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.PACKAGED_ELEMENT, Namespace = "")]
     public class UmlStereotype : PackagedElement
     {
+        /// <summary>
+        /// Represents the <c>&lt;ownedComment xmi:type='uml:Comment' /&gt;</c> element(s).
+        /// </summary>
         [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_COMMENT, Namespace = "")]
         public UmlComment[]? Comments { get; set; }
 
+        /// <summary>
+        /// Represents the <c>&lt;ownedAttribute xmi:type='uml:Property' /&gt;</c> element(s).
+        /// </summary>
         [XPath("./*[@xmi:type='uml:Property']")]
         public UmlProperty[]? Properties { get; set; }
     }
