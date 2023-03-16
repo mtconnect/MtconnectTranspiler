@@ -17,7 +17,7 @@ namespace MtconnectTranspiler
         public string GitHubRelease { get; set; } = "latest";
 
         /// <inheritdoc />
-        internal override XmiDeserializer GetDeserializer()
+        public override XmiDeserializer GetDeserializer()
         {
             if (string.IsNullOrEmpty(GitHubRelease)) throw new ArgumentNullException();
 
