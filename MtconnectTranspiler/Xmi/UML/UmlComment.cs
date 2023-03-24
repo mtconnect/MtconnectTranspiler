@@ -5,12 +5,13 @@ using System.Xml.Serialization;
 namespace MtconnectTranspiler.Xmi.UML
 {
     /// <summary>
-    /// Represents <c>&lt;ownedComment xmi:type='uml:Comment' /&gt;</c>
+    /// <inheritdoc cref="MtconnectTranspiler.Xmi.OwnedComment"/> where <c>xmi:type='uml:Comment'</c>
     /// </summary>
     [Serializable, XmlType(Namespace = XmlHelper.UmlNamespace), XmlRoot(ElementName = XmlHelper.XmiStructure.OWNED_COMMENT, Namespace = "")]
     public class UmlComment : OwnedComment
     {
-        public override string Type => "uml:Comment";
+        /// <inheritdoc cref="MtconnectTranspiler.Xmi.XmiElement.Type"/>
+        public override string Type => XmlHelper.UmlStructure.Comment;
 
     }
 }

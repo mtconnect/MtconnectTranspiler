@@ -9,7 +9,7 @@ namespace MtconnectTranspiler.Contracts
     /// <summary>
     /// A class that can deserialize a XMI document into an object-oriented form.
     /// </summary>
-    public sealed class XmiDeserializer : XmlSerializer
+    public sealed class XmiDeserializer
     {
         private ILogger<XmiDeserializer>? _logger;
         private XmlDocument xDoc;
@@ -41,19 +41,13 @@ namespace MtconnectTranspiler.Contracts
             nsmgr.AddNamespace("SimulationProfile", XmlHelper.SimulationProfileNamespace);
         }
 
-        protected override object Deserialize(XmlSerializationReader reader)
-        {
-            return base.Deserialize(reader);
-        }
-
         /// <summary>
         /// Deserializes the XML Document into the specified type.
         /// </summary>
-        /// <param name="predicatePath">Predicate XPath to start deserializing from.</param>
-        /// <returns>The deserialized object as <typeparamref name="T"/>.</returns>
-        public XmiDocument Deserialize(CancellationToken cancellationToken)
+        /// <returns>The deserialized object as a <see cref="XmiDocument"/>.</returns>
+        public XmiDocument? Deserialize(CancellationToken cancellationToken)
         {
-            XmiDocument result = null;
+            XmiDocument? result = null;
 
             XmlRootAttribute xRoot = new XmlRootAttribute();
             xRoot.ElementName = xDoc.DocumentElement.LocalName;

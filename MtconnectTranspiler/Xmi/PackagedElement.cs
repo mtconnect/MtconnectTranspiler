@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 namespace MtconnectTranspiler.Xmi
 {
     /// <summary>
-    /// Represents <c>&lt;packagedElement /&gt;</c>
+    /// <c>&lt;packagedElement /&gt;</c> element
     /// </summary>
     [Serializable, XmlType(Namespace = XmlHelper.UmlNamespace), XmlRoot(ElementName = XmlHelper.XmiStructure.PACKAGED_ELEMENT, Namespace = XmlHelper.UmlNamespace)]
     [XmlInclude(typeof(UmlPackage)),

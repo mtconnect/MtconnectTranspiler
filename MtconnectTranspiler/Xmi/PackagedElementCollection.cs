@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml;
 using MtconnectTranspiler.Contracts;
 using System.Xml.Serialization;
+using System.Xml.Linq;
 
 namespace MtconnectTranspiler.Xmi
 {
@@ -27,11 +28,13 @@ namespace MtconnectTranspiler.Xmi
         /// <returns>First <c>&lt;packagedElement /&gt;</c> where the <c>name</c> matched. Returns <c>null</c> if no elements were found</returns>
         public T GetByName(string name)
         {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException(nameof(name));
             int index = -1;
             if (NameCache.TryGetValue(name, out index))
                 return Items.ElementAt(index);
 
-            return Get((e) => e.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+            return Get((e) => e.Name!.Equals(name, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
         }
 
         /// <summary>
@@ -41,11 +44,13 @@ namespace MtconnectTranspiler.Xmi
         /// <returns>First <c>&lt;packagedElement /&gt;</c> where the <c>id</c> matched. Returns <c>null</c> if no elements were found</returns>
         public T GetById(string id)
         {
+            if (string.IsNullOrEmpty(id))
+                throw new ArgumentNullException(nameof(id));
             int index = -1;
             if (NameCache.TryGetValue(id, out index))
                 return Items.ElementAt(index);
 
-            return Get((e) => e.Id.Equals(id, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+            return Get((e) => e.Id!.Equals(id, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
         }
 
         private IEnumerable<T> Get(Func<PackagedElement, bool> eval)
@@ -56,11 +61,11 @@ namespace MtconnectTranspiler.Xmi
                 var element = Items.ElementAt(i);
                 if (element != null && eval(element))
                 {
-                    if (!NameCache.ContainsKey(element.Name))
-                        NameCache.Add(element.Name, i);
+                    if (!string.IsNullOrEmpty(element.Name) && !NameCache.ContainsKey(element.Name!))
+                        NameCache.Add(element.Name!, i);
 
-                    if (!IdCache.ContainsKey(element.Id))
-                        IdCache.Add(element.Id, i);
+                    if (!string.IsNullOrEmpty(element.Id) && !IdCache.ContainsKey(element.Id!))
+                        IdCache.Add(element.Id!, i);
 
                     Cache.Add(i);
 
@@ -81,11 +86,11 @@ namespace MtconnectTranspiler.Xmi
             int index = Items.Count;
             Items.Add(item);
 
-            if (!NameCache.ContainsKey(item.Name))
-                NameCache.Add(item.Name, index);
+            if (!string.IsNullOrEmpty(item.Name) && !NameCache.ContainsKey(item.Name!))
+                NameCache.Add(item.Name!, index);
 
-            if (!IdCache.ContainsKey(item.Id))
-                IdCache.Add(item.Id, index);
+            if (!string.IsNullOrEmpty(item.Id) && !IdCache.ContainsKey(item.Id!))
+                IdCache.Add(item.Id!, index);
 
             if (!Cache.Contains(index))
                 Cache.Add(index);
@@ -133,6 +138,12 @@ namespace MtconnectTranspiler.Xmi
         IEnumerator IEnumerable.GetEnumerator()
             => GetEnumerator();
     
+        /// <summary>
+        /// Deserializes the XmlElement(s) into the provided <typeparamref name="T"/>.
+        /// </summary>
+        /// <param name="elements">Collection of XmlElement(s) to deserialize.</param>
+        /// <param name="type">Reference to the <c>xmi:type</c> to filter the <paramref name="elements"/> by.</param>
+        /// <returns><inheritdoc cref="PackagedElementCollection{T}"/></returns>
         public static PackagedElementCollection<T> Deserialize(XmlElement[]? elements, string type)
         {
             var result = new PackagedElementCollection<T>();
@@ -151,17 +162,14 @@ namespace MtconnectTranspiler.Xmi
                 if (element.LocalName != XmlHelper.XmiStructure.PACKAGED_ELEMENT || !element.GetAttribute("type", XmlHelper.XmiNamespace).Equals(type))
                     continue;
 
-                using (var xReader = new XmlNodeReader(element))
-                {
-                    object? deserializedObject = serial.Deserialize(xReader);
-                    if (deserializedObject == null)
-                        continue;
-                    T typedObject = deserializedObject as T;
-                    if (typedObject == null)
-                        continue;
-                    
-                    result.Add(typedObject);
-                }
+                using var xReader = new XmlNodeReader(element);
+                object? deserializedObject = serial.Deserialize(xReader);
+                if (deserializedObject == null)
+                    continue;
+                if (!(deserializedObject is T typedObject))
+                    continue;
+
+                result.Add(typedObject);
             }
 
             return result;

@@ -5,13 +5,13 @@ using System.Xml.Serialization;
 namespace MtconnectTranspiler.Xmi
 {
     /// <summary>
-    /// Represents <c>&lt;metamodelReference /&gt;</c>
+    /// <c>&lt;metamodelReference /&gt;</c> element
     /// </summary>
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.METAMODEL_REFERENCE, Namespace = "")]
     public class MetamodelReference : XmiElement
     {
         /// <summary>
-        /// Represents <c>xmi:idref</c> in <c>&lt;metamodelReference /&gt;</c>
+        /// <c>xmi:idref</c> attribute
         /// </summary>
         [XmlElement(ElementName = XmlHelper.XmiStructure.idRef, Namespace = XmlHelper.XmiNamespace)]
         public string? IdRef { get; set; }

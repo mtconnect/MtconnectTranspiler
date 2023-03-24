@@ -5,19 +5,20 @@ using System.Xml.Serialization;
 namespace MtconnectTranspiler.Xmi.UML
 {
     /// <summary>
-    /// Represents <c>&lt;defaultValue xmi:type='uml:InstanceValue' /&gt;</c>
+    /// <inheritdoc cref="MtconnectTranspiler.Xmi.DefaultValue"/> where <c>xmi:type='uml:InstanceValue'</c>
     /// </summary>
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.DEFAULT_VALUE, Namespace = "")]
     public class UmlInstanceValue : DefaultValue
     {
-        public override string Type => "uml:InstanceValue";
+        /// <inheritdoc cref="MtconnectTranspiler.Xmi.XmiElement.Type"/>
+        public override string Type => XmlHelper.UmlStructure.InstanceValue;
 
         /// <summary>
-        /// Represents the <c>instance</c> attribute in a <c>&lt;defaultValue xmi:type='uml:InstanceValue' /&gt;</c> element.
+        /// <c>instance</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.instance, Namespace = "")]
-        internal string _instance { get; set; }
-        /// <inheritdoc cref="_association"/>
-        public string Instance => _instance;
+        internal string? _instance { get; set; }
+        /// <inheritdoc cref="_instance"/>
+        public string Instance => _instance ?? string.Empty;
     }
 }

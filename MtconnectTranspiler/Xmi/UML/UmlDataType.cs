@@ -5,13 +5,16 @@ using System.Xml.Serialization;
 namespace MtconnectTranspiler.Xmi.UML
 {
     /// <summary>
-    /// Represents <c>&lt;packagedElement xmi:type='uml:DataType' /&gt;</c>
+    /// <inheritdoc cref="MtconnectTranspiler.Xmi.PackagedElement" /> where <c>xmi:type='uml:DataType'</c>
     /// </summary>
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.PACKAGED_ELEMENT, Namespace = "")]
     public class UmlDataType : PackagedElement
     {
+        /// <inheritdoc cref="MtconnectTranspiler.Xmi.XmiElement.Type"/>
+        public override string Type => XmlHelper.UmlStructure.DataType;
+
         /// <summary>
-        /// Represents the <c>isAbstract</c> attribute in a <c>&lt;ownedAttribute xmi:type='uml:Property' /&gt;</c> element.
+        /// <c>isAbstract</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.isAbstract, Namespace = "")]
         private bool _isAbstract { get; set; }
@@ -19,7 +22,7 @@ namespace MtconnectTranspiler.Xmi.UML
         public bool IsAbstract => _isAbstract;
 
         /// <summary>
-        /// Represents the <c>visibility</c> attribute in a <c>&lt;ownedAttribute xmi:type='uml:Property' /&gt;</c> element.
+        /// <c>visibility</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.visibility, Namespace = "")]
         private string _visibility { get; set; } = "public";
@@ -27,13 +30,13 @@ namespace MtconnectTranspiler.Xmi.UML
         public string Visibility => _visibility;
 
         /// <summary>
-        /// Represents the <c>&lt;ownedComment xmi:type='uml:Comment' /&gt;</c> element(s).
+        /// Collection of <inheritdoc cref="UmlComment"/>
         /// </summary>
         [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_COMMENT, Namespace = "")]
         public UmlComment[]? Comments { get; set; }
 
         /// <summary>
-        /// Represents the <c>&lt;generalization xmi:type='uml:Generalization' /&gt;</c> element(s).
+        /// Collection of <inheritdoc cref="UmlGeneralization"/>
         /// </summary>
         [XmlElement(ElementName = XmlHelper.XmiStructure.GENERALIZATION, Namespace = "")]
         public UmlGeneralization[]? Generalization { get; set; }

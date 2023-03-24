@@ -25,6 +25,11 @@ namespace MtconnectTranspiler
         /// </summary>
         public TranspilerDispatcherOptions Options { get; private set; }
 
+        /// <summary>
+        /// Constructs a new <see cref="TranspilerDispatcher"/>.
+        /// </summary>
+        /// <param name="options">Options for the dispatcher to retrieve and process the XMI document.</param>
+        /// <param name="logger">Optional logger.</param>
         public TranspilerDispatcher(TranspilerDispatcherOptions options, ILogger<TranspilerDispatcher>? logger = default)
         {
             _logger = logger;
@@ -88,6 +93,7 @@ namespace MtconnectTranspiler
             if (tasks.Any()) await Task.WhenAll(tasks);
         }
 
+        /// <inheritdoc />
         public void Dispose() {
             _sinks.Clear();
         }

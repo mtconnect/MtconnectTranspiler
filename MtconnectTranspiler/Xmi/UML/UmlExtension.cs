@@ -5,16 +5,23 @@ using System.Xml.Serialization;
 namespace MtconnectTranspiler.Xmi.UML
 {
     /// <summary>
-    /// Represents <c>&lt;packageElement xmi:type='uml:Extension' /&gt;</c>
+    /// <inheritdoc cref="MtconnectTranspiler.Xmi.PackagedElement"/> where <c>xmi:type='uml:Extension'</c>
     /// </summary>
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.PACKAGED_ELEMENT, Namespace = "")]
     public class UmlExtension : PackagedElement
     {
-        public override string Type => "uml:Extension";
+        /// <inheritdoc cref="MtconnectTranspiler.Xmi.XmiElement.Type"/>
+        public override string Type => XmlHelper.UmlStructure.Extension;
 
+        /// <summary>
+        /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.MemberEnd"/>
+        /// </summary>
         [XmlElement(ElementName = XmlHelper.XmiStructure.MEMBER_END, Namespace = "")]
         public MemberEnd[]? MemberEnds { get; set; }
 
+        /// <summary>
+        /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlExtensionEnd"/>
+        /// </summary>
         [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_END, Namespace = "")]
         public UmlExtensionEnd? End { get; set; }
 

@@ -6,7 +6,6 @@ namespace MtconnectTranspiler.Sinks.CSharp.Models
     /// <summary>
     /// Generic type for a model derived from <see cref="XmiElement" /> which also might have normative versioning.
     /// </summary>
-    /// <typeparam name="T">The type of <see cref="XmiElement" />.</typeparam>
     public abstract class VersionedObject : XmiModel<XmiElement>
     {
         /// <summary>
@@ -22,7 +21,7 @@ namespace MtconnectTranspiler.Sinks.CSharp.Models
         /// <summary>
         /// Constructs a new instance of the <see cref="VersionedObject"/>.
         /// </summary>
-        /// <param name="model">Reference to the high-level <see cref="MTConnectModel"/>.</param>
+        /// <param name="model">Reference to the high-level <see cref="XmiDocument"/>.</param>
         /// <param name="source">Reference to the source <see cref="XmiElement"/> that may have Normative and Deprecated references in the XMI model.</param>
         public VersionedObject(XmiDocument model, XmiElement source) : base(source)
         {
@@ -43,6 +42,6 @@ namespace MtconnectTranspiler.Sinks.CSharp.Models
         /// </summary>
         /// <param name="version">Reference to the version of MTConnect Standard as labeled in the XMI model. For example, <c>1.0</c> or <c>2.1</c>.</param>
         /// <returns>The representation of the MTConnect Standard version in the current context.</returns>
-        protected abstract string lookupMtconnectVersion(string version);
+        protected abstract string lookupMtconnectVersion(string? version);
     }
 }

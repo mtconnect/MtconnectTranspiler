@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 namespace MtconnectTranspiler.Xmi.Profile
 {
     /// <summary>
-    /// Represents <c>&lt;Profile:x /&gt;</c>
+    /// <c>&lt;Profile:x /&gt;</c> element
     /// </summary>
     public abstract class ProfileElement
     {
@@ -12,6 +12,6 @@ namespace MtconnectTranspiler.Xmi.Profile
         /// Unique ID within the XMI.
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.id, Namespace = XmlHelper.XmiNamespace)]
-        public virtual string Id { get; set; }
+        public virtual string? Id { get; set; }
     }
 }

@@ -6,18 +6,18 @@
     public interface IXmiElement
     {
         /// <summary>
-        /// Represents the <c>xmi:id</c> attribute on the element
+        /// <c>xmi:id</c> attribute
         /// </summary>
-        string Id { get; set; }
+        string? Id { get; set; }
 
         /// <summary>
-        /// Represents the <c>name</c> attribute on the element
+        /// <c>name</c> attribute
         /// </summary>
-        string Name { get; set; }
+        string? Name { get; set; }
 
         /// <summary>
-        /// Represents the <c>xmi:type</c> attribute on the element
+        /// <c>xmi:type</c> attribute
         /// </summary>
-        string Type { get; set; }
+        string? Type { get; set; }
     }
 }
