@@ -52,7 +52,7 @@ namespace MtconnectTranspiler.Console.Views
 
             var deserializer = options.GetDeserializer();
             var result = deserializer.Deserialize(default);
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
 
             var profile = result!.Model!.Profiles.FirstOrDefault()!;
             sb.AppendLine(BuildNavigationClass(null, profile, profile.Packages));
@@ -175,7 +175,9 @@ namespace MtconnectTranspiler.Console.Views
             return sb.ToString();
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         private async void Deserialize(TranspilerDispatcherOptions options)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             using var cancellationSource = new CancellationTokenSource();
             var deserializer = options.GetDeserializer();
@@ -194,7 +196,9 @@ namespace MtconnectTranspiler.Console.Views
                 Consoul.Write("Aborted!", ConsoleColor.Red);
             }
         }
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         private async void Deserialize(XmiDeserializer deserializer, CancellationToken cancellationToken)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             Consoul.Write("Deserializing...");
             XmiDocument? model = deserializer.Deserialize(cancellationToken);

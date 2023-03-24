@@ -11,13 +11,14 @@ namespace MtconnectTranspiler.Contracts
     /// <summary>
     /// Helper methods for navigating the XMI document relative to the MTConnect Standard structure.
     /// </summary>
+    /// <remarks>This helper class contains internal caches that do not support multiple different XMI sources without first clearing the cache.</remarks>
     public static class MTConnectHelper
     {
         /// <summary>
         /// A tree structure that outlines the <c>&lt;packagedElement xmi:type='uml:Package' /&gt;</c> element structure in the XMI document.
         /// </summary>
         /// <remarks>Meant to be used in combination with <see cref="JumpToPackage(XmiDocument, string)"/></remarks>
-        public static ModelNavigation PackageNavigationTree = new ModelNavigation();
+        public static ModelNavigation PackageNavigationTree { get; } = new ModelNavigation();
 
         /// <summary>
         /// Lookup table for each released version of MTConnect and the respective GitHub tags in the SysML model repository.
@@ -36,6 +37,7 @@ namespace MtconnectTranspiler.Contracts
             { MTConnectVersions.v1_8, "v1.8" },
             { MTConnectVersions.v2_0, "v2.0" },
             { MTConnectVersions.v2_1, "v2.1" },
+            { MTConnectVersions.v2_2, "v2.2" },
         };
 
         /// <summary>
@@ -148,6 +150,18 @@ namespace MtconnectTranspiler.Contracts
                 }
             }
             return package;
+        }
+    
+        /// <summary>
+        /// Clears all internal caches in this helper class.
+        /// </summary>
+        public static void ClearCache()
+        {
+            NormativeCache?.Clear();
+            NormativeCache = null;
+
+            DeprecatedCache?.Clear();
+            DeprecatedCache = null;
         }
     }
 }
