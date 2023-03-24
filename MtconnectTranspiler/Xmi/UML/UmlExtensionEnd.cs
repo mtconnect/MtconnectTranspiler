@@ -7,6 +7,6 @@ namespace MtconnectTranspiler.Xmi.UML
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.OWNED_END, Namespace = "")]
     public class UmlExtensionEnd : OwnedEnd
     {
-
+        public override string Type => "uml:ExtensionEnd";
     }
 }

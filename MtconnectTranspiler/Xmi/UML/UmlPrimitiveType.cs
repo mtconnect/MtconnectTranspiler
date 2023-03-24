@@ -8,5 +8,8 @@ namespace MtconnectTranspiler.Xmi.UML
     /// Represents <c>&lt;packageElement xmi:type='uml:PrimitiveType' /&gt;</c>
     /// </summary>
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.PACKAGED_ELEMENT, Namespace = "")]
-    public class UmlPrimitiveType : PackagedElement { }
+    public class UmlPrimitiveType : PackagedElement
+    {
+        public override string Type => XmlHelper.UmlStructure.PrimitiveType;
+    }
 }

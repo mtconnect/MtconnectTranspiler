@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using MtconnectTranspiler.Contracts;
-using MtconnectTranspiler.Model;
 using MtconnectTranspiler.Sinks;
+using MtconnectTranspiler.Xmi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +48,7 @@ namespace MtconnectTranspiler
             XmiDeserializer deserializer = Options.GetDeserializer();
             if (deserializer == null) throw new ArgumentNullException(nameof(deserializer), "XmiDeserializer cannot be null and must have loaded improperly");
 
-            MTConnectModel? model = deserializer.Deserialize<MTConnectModel>("//uml:Model[@name='MTConnect']", cancellationToken);
+            XmiDocument? model = deserializer.Deserialize(cancellationToken);
             if (model == null)
             {
                 var serializationException = new SerializationException("Failed to deserialize XMI into MTConnectModel");
@@ -62,13 +62,13 @@ namespace MtconnectTranspiler
         }
 
         /// <summary>
-        /// Dispatches the provided <see cref="MTConnectModel"/> to all implementations of <see cref="ITranspilerSink"/> that have been added to this <see cref="TranspilerDispatcher"/>.
+        /// Dispatches the provided <see cref="XmiDocument"/> to all implementations of <see cref="ITranspilerSink"/> that have been added to this <see cref="TranspilerDispatcher"/>.
         /// </summary>
-        /// <param name="model">Reference to the <see cref="MTConnectModel"/> that was deserialized from a copy of the MTConnect Standard SysML model.</param>
+        /// <param name="model">Reference to the <see cref="XmiDocument"/> that was deserialized from a copy of the MTConnect Standard SysML model.</param>
         /// <param name="cancellationToken">Optional reference to a cancellation token since this operation may be a long running method.</param>
         /// <returns>Task</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task DispatchAsync(MTConnectModel model, CancellationToken cancellationToken = default)
+        public async Task DispatchAsync(XmiDocument model, CancellationToken cancellationToken = default)
         {
 
             if (model == null) throw new ArgumentNullException(nameof(model));

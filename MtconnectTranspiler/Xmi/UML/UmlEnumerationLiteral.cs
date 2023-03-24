@@ -10,6 +10,8 @@ namespace MtconnectTranspiler.Xmi.UML
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.OWNED_LITERAL, Namespace = "")]
     public class UmlEnumerationLiteral : OwnedLiteral
     {
+        public override string Type => "uml:EnumerationLiteral";
+
         /// <summary>
         /// Represents the <c>&lt;ownedComment xmi:type='uml:Comment' /&gt;</c> element(s).
         /// </summary>

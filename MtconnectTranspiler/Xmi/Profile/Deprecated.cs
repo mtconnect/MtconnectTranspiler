@@ -1,11 +1,13 @@
 ﻿using MtconnectTranspiler.Contracts;
+using System;
 using System.Xml.Serialization;
 
 namespace MtconnectTranspiler.Xmi.Profile
 {
     /// <summary>
-    /// Represents <c>&lt;MTConnectProfile:deprecated /&gt;</c>
+    /// Represents <c>&lt;Profile:deprecated /&gt;</c>
     /// </summary>
+    [Serializable, XmlRoot(ElementName = XmlHelper.ProfileStructure.DEPRECATED, Namespace = XmlHelper.ProfileNamespace)]
     public class Deprecated : ProfileElement
     {
         /// <summary>

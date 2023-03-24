@@ -11,8 +11,8 @@ namespace MtconnectTranspiler.Xmi
         public string? Visibility { get; set; }
 
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.isQuery, Namespace = "")]
-        internal string? _isQuery { get; set; }
-        public bool isQuery => bool.Parse(_isQuery);
+        internal bool _isQuery { get; set; }
+        public bool isQuery => _isQuery;
 
         [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_COMMENT)]
         public OwnedComment[]? Comment { get; set; }

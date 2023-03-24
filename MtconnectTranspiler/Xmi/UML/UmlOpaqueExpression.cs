@@ -10,6 +10,6 @@ namespace MtconnectTranspiler.Xmi.UML
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.SPECIFICATION, Namespace = "")]
     public class UmlOpaqueExpression : Specification
     {
-
+        public override string Type => "uml:OpaqueExpression";
     }
 }

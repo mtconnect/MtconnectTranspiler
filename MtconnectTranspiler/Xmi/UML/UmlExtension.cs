@@ -1,5 +1,4 @@
 ﻿using MtconnectTranspiler.Contracts;
-using MtconnectTranspiler.Contracts.Attributes;
 using System;
 using System.Xml.Serialization;
 
@@ -11,10 +10,12 @@ namespace MtconnectTranspiler.Xmi.UML
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.PACKAGED_ELEMENT, Namespace = "")]
     public class UmlExtension : PackagedElement
     {
-        [XPath("./memberEnd/@xmi:idref")]
-        public string[]? MemberEnds { get; set; }
+        public override string Type => "uml:Extension";
 
-        [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_END)]
+        [XmlElement(ElementName = XmlHelper.XmiStructure.MEMBER_END, Namespace = "")]
+        public MemberEnd[]? MemberEnds { get; set; }
+
+        [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_END, Namespace = "")]
         public UmlExtensionEnd? End { get; set; }
 
     }

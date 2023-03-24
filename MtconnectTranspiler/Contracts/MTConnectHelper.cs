@@ -1,4 +1,4 @@
-﻿using MtconnectTranspiler.Model;
+﻿using MtconnectTranspiler.Xmi;
 using MtconnectTranspiler.Xmi.Profile;
 using System;
 using System.Collections.Generic;
@@ -49,10 +49,10 @@ namespace MtconnectTranspiler.Contracts
             ? new Uri($"https://github.com/mtconnect/mtconnect_sysml_model/releases/latest/download/Model.xml")
             : new Uri($"https://github.com/mtconnect/mtconnect_sysml_model/releases/download/{tag}/Model.xml");
 
-        public static Normative? LookupNormative(MTConnectModel model, string id)
-            => model.NormativeReferences.FirstOrDefault(o => o.BaseElement == id);
-        public static Deprecated? LookupDeprecated(MTConnectModel model, string id)
-            => model.DeprecatedReferences.FirstOrDefault(o => o.BaseElement == id);
+        public static Normative? LookupNormative(XmiDocument model, string id)
+            => model.NormativeIntroductions.FirstOrDefault(o => o.BaseElement == id);
+        public static Deprecated? LookupDeprecated(XmiDocument model, string id)
+            => model.Deprecations.FirstOrDefault(o => o.BaseElement == id);
 
     }
 }

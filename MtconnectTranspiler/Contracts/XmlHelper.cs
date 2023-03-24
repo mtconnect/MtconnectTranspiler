@@ -16,6 +16,19 @@
         public const string Md_Customization_for_SysML__additional_stereotypesNamespace = "http://www.magicdraw.com/spec/Customization/180/SysML";
         public const string SimulationProfileNamespace = "http://www.magicdraw.com/schemas/SimulationProfile.xmi";
 
+        public static class ProfileStructure
+        {
+            #region XML Tags
+            public const string NORMATIVE = "normative";
+            public const string DEPRECATED = "deprecated";
+            public const string EXTENSIBLE = "extensible";
+            public const string INFORMATIVE = "informative";
+            public const string OBSERVES = "observes";
+            public const string ORGANIZER = "organizer";
+            public const string VALUE_TYPE = "valueType";
+            #endregion
+        }
+
         public static class XmiStructure
         {
             #region XML Tags
@@ -35,6 +48,21 @@
             public const string GENERAL = "general";
             public const string TYPE = "type";
             public const string ASSOCIATION = "association";
+            public const string DEFAULT_VALUE = "defaultValue";
+            public const string REDEFINED_PROPERTY = "redefinedProperty";
+            public const string SUBSETTED_PROPERTY = "subsettedProperty";
+            public const string MODEL = "Model";
+            public const string ANNOTATED_ELEMENT = "annotatedElement";
+            public const string LOWER_VALUE = "lowerValue";
+            public const string UPPER_VALUE = "upperValue";
+            public const string EXTENSION = "Extension";
+            public const string MODEL_EXTENSION = "modelExtension";
+            public const string CONSTRAINED_ELEMENT = "constrainedElement";
+            public const string MEMBER_END = "memberEnd";
+            public const string METAMODEL_REFERENCE = "metamodelReference";
+            public const string DOCUMENTATION = "Documentation";
+            public const string EXPORTER = "exporter";
+            public const string EXPORTER_VERSION = "exporterVersion";
             #endregion
 
             #region XML Attributes
@@ -43,6 +71,7 @@
             public const string isAbstract = "isAbstract";
             public const string aggregation = "aggregation";
             public const string id = "id";
+            public const string idRef = "idref";
             public const string type = "type";
             public const string name = "name";
             public const string version = "version";
@@ -54,6 +83,89 @@
             public const string importedPackage = "importedPackage";
             public const string href = "href";
             public const string association = "association";
+            public const string instance = "instance";
+            public const string isStatic = "isStatic";
+            public const string isReadOnly = "isReadOnly";
+            public const string value = "value";
+            public const string extender = "extender";
+            #endregion
+        }
+
+        public class UmlStructure
+        {
+            #region UML xmi:type options
+            /// <summary>
+            /// <c>&lt;packagedElement xmi:type='uml:Enumeration' /&gt;</c>
+            /// </summary>
+            public const string Enumeration = "uml:Enumeration";
+            /// <summary>
+            /// <c>&lt;packagedElement xmi:type='uml:DataType' /&gt;</c>
+            /// </summary>
+            public const string DataType = "uml:DataType";
+            /// <summary>
+            /// <c>&lt;packagedElement xmi:type='uml:Class' /&gt;</c>
+            /// </summary>
+            public const string Class = "uml:Class";
+            /// <summary>
+            /// <c>&lt;packagedElement xmi:type='uml:Stereotype' /&gt;</c>
+            /// </summary>
+            public const string Stereotype = "uml:Stereotype";
+            /// <summary>
+            /// <c>&lt;packagedElement xmi:type='uml:Extension' /&gt;</c>
+            /// </summary>
+            public const string Extension = "uml:Extension";
+            /// <summary>
+            /// <c>&lt;packagedElement xmi:type='uml:Package' /&gt;</c>
+            /// </summary>
+            public const string Package = "uml:Package";
+            /// <summary>
+            /// <c>&lt;ownedComment xmi:type='uml:Comment' /&gt;</c>
+            /// </summary>
+            public const string Comment = "uml:Comment";
+            /// <summary>
+            /// <c>&lt;ownedRule xmi:type='uml:Constraint' /&gt;</c>
+            /// </summary>
+            public const string Constraint = "uml:Constraint";
+            /// <summary>
+            /// <c>&lt;ownedLiteral xmi:type='uml:EnumerationLiteral' /&gt;</c>
+            /// </summary>
+            public const string EnumerationLiteral = "uml:EnumerationLiteral";
+            /// <summary>
+            /// <c>&lt;ownedEnd xmi:type='uml:ExtensionEnd' /&gt;</c>
+            /// </summary>
+            public const string ExtensionEnd = "uml:ExtensionEnd";
+            /// <summary>
+            /// <c>&lt;generalization xmi:type='uml:Generalization' /&gt;</c>
+            /// </summary>
+            public const string Generalization = "uml:Generalization";
+            /// <summary>
+            /// <c>&lt;defaultValue xmi:type='uml:InstanceValue' /&gt;</c>
+            /// </summary>
+            public const string InstanceValue = "uml:InstanceValue";
+            /// <summary>
+            /// <c>&lt;uml:Model xmi:type='uml:Model' /&gt;</c>
+            /// </summary>
+            public const string Model = "uml:Model";
+            /// <summary>
+            /// <c>&lt;specification xmi:type='uml:OpaqueExpression' /&gt;</c>
+            /// </summary>
+            public const string OpaqueExpression = "uml:OpaqueExpression";
+            /// <summary>
+            /// <c>&lt;packageImport xmi:type='uml:PackageImport' /&gt;</c>
+            /// </summary>
+            public const string PackageImport = "uml:PackageImport";
+            /// <summary>
+            /// <c>&lt;packagedElement xmi:type='uml:PrimitiveType' /&gt;</c>
+            /// </summary>
+            public const string PrimitiveType = "uml:PrimitiveType";
+            /// <summary>
+            /// <c>&lt;packagedElement xmi:type='uml:Profile' /&gt;</c>
+            /// </summary>
+            public const string Profile = "uml:Profile";
+            /// <summary>
+            /// <c>&lt;ownedAttribute xmi:type='uml:Property' /&gt;</c>
+            /// </summary>
+            public const string Property = "uml:Property";
             #endregion
         }
     }

@@ -10,6 +10,8 @@ namespace MtconnectTranspiler.Xmi.UML
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.PACKAGE_IMPORT, Namespace = "")]
     public class UmlPackageImport : PackageImport
     {
+        public override string Type => XmlHelper.UmlStructure.PackageImport;
+
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.importedPackage, Namespace = "")]
         public string ImportedPackage { get; set; }
     }

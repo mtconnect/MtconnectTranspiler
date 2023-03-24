@@ -1,11 +1,13 @@
 ﻿using MtconnectTranspiler.Contracts;
+using System;
 using System.Xml.Serialization;
 
 namespace MtconnectTranspiler.Xmi.Profile
 {
     /// <summary>
-    /// Represents <c>&lt;MTConnectProfile:organizer /&gt;</c>
+    /// Represents <c>&lt;Profile:organizer /&gt;</c>
     /// </summary>
+    [Serializable, XmlRoot(ElementName = XmlHelper.ProfileStructure.ORGANIZER, Namespace = XmlHelper.ProfileNamespace)]
     public class Organizer : ProfileElement
     {
         /// <summary>

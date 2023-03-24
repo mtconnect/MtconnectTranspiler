@@ -1,5 +1,4 @@
-﻿using MtconnectTranspiler.Model;
-using MtconnectTranspiler.Xmi;
+﻿using MtconnectTranspiler.Xmi;
 using System.Linq;
 
 namespace MtconnectTranspiler.Sinks.CSharp.Models
@@ -25,13 +24,13 @@ namespace MtconnectTranspiler.Sinks.CSharp.Models
         /// </summary>
         /// <param name="model">Reference to the high-level <see cref="MTConnectModel"/>.</param>
         /// <param name="source">Reference to the source <see cref="XmiElement"/> that may have Normative and Deprecated references in the XMI model.</param>
-        public VersionedObject(MTConnectModel model, XmiElement source) : base(source)
+        public VersionedObject(XmiDocument model, XmiElement source) : base(source)
         {
-            var normative = model?.NormativeReferences?.FirstOrDefault(o => o.BaseElement == Source.Id);
+            var normative = model?.NormativeIntroductions?.FirstOrDefault(o => o.BaseElement == Source.Id);
             if (normative != null)
             {
                 NormativeVersion = lookupMtconnectVersion(normative.Version);
-                var deprecated = model?.DeprecatedReferences?.FirstOrDefault(o => o.BaseElement == Source.Id);
+                var deprecated = model?.Deprecations?.FirstOrDefault(o => o.BaseElement == Source.Id);
                 if (deprecated != null)
                 {
                     DeprecatedVersion = lookupMtconnectVersion(deprecated.Version);

@@ -1,11 +1,13 @@
 ﻿using MtconnectTranspiler.Contracts;
+using System;
 using System.Xml.Serialization;
 
 namespace MtconnectTranspiler.Xmi.Profile
 {
     /// <summary>
-    /// Represents <c>&lt;MTConnectProfile:valueType /&gt;</c>
+    /// Represents <c>&lt;Profile:valueType /&gt;</c>
     /// </summary>
+    [Serializable, XmlRoot(ElementName = XmlHelper.ProfileStructure.VALUE_TYPE, Namespace = XmlHelper.ProfileNamespace)]
     public class ValueType : ProfileElement
     {
         /// <summary>

@@ -1,5 +1,4 @@
 ﻿using MtconnectTranspiler.Contracts;
-using MtconnectTranspiler.Contracts.Attributes;
 using System;
 using System.Xml.Serialization;
 
@@ -11,6 +10,8 @@ namespace MtconnectTranspiler.Xmi.UML
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.PACKAGED_ELEMENT, Namespace = "")]
     public class UmlStereotype : PackagedElement
     {
+        public override string Type => XmlHelper.UmlStructure.Stereotype;
+
         /// <summary>
         /// Represents the <c>&lt;ownedComment xmi:type='uml:Comment' /&gt;</c> element(s).
         /// </summary>
@@ -20,7 +21,7 @@ namespace MtconnectTranspiler.Xmi.UML
         /// <summary>
         /// Represents the <c>&lt;ownedAttribute xmi:type='uml:Property' /&gt;</c> element(s).
         /// </summary>
-        [XPath("./*[@xmi:type='uml:Property']")]
+        [XmlElement(ElementName = XmlHelper.XmiStructure.PACKAGED_ELEMENT, Namespace = "")]
         public UmlProperty[]? Properties { get; set; }
     }
 }

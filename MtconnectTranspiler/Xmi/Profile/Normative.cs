@@ -1,11 +1,13 @@
 ﻿using MtconnectTranspiler.Contracts;
+using System;
 using System.Xml.Serialization;
 
 namespace MtconnectTranspiler.Xmi.Profile
 {
     /// <summary>
-    /// Represents <c>&lt;MTConnectProfile:normative /&gt;</c>
+    /// Represents <c>&lt;Profile:normative /&gt;</c>
     /// </summary>
+    [Serializable, XmlRoot(ElementName = XmlHelper.ProfileStructure.NORMATIVE, Namespace = XmlHelper.ProfileNamespace)]
     public class Normative : ProfileElement
     {
         /// <summary>

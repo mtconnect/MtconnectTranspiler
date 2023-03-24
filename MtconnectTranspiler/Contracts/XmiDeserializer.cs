@@ -1,8 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using MtconnectTranspiler.Contracts.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
+using MtconnectTranspiler.Xmi;
 using System.Threading;
 using System.Xml;
 using System.Xml.Serialization;
@@ -12,7 +9,7 @@ namespace MtconnectTranspiler.Contracts
     /// <summary>
     /// A class that can deserialize a XMI document into an object-oriented form.
     /// </summary>
-    public sealed class XmiDeserializer
+    public sealed class XmiDeserializer : XmlSerializer
     {
         private ILogger<XmiDeserializer>? _logger;
         private XmlDocument xDoc;
@@ -44,128 +41,35 @@ namespace MtconnectTranspiler.Contracts
             nsmgr.AddNamespace("SimulationProfile", XmlHelper.SimulationProfileNamespace);
         }
 
+        protected override object Deserialize(XmlSerializationReader reader)
+        {
+            return base.Deserialize(reader);
+        }
+
         /// <summary>
         /// Deserializes the XML Document into the specified type.
         /// </summary>
-        /// <typeparam name="T">Generic type to deserialize the XML document into.</typeparam>
         /// <param name="predicatePath">Predicate XPath to start deserializing from.</param>
         /// <returns>The deserialized object as <typeparamref name="T"/>.</returns>
-        public T? Deserialize<T>(string predicatePath, CancellationToken cancellationToken) where T : class, new()
+        public XmiDocument Deserialize(CancellationToken cancellationToken)
         {
-            XmlNode? xPredicate = xDoc.SelectSingleNode(predicatePath, nsmgr);
-            if (xPredicate == null)
-            {
-                _logger?.LogError("Could not find XmlNode from predicatePath '{predicatePath}'", predicatePath);
-                return null;
-            }
-
-            var result = unwrapObject(xPredicate, typeof(T), cancellationToken);
-            if (result == null)
-            {
-                _logger?.LogError("Unable to deserialize type starting from predicatePath '{predicatePath}'", predicatePath);
-                return null;
-            }
-
-            return (T)result;
-        }
-
-        private object? unwrapObject(XmlNode xNode, Type targetType, CancellationToken cancellationToken)
-        {
-            if (cancellationToken.IsCancellationRequested)
-            {
-                _logger?.LogInformation("Deserialization aborting due to cancellation");
-                return null;
-            }
-
-            object? result = null;
+            XmiDocument result = null;
 
             XmlRootAttribute xRoot = new XmlRootAttribute();
-            xRoot.ElementName = xNode.LocalName;
+            xRoot.ElementName = xDoc.DocumentElement.LocalName;
             xRoot.IsNullable = true;
-            xRoot.Namespace = xNode.NamespaceURI;
-            XmlSerializer serial = new XmlSerializer(targetType, xRoot);
+            xRoot.Namespace = XmlHelper.XmiNamespace;
+            XmlSerializer serial = new XmlSerializer(typeof(Xmi.XmiDocument), xRoot);
             // Deserialize the XmlNode
-            using (XmlNodeReader xReader = new XmlNodeReader(xNode))
+            using (XmlNodeReader xReader = new XmlNodeReader(xDoc.DocumentElement))
             {
                 object? deserializedObject = serial.Deserialize(xReader);
-                if (deserializedObject != null)
-                {
-                    result = deserializedObject;
-                }
-            }
 
+                result = deserializedObject as XmiDocument;
 
-            System.Reflection.PropertyInfo[]? properties = targetType
-                .GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
-
-            foreach (var property in properties)
-            {
-                ParseXPathAttribute(xNode, targetType, result, property, cancellationToken);
-                ParseXmlAttributeAttribute(xNode, targetType, result, property, cancellationToken);
             }
 
             return result;
-        }
-
-        private Type XPathAttributeType = typeof(XPathAttribute);
-        private void ParseXPathAttribute(XmlNode xNode, Type targetType, object? result, PropertyInfo property, CancellationToken cancellationToken)
-        {
-            XPathAttribute[] xpathAttributes = ((XPathAttribute[])property.GetCustomAttributes(XPathAttributeType, true));
-            foreach (var xpathAttribute in xpathAttributes)
-            {
-                if (property.PropertyType.IsArray)
-                {
-                    _logger?.LogTrace("Deserializing array property '{PropertyName}' in '{TargetType}'", property.Name, targetType.FullName);
-                    XmlNodeList? xPropertyNodes = xNode.SelectNodes(xpathAttribute.Path, nsmgr);
-                    if (xPropertyNodes != null)
-                    {
-                        Type? elementType = property.PropertyType.GetElementType();
-                        Type? resultType = xpathAttribute.Type ?? elementType;
-                        List<object> collection = new List<object>();
-                        foreach (XmlNode xChild in xPropertyNodes)
-                        {
-                            var childObject = unwrapObject(xChild, resultType, cancellationToken);
-                            if (childObject != null)
-                            {
-                                collection.Add(childObject);
-                            }
-                        }
-                        object[]? existingArray = property.GetValue(result) as object[];
-                        if (existingArray?.Length > 0)
-                        {
-                            collection.InsertRange(0, existingArray);
-                        }
-                        Array typedArray = Array.CreateInstance(elementType, collection.Count);
-                        Array.Copy(collection.ToArray(), typedArray, collection.Count);
-                        property.SetValue(result, typedArray);
-                    }
-                }
-                else
-                {
-                    _logger?.LogTrace("Deserializing property '{PropertyName}' in '{TargetType}'", property.Name, targetType.FullName);
-                    XmlNode? xPropertyNode = xNode.SelectSingleNode(xpathAttribute.Path, nsmgr);
-                    if (xPropertyNode != null)
-                    {
-                        property.SetValue(result, unwrapObject(xPropertyNode, xpathAttribute.Type ?? property.PropertyType, cancellationToken));
-                    }
-                }
-            }
-        }
-
-        private Type XmlAttributeType = typeof(XmlAttributeAttribute);
-        private void ParseXmlAttributeAttribute(XmlNode xNode, Type targetType, object? result, PropertyInfo property, CancellationToken cancellationToken)
-        {
-            XmlAttributeAttribute[] xAttributes = ((XmlAttributeAttribute[])property.GetCustomAttributes(XmlAttributeType, true));
-            foreach (var xAttribute in xAttributes)
-            {
-                _logger?.LogTrace("Deserializing property '{PropertyName}' in '{TargetType}'", property.Name, targetType.FullName);
-                XmlAttribute? xProperty = xNode.Attributes[xAttribute.AttributeName, xAttribute.Namespace];
-
-                if (xProperty != null)
-                {
-                    property.SetValue(result, xProperty.Value);
-                }
-            }
         }
 
         /// <summary>

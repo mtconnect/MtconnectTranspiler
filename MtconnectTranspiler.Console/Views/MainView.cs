@@ -2,7 +2,7 @@
 using ConsoulLibrary.Views;
 using Microsoft.Extensions.Logging;
 using MtconnectTranspiler.Contracts;
-using MtconnectTranspiler.Model;
+using MtconnectTranspiler.Xmi;
 using System.Threading;
 
 namespace MtconnectTranspiler.Console.Views
@@ -24,7 +24,7 @@ namespace MtconnectTranspiler.Console.Views
         public void TranspileFromGitHub()
         {
             var options = new FromGitHubOptions() { GitHubRelease = "latest" };
-            if (!Consoul.Ask("Would you like to use the latest GitHub Release of mtconnect_sysml_model?"))
+            if (!Consoul.Ask("Would you like to use the latest GitHub Release of mtconnect_sysml_model?", allowEmpty: true, defaultIsNo: false))
             {
                 string release = Consoul.Input("Please specify which Release you would prefer to use");
                 options.GitHubRelease = release;
@@ -66,7 +66,7 @@ namespace MtconnectTranspiler.Console.Views
         private async void Deserialize(XmiDeserializer deserializer, CancellationToken cancellationToken)
         {
             Consoul.Write("Deserializing...");
-            MTConnectModel? model = deserializer.Deserialize<MTConnectModel>("//uml:Model[@name='MTConnect']", cancellationToken);
+            XmiDocument? model = deserializer.Deserialize(cancellationToken);
 
             Consoul.Write("Finished deserializing");
         }

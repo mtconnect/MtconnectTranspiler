@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 namespace MtconnectTranspiler.Xmi.Profile
 {
     /// <summary>
-    /// Represents <c>&lt;MTConnectProfile:x /&gt;</c>
+    /// Represents <c>&lt;Profile:x /&gt;</c>
     /// </summary>
     public abstract class ProfileElement
     {
