@@ -1,60 +1,64 @@
-﻿using MtconnectTranspiler.Contracts;
+﻿using CaseExtensions;
 using MtconnectTranspiler.Model;
-using MtconnectTranspiler.Xmi;
+using MtconnectTranspiler.Sinks.CSharp.Attributes;
 using MtconnectTranspiler.Xmi.UML;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MtconnectTranspiler.Sinks.CSharp.Models
 {
-    /// <summary>
-    /// Generic type for a model derived from <see cref="XmiElement" />.
-    /// </summary>
-    /// <typeparam name="T">The type of <see cref="XmiElement" />.</typeparam>
-    internal interface IModel<T> where T : XmiElement
+    [ScribanTemplate("Enum.scriban")]
+    public class Enum : VersionedObject, IFileSource
     {
         /// <summary>
-        /// Reference to the source <see cref="XmiElement" />.
+        /// Reference to any Comments written in the SysML model to be converted into a C# format <c>&lt;summary /&gt;</c>
         /// </summary>
-        T Source { get; }
-    }
-    /// <summary>
-    /// Generic type for a model derived from <see cref="XmiElement" /> which also might have normative versioning.
-    /// </summary>
-    /// <typeparam name="T">The type of <see cref="XmiElement" />.</typeparam>
-    internal abstract class VersionedObject<T> : IModel<T> where T : XmiElement
-    {
+        public Summary? Summary { get; private set; }
+
         /// <inheritdoc />
-        public T Source { get; }
+        public string Name => ScribanHelperMethods.ToPascalCase(base.SysML_Name);
 
         /// <summary>
-        /// The version of MTConnect when this became normative.
+        /// Collection of Enum values
         /// </summary>
-        public string NormativeVersion { get; }
+        public EnumItem[]? Items { get; }
 
-        /// <summary>
-        /// The version of MTConnect when this became deprecated.
-        /// </summary>
-        public string DeprecatedVersion { get; }
+        /// <inheritdoc />
+        public string Filename { get; set; }
 
-        public VersionedObject(MTConnectModel model, T source)
-        {
-            Source = source;
-            var normative = model?.NormativeReferences?.FirstOrDefault(o => o.BaseElement == Source.Id);
-            if (normative != null)
-            {
-                NormativeVersion = MTConnectHelperMethods.LookupMtconnectVersions(normative.Version);
-                DeprecatedVersion = model?.DeprecatedReferences?.FirstOrDefault(o => o.BaseElement == Source.Id)?.Version;
-            }
-        }
-    }
-    internal class Enum : VersionedObject<UmlEnumeration>
-    {
+        /// <inheritdoc />
+        public string Namespace { get; set; }
+
         public Enum(MTConnectModel model, UmlEnumeration source) : base(model, source)
         {
+            Filename = $"{Name}.cs";
+            Items = source.Items
+                ?.Select(o => new EnumItem(model, o))
+                ?.ToArray();
         }
+        public Enum(MTConnectModel model, UmlPackage source) : base(model, source)
+        {
+            Filename = $"{Name}.cs";
+            Items = source.Elements
+                ?.Where(o => o is UmlClass)
+                ?.Select(o => new EnumItem(model, (UmlClass)o))
+                ?.ToArray();
+            
+            if (source.Comments?.Length > 0)
+            {
+                Summary = new Summary(source.Comments);
+            }
+        }
+        public Enum(MTConnectModel model, MTConnectDeviceInformationModel source) : base(model, source)
+        {
+            Filename = $"{Name}.cs";
+            Items = source.Classes
+                ?.Select(o => new EnumItem(model, (UmlClass)o))
+                ?.ToArray();
+
+            if (source.Comments?.Length > 0)
+            {
+                Summary = new Summary(source.Comments);
+            }
+        }
+
     }
 }

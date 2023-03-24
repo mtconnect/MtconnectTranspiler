@@ -1,32 +1,47 @@
 ﻿using MtconnectTranspiler.Contracts;
-using MtconnectTranspiler.Contracts.Attributes;
 using System;
 using System.Xml.Serialization;
 
 namespace MtconnectTranspiler.Xmi.UML
 {
     /// <summary>
-    /// Represents <c>&lt;packagedElement xmi:type='uml:Class' /&gt;</c>
+    /// <inheritdoc cref="MtconnectTranspiler.Xmi.PackagedElement"/> where <c>xmi:type='uml:Class'</c>
     /// </summary>
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.PACKAGED_ELEMENT, Namespace = "")]
     public class UmlClass : PackagedElement
     {
-        [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_COMMENT)]
+        /// <inheritdoc cref="MtconnectTranspiler.Xmi.XmiElement.Type"/>
+        public override string Type => XmlHelper.UmlStructure.Class;
+
+        /// <summary>
+        /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlComment"/>
+        /// </summary>
+        [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_COMMENT, Namespace = "")]
         public UmlComment[]? Comments { get; set; }
 
         /// <summary>
-        /// Collection of properties applied to an entity
+        /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlProperty"/>
         /// </summary>
-        [XPath("./ownedAttribute[@xmi:type='uml:Property']")]
+        [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_ATTRIBUTE, Namespace = "")]
         public UmlProperty[]? Properties { get; set; }
 
+        /// <summary>
+        /// <c>isAbstract</c> attribute
+        /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.isAbstract, Namespace = "")]
-        public string _isAbstract { get; set; }
-        public bool IsAbstract => _isAbstract?.Equals("true", System.StringComparison.OrdinalIgnoreCase) == true;
+        private bool _isAbstract { get; set; }
+        /// <inheritdoc cref="_isAbstract"/>
+        public bool IsAbstract => _isAbstract;
 
+        /// <summary>
+        /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlConstraint"/>
+        /// </summary>
         [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_RULE)]
         public UmlConstraint[]? Constraints { get; set; }
 
+        /// <summary>
+        /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlGeneralization"/>
+        /// </summary>
         [XmlElement(ElementName = XmlHelper.XmiStructure.GENERALIZATION, Namespace = "")]
         public UmlGeneralization? Generalization { get; set; }
     }

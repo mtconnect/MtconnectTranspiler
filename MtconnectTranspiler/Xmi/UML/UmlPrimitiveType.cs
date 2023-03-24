@@ -5,8 +5,12 @@ using System;
 namespace MtconnectTranspiler.Xmi.UML
 {
     /// <summary>
-    /// Represents <c>&lt;packageElement xmi:type='uml:PrimitiveType' /&gt;</c>
+    /// <inheritdoc cref="MtconnectTranspiler.Xmi.PackagedElement"/> where <c>xmi:type='uml:PrimitiveType'</c>
     /// </summary>
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.PACKAGED_ELEMENT, Namespace = "")]
-    public class UmlPrimitiveType : PackagedElement { }
+    public class UmlPrimitiveType : PackagedElement
+    {
+        /// <inheritdoc cref="MtconnectTranspiler.Xmi.XmiElement.Type"/>
+        public override string Type => XmlHelper.UmlStructure.PrimitiveType;
+    }
 }

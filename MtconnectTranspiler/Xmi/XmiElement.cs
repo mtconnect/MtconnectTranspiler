@@ -3,24 +3,27 @@ using System.Xml.Serialization;
 
 namespace MtconnectTranspiler.Xmi
 {
+    /// <summary>
+    /// Abstract model for common <c>xmi</c> elements
+    /// </summary>
     public abstract class XmiElement : IXmiElement
     {
         /// <summary>
-        /// Unique ID within the XMI.
+        /// <c>xmi:id</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.id, Namespace = XmlHelper.XmiNamespace)]
-        public virtual string Id { get; set; }
+        public virtual string? Id { get; set; }
 
         /// <summary>
-        /// XMI name.
+        /// <c>name</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.name, Namespace = "")]
-        public virtual string Name { get; set; }
+        public virtual string? Name { get; set; }
 
         /// <summary>
-        /// XMI type.
+        /// <c>xmi:type</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.type, Namespace = XmlHelper.XmiNamespace)]
-        public virtual string Type { get; set; }
+        public virtual string? Type { get; set; }
     }
 }

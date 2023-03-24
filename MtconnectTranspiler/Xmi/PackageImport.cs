@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 namespace MtconnectTranspiler.Xmi
 {
     /// <summary>
-    /// Represents <c>&lt;packageImport /&gt;</c>
+    /// <c>&lt;packageImport /&gt;</c> element
     /// </summary>
     [Serializable, XmlType(AnonymousType = true, Namespace = ""), XmlRoot(ElementName = XmlHelper.XmiStructure.PACKAGE_IMPORT, Namespace = "")]
     public class PackageImport : XmiElement

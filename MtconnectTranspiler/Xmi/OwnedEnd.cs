@@ -5,22 +5,34 @@ using System.Xml.Serialization;
 namespace MtconnectTranspiler.Xmi
 {
     /// <summary>
-    /// The abstract for a <c>&lt;ownedEnd /&gt;</c>.
+    /// <c>&lt;ownedEnd /&gt;</c> element
     /// </summary>
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.OWNED_END, Namespace = "")]
     public class OwnedEnd : XmiElement
     {
+        /// <summary>
+        /// <c>visibility</c> attribute
+        /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.visibility, Namespace = "")]
-        public string Visibility { get; set; }
+        public string? Visibility { get; set; }
 
+        /// <summary>
+        /// <c>aggregation</c> attribute
+        /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.aggregation, Namespace = "")]
-        public string Aggregation { get; set; }
+        public string? Aggregation { get; set; }
 
+        /// <summary>
+        /// <c>type</c> attribute
+        /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.type, Namespace = "")]
-        public string TypeId { get; set; }
+        public string? TypeId { get; set; }
 
+        /// <summary>
+        /// <c>association</c> attribute
+        /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.association, Namespace = "")]
-        public string Association { get; set; }
+        public string? Association { get; set; }
 
         // TODO: Add lowerValue
         // TODO: Add xmi:Extension;

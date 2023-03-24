@@ -1,0 +1,35 @@
+name: Publish NuGet Package
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+env:
+  NUGET_REGISTRY: https://nuget.pkg.github.com/
+  NUGET_NAMESPACE: mtconnect
+  NUGET_API_KEY: ${{ secrets.GITHUB_TOKEN }}
+  VS_PROJECT: MtconnectTranspiler
+
+jobs:
+  build:
+    name: Build + Publish to GitHub Packages
+    runs-on: windows-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.x'
+    - name: Build with dotnet
+      run: dotnet build "${{ env.VS_PROJECT }}\${{ env.VS_PROJECT }}.csproj" --configuration Release
+    - name: Pack NuGet package
+      run: dotnet pack "${{ env.VS_PROJECT }}\${{ env.VS_PROJECT }}.csproj" -c Release -o artifacts --no-build
+    - name: Publish Artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: nupkg
+        path: artifacts
+    - name: Publish NuGet package to GitHub Packages
+      run: dotnet nuget push artifacts\*.nupkg --source ${{ env.NUGET_REGISTRY }}${{ env.NUGET_NAMESPACE }} --api-key ${{ env.NUGET_API_KEY }}

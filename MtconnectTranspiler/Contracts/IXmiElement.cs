@@ -1,11 +1,23 @@
 ﻿namespace MtconnectTranspiler.Contracts
 {
+    /// <summary>
+    /// Generic reference to a <c>xmi</c> element
+    /// </summary>
     public interface IXmiElement
     {
-        string Id { get; set; }
+        /// <summary>
+        /// <c>xmi:id</c> attribute
+        /// </summary>
+        string? Id { get; set; }
 
-        string Name { get; set; }
+        /// <summary>
+        /// <c>name</c> attribute
+        /// </summary>
+        string? Name { get; set; }
 
-        string Type { get; set; }
+        /// <summary>
+        /// <c>xmi:type</c> attribute
+        /// </summary>
+        string? Type { get; set; }
     }
 }
