@@ -1,4 +1,4 @@
-﻿using MtconnectTranspiler.Model;
+﻿using MtconnectTranspiler.Xmi;
 using System.Threading;
 
 namespace MtconnectTranspiler.Sinks
@@ -13,6 +13,6 @@ namespace MtconnectTranspiler.Sinks
         /// </summary>
         /// <param name="model">Object-oriented copy of the XMI structure in the context of the MTConnect Standard.</param>
         /// <param name="cancellationToken">Reference to a cancellation token, the Transpile method may be a long running operation.</param>
-        void Transpile(MTConnectModel model, CancellationToken cancellationToken = default);
+        void Transpile(XmiDocument model, CancellationToken cancellationToken = default);
     }
 }

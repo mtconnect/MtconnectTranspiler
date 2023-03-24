@@ -5,15 +5,18 @@ using System.Xml.Serialization;
 namespace MtconnectTranspiler.Xmi.UML
 {
     /// <summary>
-    /// Represents <c>&lt;generalization xmi:type='uml:Generalization' /&gt;</c>
+    /// <inheritdoc cref="MtconnectTranspiler.Xmi.Generalization"/> where <c>xmi:type='uml:Generalization'</c>
     /// </summary>
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.GENERALIZATION, Namespace = "")]
     public class UmlGeneralization : Generalization
     {
+        /// <inheritdoc cref="MtconnectTranspiler.Xmi.XmiElement.Type"/>
+        public override string Type => XmlHelper.UmlStructure.Generalization;
+
         /// <summary>
-        /// Represents the <c>general</c> attribute in a <c>&lt;generalization xmi:type='uml:Generalization' /&gt;</c> element.
+        /// <c>general</c> attribute
         /// </summary>
-        [XmlAttribute(AttributeName = XmlHelper.XmiStructure.GENERAL)]
-        public string General { get; set; }
+        [XmlAttribute(AttributeName = XmlHelper.XmiStructure.GENERAL, Namespace = "")]
+        public string? General { get; set; }
     }
 }

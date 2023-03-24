@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Consoul" Version="1.6.3" />
+    <PackageReference Include="TextCopy" Version="6.2.1" />
   </ItemGroup>
 
   <ItemGroup>

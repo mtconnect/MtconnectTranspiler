@@ -4,19 +4,35 @@ using System.Xml.Serialization;
 
 namespace MtconnectTranspiler.Xmi
 {
+    /// <summary>
+    /// <c>&lt;ownedOperation /&gt;</c> element
+    /// </summary>
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.OWNED_OPERATION, Namespace = "")]
     public class OwnedOperation : XmiElement
     {
+        /// <summary>
+        /// <c>visibility</c> attribute
+        /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.visibility, Namespace = "")]
         public string? Visibility { get; set; }
 
+        /// <summary>
+        /// <c>isQuery</c> attribute
+        /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.isQuery, Namespace = "")]
-        internal string? _isQuery { get; set; }
-        public bool isQuery => bool.Parse(_isQuery);
+        internal bool _isQuery { get; set; }
+        /// <inheritdoc cref="_isQuery"/>
+        public bool isQuery => _isQuery;
 
+        /// <summary>
+        /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlComment"/>
+        /// </summary>
         [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_COMMENT)]
         public OwnedComment[]? Comment { get; set; }
 
+        /// <summary>
+        /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.OwnedParameter"/>
+        /// </summary>
         [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_PARAMETER)]
         public OwnedParameter[]? Parameters { get; set; }
     }

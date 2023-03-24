@@ -5,15 +5,18 @@ using System.Xml.Serialization;
 namespace MtconnectTranspiler.Xmi.UML
 {
     /// <summary>
-    /// Represents <c>&lt;ownedLiteral xmi:type='uml:EnumerationLiteral' /&gt;</c>
+    /// <inheritdoc cref="MtconnectTranspiler.Xmi.OwnedLiteral" /> where <c>xmi:type='uml:EnumerationLiteral'</c>
     /// </summary>
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.OWNED_LITERAL, Namespace = "")]
     public class UmlEnumerationLiteral : OwnedLiteral
     {
+        /// <inheritdoc cref="MtconnectTranspiler.Xmi.XmiElement.Type"/>
+        public override string Type => XmlHelper.UmlStructure.EnumerationLiteral;
+
         /// <summary>
-        /// Represents the <c>&lt;ownedComment xmi:type='uml:Comment' /&gt;</c> element(s).
+        /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlComment"/>
         /// </summary>
         [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_COMMENT, Namespace = "")]
-        public OwnedComment[]? Comments { get; set; }
+        public UmlComment[]? Comments { get; set; }
     }
 }

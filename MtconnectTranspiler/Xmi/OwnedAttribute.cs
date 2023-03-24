@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 namespace MtconnectTranspiler.Xmi
 {
     /// <summary>
-    /// The abstract for a <c>&lt;ownedComment /&gt;</c>.
+    /// <c>&lt;ownedAttribute /&gt;</c> element
     /// </summary>
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.OWNED_ATTRIBUTE, Namespace = "")]
     public class OwnedAttribute : XmiElement

@@ -1,15 +1,26 @@
 ﻿using MtconnectTranspiler.Contracts;
+using MtconnectTranspiler.Xmi.UML;
 using System;
 using System.Xml.Serialization;
 
 namespace MtconnectTranspiler.Xmi
 {
+    /// <summary>
+    /// <c>&lt;ownedParameter /&gt;</c> element
+    /// </summary>
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.OWNED_PARAMETER, Namespace = "")]
     public class OwnedParameter : XmiElement
     {
-        [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_COMMENT)]
-        public OwnedComment? Comment { get; set; }
+        /// <summary>
+        /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.OwnedComment"/>
+        /// </summary>
+        [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_COMMENT, Namespace = "")]
+        public OwnedComment[]? Comments { get; set; }
 
-        // TODO: Get <defaultValue />
+        /// <summary>
+        /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.DefaultValue"/>
+        /// </summary>
+        [XmlElement(ElementName = XmlHelper.XmiStructure.DEFAULT_VALUE, Namespace = "")]
+        public DefaultValue? DefaultValue { get; set; }
     }
 }

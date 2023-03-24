@@ -1,30 +1,56 @@
 ﻿using MtconnectTranspiler.Contracts;
-using MtconnectTranspiler.Contracts.Attributes;
 using System;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace MtconnectTranspiler.Xmi.UML
 {
     /// <summary>
-    /// Represents <c>&lt;packageElement xmi:type='uml:Profile' /&gt;</c>
+    /// <inheritdoc cref="MtconnectTranspiler.Xmi.PackagedElement"/> where <c>xmi:type='uml:Profile'</c>
     /// </summary>
     [Serializable, XmlRoot(ElementName = XmlHelper.XmiStructure.PACKAGED_ELEMENT, Namespace = "")]
     public class UmlProfile : PackagedElement
     {
+        /// <inheritdoc cref="MtconnectTranspiler.Xmi.XmiElement.Type"/>
+        public override string Type => XmlHelper.UmlStructure.Profile;
+
         /// <summary>
-        /// Represents the <c>&lt;ownedComment xmi:type='uml:Comment' /&gt;</c> element(s).
+        /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlComment"/>
         /// </summary>
-        [XPath("./ownedComments[@xmi:type='uml:Comment']")]
+        [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_COMMENT, Namespace = "")]
         public UmlComment[]? Comments { get; set; }
 
-        [XPath("./packageImport[@xmi:type='uml:PackageImport']")]
+        /// <summary>
+        /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlPackageImport"/>
+        /// </summary>
+        [XmlElement(ElementName = XmlHelper.XmiStructure.PACKAGE_IMPORT, Namespace = "")]
         public UmlPackageImport[]? Imports { get; set; }
 
-        [XmlElement(XmlHelper.XmiStructure.PACKAGED_ELEMENT, Namespace = "")]
-        public PackagedElement[]? Elements { get; set; }
+        /// <summary>
+        /// Represents <c>&lt;packagedElement /&gt;</c> element(s):
+        /// <list type="bullet">
+        /// <item><c>&lt;packagedElement xmi:type='uml:Package' /&gt;</c></item>
+        /// </list>
+        /// </summary>
+        [XmlAnyElement(XmlHelper.XmiStructure.PACKAGED_ELEMENT, Namespace = "")]
+        public XmlElement[]? PackagedElements { get; set; }
 
-        [XPath("./metamodelReference/@xmi:idref")]
-        public string MetaModelReference { get; set; }
+        /// <summary>
+        /// Internal switch property for <see cref="Packages"/>.
+        /// </summary>
+        [XmlIgnore]
+        private PackagedElementCollection<UmlPackage>? _packages;
+        /// <summary>
+        /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlPackage"/>
+        /// </summary>
+        [XmlIgnore]
+        public PackagedElementCollection<UmlPackage> Packages => _packages ??= PackagedElementCollection<UmlPackage>.Deserialize(PackagedElements, XmlHelper.UmlStructure.Package);
+
+        /// <summary>
+        /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.MetamodelReference"/>
+        /// </summary>
+        [XmlElement(ElementName = XmlHelper.XmiStructure.METAMODEL_REFERENCE, Namespace = "")]
+        public MetamodelReference? MetaModelReference { get; set; }
 
         // TODO: Add appliedProfile
     }
