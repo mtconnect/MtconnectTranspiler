@@ -75,6 +75,14 @@ namespace MtconnectTranspiler.Xmi.UML
         public XmiExtension? Extension { get; set; }
 
         /// <summary>
+        /// <c>visibility</c> attribute
+        /// </summary>
+        [XmlAttribute(AttributeName = XmlHelper.XmiStructure.visibility, Namespace = "")]
+        private string _visibility { get; set; } = "public";
+        /// <inheritdoc cref="_visibility"/>
+        public string Visibility => _visibility;
+
+        /// <summary>
         /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlComment"/>
         /// </summary>
         [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_COMMENT, Namespace = "")]
