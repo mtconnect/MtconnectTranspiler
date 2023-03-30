@@ -74,7 +74,7 @@ namespace MtconnectTranspiler.Console.Views
             var deserializer = options.GetDeserializer();
             var result = deserializer.Deserialize(default);
 
-            var path = MTConnectHelper.PackageNavigationTree.Profile.DataTypes;
+            var path = MTConnectHelper.PackageNavigationTree.ObservationInformationModel.ObservationTypes;
             Consoul.Write("Path: " + path);
             var package = MTConnectHelper.JumpToPackage(result!, path);
             Consoul.Write("Package ID: " + (package?.Id ?? "Not found"));
