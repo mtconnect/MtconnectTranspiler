@@ -26,12 +26,12 @@ namespace MtconnectTranspiler.Xmi
         /// </summary>
         /// <param name="name">Term to lookup the element by <c>name</c></param>
         /// <returns>First <c>&lt;packagedElement /&gt;</c> where the <c>name</c> matched. Returns <c>null</c> if no elements were found</returns>
-        public T GetByName(string name)
+        public T GetByName(string? name)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name));
             int index = -1;
-            if (NameCache.TryGetValue(name, out index))
+            if (NameCache.TryGetValue(name!, out index))
                 return Items.ElementAt(index);
 
             return Get((e) => e.Name!.Equals(name, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
@@ -42,12 +42,12 @@ namespace MtconnectTranspiler.Xmi
         /// </summary>
         /// <param name="id">Term to lookup the element by <c>id</c></param>
         /// <returns>First <c>&lt;packagedElement /&gt;</c> where the <c>id</c> matched. Returns <c>null</c> if no elements were found</returns>
-        public T GetById(string id)
+        public T GetById(string? id)
         {
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentNullException(nameof(id));
             int index = -1;
-            if (NameCache.TryGetValue(id, out index))
+            if (NameCache.TryGetValue(id!, out index))
                 return Items.ElementAt(index);
 
             return Get((e) => e.Id!.Equals(id, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
