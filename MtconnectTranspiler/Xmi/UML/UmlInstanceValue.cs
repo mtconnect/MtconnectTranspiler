@@ -17,6 +17,12 @@ namespace MtconnectTranspiler.Xmi.UML
         /// <c>instance</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.instance, Namespace = "")]
-        public string Instance { get; set; } = string.Empty;
+        public string? Instance { get; set; }
+
+        /// <summary>
+        /// <c>value</c> attribute
+        /// </summary>
+        [XmlAttribute(AttributeName = XmlHelper.XmiStructure.value, Namespace = "")]
+        public string? Value { get; set; }
     }
 }
