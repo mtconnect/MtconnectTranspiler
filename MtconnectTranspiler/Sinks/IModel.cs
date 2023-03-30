@@ -1,6 +1,6 @@
 ﻿using MtconnectTranspiler.Xmi;
 
-namespace MtconnectTranspiler.Sinks.CSharp.Models
+namespace MtconnectTranspiler.Sinks.Models
 {
     /// <summary>
     /// Generic type for a model derived from <see cref="XmiElement" />.

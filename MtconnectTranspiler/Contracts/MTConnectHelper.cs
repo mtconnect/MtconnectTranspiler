@@ -24,20 +24,20 @@ namespace MtconnectTranspiler.Contracts
         /// Lookup table for each released version of MTConnect and the respective GitHub tags in the SysML model repository.
         /// </summary>
         /// <remarks>TODO: Keep this dictionary up-to-date with each release. <see href="https://api.github.com/repos/mtconnect/mtconnect_sysml_model/releases"/>.</remarks>
-        public static Dictionary<MTConnectVersions, string> VersionGitTags { get; } = new Dictionary<MTConnectVersions, string>()
+        public static Dictionary<MTConnectVersion, string> VersionGitTags { get; } = new Dictionary<MTConnectVersion, string>()
         {
-            { MTConnectVersions.v1_0, "v1.5" },
-            { MTConnectVersions.v1_1, "v1.5" },
-            { MTConnectVersions.v1_2, "v1.5" },
-            { MTConnectVersions.v1_3, "v1.5" },
-            { MTConnectVersions.v1_4, "v1.5" },
-            { MTConnectVersions.v1_5, "v1.5" },
-            { MTConnectVersions.v1_6, "v1.6" },
-            { MTConnectVersions.v1_7, "v1.7" },
-            { MTConnectVersions.v1_8, "v1.8" },
-            { MTConnectVersions.v2_0, "v2.0" },
-            { MTConnectVersions.v2_1, "v2.1" },
-            { MTConnectVersions.v2_2, "v2.2" },
+            { MTConnectVersion.v1_0_1, "v1.5" },
+            { MTConnectVersion.v1_1, "v1.5" },
+            { MTConnectVersion.v1_2, "v1.5" },
+            { MTConnectVersion.v1_3, "v1.5" },
+            { MTConnectVersion.v1_4, "v1.5" },
+            { MTConnectVersion.v1_5, "v1.5" },
+            { MTConnectVersion.v1_6, "v1.6" },
+            { MTConnectVersion.v1_7, "v1.7" },
+            { MTConnectVersion.v1_8, "v1.8" },
+            { MTConnectVersion.v2_0, "v2.0" },
+            { MTConnectVersion.v2_1, "v2.1" },
+            { MTConnectVersion.v2_2, "v2.2" },
         };
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace MtconnectTranspiler.Contracts
         /// <param name="version">Reference to the MTConnect Version to lookup</param>
         /// <returns>Formatted URI to download the XML of the SysML model for the requested version of MTConnect.</returns>
         /// <exception cref="KeyNotFoundException"></exception>
-        public static Uri BuildModelUri(MTConnectVersions version)
+        public static Uri BuildModelUri(MTConnectVersion version)
         {
             if (!VersionGitTags.TryGetValue(version, out string tag)) throw new KeyNotFoundException();
             return BuildModelUri(tag);
@@ -56,7 +56,7 @@ namespace MtconnectTranspiler.Contracts
         /// Builds the reference address for a released version of the SysML model on GitHub.
         /// </summary>
         /// <param name="tag">The raw tag name of the released version on GitHub.</param>
-        /// <returns><inheritdoc cref="BuildModelUri(MTConnectVersions)" path="/returns"/></returns>
+        /// <returns><inheritdoc cref="BuildModelUri(MTConnectVersion)" path="/returns"/></returns>
         public static Uri BuildModelUri(string tag)
             => tag.Equals("latest", StringComparison.OrdinalIgnoreCase)
             ? new Uri($"https://github.com/mtconnect/mtconnect_sysml_model/releases/latest/download/Model.xml")
@@ -69,11 +69,14 @@ namespace MtconnectTranspiler.Contracts
         /// <param name="model">Reference to the deserialized model</param>
         /// <param name="id">Lookup key</param>
         /// <returns><see cref="Normative"/> model that matches. Returns <c>null</c> if not found.</returns>
-        public static Normative? LookupNormative(this XmiDocument model, string id)
+        public static Normative? LookupNormative(this XmiDocument model, string? id)
         {
+            if (string.IsNullOrEmpty(id))
+                return null;
+
             NormativeCache ??= model.NormativeIntroductions?.Select((o, i) => (o.BaseElement, i))?.ToDictionary(o => o.BaseElement!, o => o.i);
 
-            if (NormativeCache != null && NormativeCache.TryGetValue(id, out int index))
+            if (NormativeCache != null && NormativeCache.TryGetValue(id!, out int index))
                 return model.NormativeIntroductions?.ElementAt(index);
             return null;
         }
@@ -85,11 +88,14 @@ namespace MtconnectTranspiler.Contracts
         /// <param name="model">Reference to the deserialized model</param>
         /// <param name="id">Lookup key</param>
         /// <returns><see cref="Deprecated"/> model that matches. Returns <c>null</c> if not found.</returns>
-        public static Deprecated? LookupDeprecated(this XmiDocument model, string id)
+        public static Deprecated? LookupDeprecated(this XmiDocument model, string? id)
         {
+            if (string.IsNullOrEmpty(id))
+                return null;
+
             DeprecatedCache ??= model.Deprecations?.Select((o, i) => (o.BaseElement, i))?.ToDictionary(o => o.BaseElement!, o => o.i);
 
-            if (DeprecatedCache != null && DeprecatedCache.TryGetValue(id, out int index))
+            if (DeprecatedCache != null && DeprecatedCache.TryGetValue(id!, out int index))
                 return model.Deprecations?.ElementAt(index);
             return null;
         }
@@ -100,8 +106,11 @@ namespace MtconnectTranspiler.Contracts
         /// <param name="model">Reference to the deserialized model</param>
         /// <param name="id">Lookup key</param>
         /// <returns><see cref="UmlDataType"/> model that matches. Returns <c>null</c> if not found.</returns>
-        public static UmlDataType? LookupDataType(this XmiDocument model, string id)
+        public static UmlDataType? LookupDataType(this XmiDocument model, string? id)
         {
+            if (string.IsNullOrEmpty(id))
+                return null;
+
             return model.JumpToPackage(PackageNavigationTree.Profile.DataTypes)?.DataTypes.GetById(id);
         }
 

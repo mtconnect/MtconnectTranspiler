@@ -1,7 +1,7 @@
 ﻿using MtconnectTranspiler.Xmi;
 using System;
 
-namespace MtconnectTranspiler.Sinks.CSharp.Models
+namespace MtconnectTranspiler.Sinks.Models
 {
     /// <summary>
     /// Abstract representation of a XMI model item.
