@@ -17,17 +17,13 @@ namespace MtconnectTranspiler.Xmi.UML
         /// <c>isAbstract</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.isAbstract, Namespace = "")]
-        private bool _isAbstract { get; set; }
-        /// <inheritdoc cref="_isAbstract"/>
-        public bool IsAbstract => _isAbstract;
+        public bool IsAbstract { get; set; }
 
         /// <summary>
         /// <c>visibility</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.visibility, Namespace = "")]
-        private string _visibility { get; set; } = "public";
-        /// <inheritdoc cref="_visibility"/>
-        public string Visibility => _visibility;
+        public string Visibility { get; set; } = "public";
 
         /// <summary>
         /// Collection of <inheritdoc cref="UmlComment"/>

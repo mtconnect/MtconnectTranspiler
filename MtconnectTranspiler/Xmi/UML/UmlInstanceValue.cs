@@ -17,8 +17,6 @@ namespace MtconnectTranspiler.Xmi.UML
         /// <c>instance</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.instance, Namespace = "")]
-        internal string? _instance { get; set; }
-        /// <inheritdoc cref="_instance"/>
-        public string Instance => _instance ?? string.Empty;
+        public string Instance { get; set; } = string.Empty;
     }
 }

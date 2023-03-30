@@ -17,9 +17,7 @@ namespace MtconnectTranspiler.Xmi.UML
         /// <c>association</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.association, Namespace = "")]
-        private string? _association { get; set; }
-        /// <inheritdoc cref="_association"/>
-        public string Association => _association ?? string.Empty;
+        public string? Association { get; set; }
 
         // TODO: Lookup the uml:Association[@name] to determine the expected Property Name
         // TODO: Figure out how to determine if the associated type is an array. Possibly just a reference to the lowerValue/upperValue elements
@@ -28,33 +26,25 @@ namespace MtconnectTranspiler.Xmi.UML
         /// <c>aggregation</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.aggregation, Namespace = "")]
-        private string? _aggregation { get; set; }
-        /// <inheritdoc cref="_aggregation"/>
-        public string Aggregation => _aggregation ?? string.Empty;
+        public string? Aggregation { get; set; }
 
         /// <summary>
         /// <c>type</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.type, Namespace = "")]
-        private string? _propertyType { get; set; }
-        /// <inheritdoc cref="_propertyType"/>
-        public string PropertyType => _propertyType ?? string.Empty;
+        public string? PropertyType { get; set; }
 
         /// <summary>
         /// <c>isStatic</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.isStatic, Namespace = "")]
-        private bool _isStatic { get; set; }
-        /// <inheritdoc cref="_isStatic"/>
-        public bool IsStatic => _isStatic;
+        public bool IsStatic { get; set; }
 
         /// <summary>
         /// <c>isReadOnly</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.isReadOnly, Namespace = "")]
-        private bool _isReadOnly { get; set; }
-        /// <inheritdoc cref="_isReadOnly"/>
-        public bool IsReadOnly => _isReadOnly;
+        public bool IsReadOnly { get; set; }
 
         /// <summary>
         /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.LowerValue"/>
@@ -78,9 +68,7 @@ namespace MtconnectTranspiler.Xmi.UML
         /// <c>visibility</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.visibility, Namespace = "")]
-        private string _visibility { get; set; } = "public";
-        /// <inheritdoc cref="_visibility"/>
-        public string Visibility => _visibility;
+        public string Visibility { get; set; } = "public";
 
         /// <summary>
         /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlComment"/>
