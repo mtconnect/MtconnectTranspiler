@@ -1,13 +1,25 @@
-﻿using MtconnectTranspiler.Xmi;
+﻿using MtconnectTranspiler.Contracts;
+using MtconnectTranspiler.Xmi;
+using MtconnectTranspiler.Xmi.Profile;
 using System.Linq;
 
-namespace MtconnectTranspiler.Sinks.CSharp.Models
+namespace MtconnectTranspiler.Sinks.Models
 {
     /// <summary>
     /// Generic type for a model derived from <see cref="XmiElement" /> which also might have normative versioning.
     /// </summary>
     public abstract class VersionedObject : XmiModel<XmiElement>
     {
+        /// <summary>
+        /// Reference to the normative definition of an object.
+        /// </summary>
+        public Normative? NormativeReference { get; }
+
+        /// <summary>
+        /// Reference to the deprecation definition of an object.
+        /// </summary>
+        public Deprecated? DeprecatedReference { get; }
+
         /// <summary>
         /// The version of MTConnect when this became normative.
         /// </summary>
@@ -25,14 +37,14 @@ namespace MtconnectTranspiler.Sinks.CSharp.Models
         /// <param name="source">Reference to the source <see cref="XmiElement"/> that may have Normative and Deprecated references in the XMI model.</param>
         public VersionedObject(XmiDocument model, XmiElement source) : base(source)
         {
-            var normative = model?.NormativeIntroductions?.FirstOrDefault(o => o.BaseElement == Source.Id);
-            if (normative != null)
+            NormativeReference = MTConnectHelper.LookupNormative(model, Source.Id);
+            if (NormativeReference != null)
             {
-                NormativeVersion = lookupMtconnectVersion(normative.Version);
-                var deprecated = model?.Deprecations?.FirstOrDefault(o => o.BaseElement == Source.Id);
-                if (deprecated != null)
+                NormativeVersion = lookupMtconnectVersion(NormativeReference.Version);
+                DeprecatedReference = MTConnectHelper.LookupDeprecated(model, Source.Id);
+                if (DeprecatedReference != null)
                 {
-                    DeprecatedVersion = lookupMtconnectVersion(deprecated.Version);
+                    DeprecatedVersion = lookupMtconnectVersion(DeprecatedReference.Version);
                 }
             }
         }
