@@ -47,7 +47,7 @@ namespace MtconnectTranspiler.Xmi
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentNullException(nameof(id));
             int index = -1;
-            if (NameCache.TryGetValue(id!, out index))
+            if (IdCache.TryGetValue(id!, out index))
                 return Items.ElementAt(index);
 
             return Get((e) => e.Id!.Equals(id, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
