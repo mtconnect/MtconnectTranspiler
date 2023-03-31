@@ -74,9 +74,12 @@ namespace MtconnectTranspiler.Console.Views
             var deserializer = options.GetDeserializer();
             var result = deserializer.Deserialize(default);
 
-            var path = MTConnectHelper.PackageNavigationTree.ObservationInformationModel.ObservationTypes;
+            var path = MTConnectHelper.PackageNavigationTree.ObservationInformationModel.ObservationTypes.SampleTypes;
             Consoul.Write("Path: " + path);
             var package = MTConnectHelper.JumpToPackage(result!, path);
+            var type = package.Classes.FirstOrDefault();
+            var units = type.Properties.FirstOrDefault(o => o.Name == "units");
+            var defaultValue = units.DefaultValue;
             Consoul.Write("Package ID: " + (package?.Id ?? "Not found"));
             Consoul.Wait();
         }

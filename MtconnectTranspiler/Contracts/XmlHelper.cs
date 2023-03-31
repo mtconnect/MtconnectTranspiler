@@ -143,6 +143,10 @@
             /// </summary>
             public const string InstanceValue = "uml:InstanceValue";
             /// <summary>
+            /// <c>&lt;defaultValue xmi:type='uml:LiteralString' /&gt;</c>
+            /// </summary>
+            public const string LiteralString = "uml:LiteralString";
+            /// <summary>
             /// <c>&lt;uml:Model xmi:type='uml:Model' /&gt;</c>
             /// </summary>
             public const string Model = "uml:Model";

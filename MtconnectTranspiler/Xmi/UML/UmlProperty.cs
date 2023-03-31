@@ -1,5 +1,7 @@
 ﻿using MtconnectTranspiler.Contracts;
 using System;
+using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace MtconnectTranspiler.Xmi.UML
@@ -53,10 +55,67 @@ namespace MtconnectTranspiler.Xmi.UML
         public LowerValue? LowerValue { get; set; }
 
         /// <summary>
-        /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlInstanceValue"/>
+        /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.DefaultValue"/>
         /// </summary>
-        [XmlElement(ElementName = XmlHelper.XmiStructure.DEFAULT_VALUE, Namespace = "")]
-        public UmlInstanceValue? DefaultValue { get; set; }
+        [XmlAnyElement(XmlHelper.XmiStructure.DEFAULT_VALUE, Namespace = "")]
+        public XmlElement? DefaultValueElement { get; set; }
+        private DefaultValue? _defaultValue;
+        public DefaultValue? DefaultValue
+        {
+            get
+            {
+                if (_defaultValue != null)
+                    return _defaultValue;
+                if (DefaultValueElement == null)
+                    return null;
+
+                XmlRootAttribute xRoot = new XmlRootAttribute
+                {
+                    ElementName = XmlHelper.XmiStructure.DEFAULT_VALUE,
+                    IsNullable = true,
+                    Namespace = ""
+                };
+
+                //XmlSerializer serial = new XmlSerializer(typeof(T), xRoot);
+                using var xReader = new XmlNodeReader(DefaultValueElement);
+
+                XmlSerializer? serial = null;
+                string umlType = DefaultValueElement.GetAttribute(XmlHelper.XmiStructure.type, XmlHelper.XmiNamespace);
+                switch (umlType)
+                {
+                    case XmlHelper.UmlStructure.InstanceValue:
+                        serial = new XmlSerializer(typeof(UmlInstanceValue), xRoot);
+                        break;
+                    case XmlHelper.UmlStructure.LiteralString:
+                        serial = new XmlSerializer(typeof(UmlLiteralString), xRoot);
+                        break;
+                    default:
+                        break;
+                }
+
+                if (serial != null)
+                {
+                    object? deserializedObject = serial.Deserialize(xReader);
+
+                    if (deserializedObject != null)
+                    {
+                        switch (umlType)
+                        {
+                            case XmlHelper.UmlStructure.InstanceValue:
+                                _defaultValue = deserializedObject as UmlInstanceValue;
+                                break;
+                            case XmlHelper.UmlStructure.LiteralString:
+                                _defaultValue = deserializedObject as UmlLiteralString;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                return _defaultValue;
+            }
+        }
 
         /// <summary>
         /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.XmiExtension"/>
