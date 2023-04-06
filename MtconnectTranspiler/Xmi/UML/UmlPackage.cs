@@ -26,6 +26,8 @@ namespace MtconnectTranspiler.Xmi.UML
         /// <item><c>&lt;packagedElement xmi:type='uml:Stereotype' /&gt;</c></item>
         /// <item><c>&lt;packagedElement xmi:type='uml:Extension' /&gt;</c></item>
         /// <item><c>&lt;packagedElement xmi:type='uml:Package' /&gt;</c></item>
+        /// <item><c>&lt;packagedElement xmi:type='uml:Association' /&gt;</c></item>
+        /// <item><c>&lt;packagedElement xmi:type='uml:AssociationClass' /&gt;</c></item>
         /// </list>
         /// </summary>
         [XmlAnyElement(XmlHelper.XmiStructure.PACKAGED_ELEMENT, Namespace = "")]
@@ -97,6 +99,27 @@ namespace MtconnectTranspiler.Xmi.UML
         [XmlIgnore]
         public PackagedElementCollection<UmlDataType> DataTypes => _dataTypes ??= PackagedElementCollection<UmlDataType>.Deserialize(PackagedElements, XmlHelper.UmlStructure.DataType);
 
+        /// <summary>
+        /// Internal switch property for <see cref="Associations"/>.
+        /// </summary>
+        [XmlIgnore]
+        private PackagedElementCollection<UmlAssociation>? _associations;
+        /// <summary>
+        /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlAssociation"/>
+        /// </summary>
+        [XmlIgnore]
+        public PackagedElementCollection<UmlAssociation> Associations => _associations ??= PackagedElementCollection<UmlAssociation>.Deserialize(PackagedElements, XmlHelper.UmlStructure.Association);
+
+        /// <summary>
+        /// Internal switch property for <see cref="AssociationClasses"/>.
+        /// </summary>
+        [XmlIgnore]
+        private PackagedElementCollection<UmlAssociationClass>? _associationClasses;
+        /// <summary>
+        /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlAssociationClass"/>
+        /// </summary>
+        [XmlIgnore]
+        public PackagedElementCollection<UmlAssociationClass> AssociationClasses => _associationClasses ??= PackagedElementCollection<UmlAssociationClass>.Deserialize(PackagedElements, XmlHelper.UmlStructure.AssociationClass);
         //// TODO: Add xmi:Extension
 
     }
