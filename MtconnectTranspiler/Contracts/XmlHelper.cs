@@ -170,6 +170,14 @@
             /// <c>&lt;ownedAttribute xmi:type='uml:Property' /&gt;</c>
             /// </summary>
             public const string Property = "uml:Property";
+            /// <summary>
+            /// <c>&lt;ownedAttribute xmi:type='uml:AssociationClass' /&gt;</c>
+            /// </summary>
+            public const string AssociationClass = "uml:AssociationClass";
+            /// <summary>
+            /// <c>&lt;ownedAttribute xmi:type='uml:Association' /&gt;</c>
+            /// </summary>
+            public const string Association = "uml:Association";
             #endregion
         }
     }
