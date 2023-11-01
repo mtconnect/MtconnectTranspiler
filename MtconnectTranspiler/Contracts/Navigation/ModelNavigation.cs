@@ -126,6 +126,13 @@ namespace MtconnectTranspiler.Contracts.Navigation
             public NavigationItem QIF => _QIF ??= (this, "QIF");
 
 
+            private NavigationItem? _ComponentConfigurationParameters;
+            /// <summary>
+            /// <inheritdoc cref="NavigationItem" /> to <c>Component Configuration Parameters</c>
+            /// </summary>
+            public NavigationItem ComponentConfigurationParameters => _ComponentConfigurationParameters ??= (this, "Component Configuration Parameters");
+
+
 
             /// <summary>
             /// Constructs a new <see cref="AssetInformationModelNavigation" /> navigation tree.
@@ -420,6 +427,13 @@ namespace MtconnectTranspiler.Contracts.Navigation
             public NavigationItem InformationModel => _InformationModel ??= (this, "InformationModel");
 
 
+            private NavigationItem? _Pipelines;
+            /// <summary>
+            /// <inheritdoc cref="NavigationItem" /> to <c>Pipelines</c>
+            /// </summary>
+            public NavigationItem Pipelines => _Pipelines ??= (this, "Pipelines");
+
+
 
             /// <summary>
             /// Constructs a new <see cref="AgentArchitectureNavigation" /> navigation tree.
@@ -458,67 +472,110 @@ namespace MtconnectTranspiler.Contracts.Navigation
             public SupportingDocumentsNavigation() : base("Supporting Documents") { }
         }
 
-        private ExamplesNavigation? _Examples;
+        private WIPBestPracticeswithExamplesNavigation? _WIPBestPracticeswithExamples;
         /// <summary>
-        /// <inheritdoc cref="Examples" /> to <c>Examples</c>
+        /// <inheritdoc cref="WIPBestPracticeswithExamples" /> to <c>WIP: Best Practices with Examples</c>
         /// </summary>
-        public ExamplesNavigation Examples => _Examples ??= new ExamplesNavigation();
+        public WIPBestPracticeswithExamplesNavigation WIPBestPracticeswithExamples => _WIPBestPracticeswithExamples ??= new WIPBestPracticeswithExamplesNavigation();
         /// <summary>
-        /// <inheritdoc cref="NavigationItem" /> to <c>Examples</c>
+        /// <inheritdoc cref="NavigationItem" /> to <c>WIP: Best Practices with Examples</c>
         /// </summary>
-        public class ExamplesNavigation : NavigationItem
+        public class WIPBestPracticeswithExamplesNavigation : NavigationItem
         {
-            private NavigationItem? _PocketNC;
+            private MachineToolNavigation? _MachineTool;
             /// <summary>
-            /// <inheritdoc cref="NavigationItem" /> to <c>PocketNC</c>
+            /// <inheritdoc cref="MachineTool" /> to <c>Machine Tool</c>
             /// </summary>
-            public NavigationItem PocketNC => _PocketNC ??= (this, "PocketNC");
-
-
-            private MillwSmoothGNavigation? _MillwSmoothG;
+            public MachineToolNavigation MachineTool => _MachineTool ??= new MachineToolNavigation(this);
             /// <summary>
-            /// <inheritdoc cref="MillwSmoothG" /> to <c>Mill w/SmoothG</c>
+            /// <inheritdoc cref="NavigationItem" /> to <c>Machine Tool</c>
             /// </summary>
-            public MillwSmoothGNavigation MillwSmoothG => _MillwSmoothG ??= new MillwSmoothGNavigation(this);
-            /// <summary>
-            /// <inheritdoc cref="NavigationItem" /> to <c>Mill w/SmoothG</c>
-            /// </summary>
-            public class MillwSmoothGNavigation : NavigationItem
+            public class MachineToolNavigation : NavigationItem
             {
-                private NavigationItem? _Representation;
+                private DeviceExamplesNavigation? _DeviceExamples;
                 /// <summary>
-                /// <inheritdoc cref="NavigationItem" /> to <c>Representation</c>
+                /// <inheritdoc cref="DeviceExamples" /> to <c>Device Examples</c>
                 /// </summary>
-                public NavigationItem Representation => _Representation ??= (this, "Representation");
+                public DeviceExamplesNavigation DeviceExamples => _DeviceExamples ??= new DeviceExamplesNavigation(this);
+                /// <summary>
+                /// <inheritdoc cref="NavigationItem" /> to <c>Device Examples</c>
+                /// </summary>
+                public class DeviceExamplesNavigation : NavigationItem
+                {
+                    private OperationalStateNavigation? _OperationalState;
+                    /// <summary>
+                    /// <inheritdoc cref="OperationalState" /> to <c>Operational State</c>
+                    /// </summary>
+                    public OperationalStateNavigation OperationalState => _OperationalState ??= new OperationalStateNavigation(this);
+                    /// <summary>
+                    /// <inheritdoc cref="NavigationItem" /> to <c>Operational State</c>
+                    /// </summary>
+                    public class OperationalStateNavigation : NavigationItem
+                    {
+                        private NavigationItem? _UseCases;
+                        /// <summary>
+                        /// <inheritdoc cref="NavigationItem" /> to <c>Use Cases</c>
+                        /// </summary>
+                        public NavigationItem UseCases => _UseCases ??= (this, "Use Cases");
 
+
+                        private NavigationItem? _Actors;
+                        /// <summary>
+                        /// <inheritdoc cref="NavigationItem" /> to <c>Actors</c>
+                        /// </summary>
+                        public NavigationItem Actors => _Actors ??= (this, "Actors");
+
+
+
+                        /// <summary>
+                        /// Constructs a new <see cref="OperationalStateNavigation" /> navigation tree.
+                        /// </summary>
+                        /// <param name="parent">Reference to the parent branch <see cref="DeviceExamplesNavigation"/></param>
+                        public OperationalStateNavigation(DeviceExamplesNavigation parent) : base("Operational State", parent) { }
+                    }
+
+
+                    /// <summary>
+                    /// Constructs a new <see cref="DeviceExamplesNavigation" /> navigation tree.
+                    /// </summary>
+                    /// <param name="parent">Reference to the parent branch <see cref="MachineToolNavigation"/></param>
+                    public DeviceExamplesNavigation(MachineToolNavigation parent) : base("Device Examples", parent) { }
+                }
 
 
                 /// <summary>
-                /// Constructs a new <see cref="MillwSmoothGNavigation" /> navigation tree.
+                /// Constructs a new <see cref="MachineToolNavigation" /> navigation tree.
                 /// </summary>
-                /// <param name="parent">Reference to the parent branch <see cref="ExamplesNavigation"/></param>
-                public MillwSmoothGNavigation(ExamplesNavigation parent) : base("Mill w/SmoothG", parent) { }
+                /// <param name="parent">Reference to the parent branch <see cref="WIPBestPracticeswithExamplesNavigation"/></param>
+                public MachineToolNavigation(WIPBestPracticeswithExamplesNavigation parent) : base("Machine Tool", parent) { }
             }
 
-            private KinematicsSimulationNavigation? _KinematicsSimulation;
+            private OtherExamplesNavigation? _OtherExamples;
             /// <summary>
-            /// <inheritdoc cref="KinematicsSimulation" /> to <c>Kinematics Simulation</c>
+            /// <inheritdoc cref="OtherExamples" /> to <c>Other Examples</c>
             /// </summary>
-            public KinematicsSimulationNavigation KinematicsSimulation => _KinematicsSimulation ??= new KinematicsSimulationNavigation(this);
+            public OtherExamplesNavigation OtherExamples => _OtherExamples ??= new OtherExamplesNavigation(this);
             /// <summary>
-            /// <inheritdoc cref="NavigationItem" /> to <c>Kinematics Simulation</c>
+            /// <inheritdoc cref="NavigationItem" /> to <c>Other Examples</c>
             /// </summary>
-            public class KinematicsSimulationNavigation : NavigationItem
+            public class OtherExamplesNavigation : NavigationItem
             {
-                private ExampleNavigation? _Example;
+                private NavigationItem? _PocketNC;
                 /// <summary>
-                /// <inheritdoc cref="Example" /> to <c>Example</c>
+                /// <inheritdoc cref="NavigationItem" /> to <c>PocketNC</c>
                 /// </summary>
-                public ExampleNavigation Example => _Example ??= new ExampleNavigation(this);
+                public NavigationItem PocketNC => _PocketNC ??= (this, "PocketNC");
+
+
+                private KinematicsSimulationNavigation? _KinematicsSimulation;
                 /// <summary>
-                /// <inheritdoc cref="NavigationItem" /> to <c>Example</c>
+                /// <inheritdoc cref="KinematicsSimulation" /> to <c>Kinematics Simulation</c>
                 /// </summary>
-                public class ExampleNavigation : NavigationItem
+                public KinematicsSimulationNavigation KinematicsSimulation => _KinematicsSimulation ??= new KinematicsSimulationNavigation(this);
+                /// <summary>
+                /// <inheritdoc cref="NavigationItem" /> to <c>Kinematics Simulation</c>
+                /// </summary>
+                public class KinematicsSimulationNavigation : NavigationItem
                 {
                     private NavigationItem? _Simulation;
                     /// <summary>
@@ -527,11 +584,11 @@ namespace MtconnectTranspiler.Contracts.Navigation
                     public NavigationItem Simulation => _Simulation ??= (this, "Simulation");
 
 
-                    private NavigationItem? _Definitions;
+                    private NavigationItem? _XArm7Model;
                     /// <summary>
-                    /// <inheritdoc cref="NavigationItem" /> to <c>Definitions</c>
+                    /// <inheritdoc cref="NavigationItem" /> to <c>XArm7Model</c>
                     /// </summary>
-                    public NavigationItem Definitions => _Definitions ??= (this, "Definitions");
+                    public NavigationItem XArm7Model => _XArm7Model ??= (this, "XArm7Model");
 
 
                     private NavigationItem? _XArm7Instance;
@@ -543,32 +600,71 @@ namespace MtconnectTranspiler.Contracts.Navigation
 
 
                     /// <summary>
-                    /// Constructs a new <see cref="ExampleNavigation" /> navigation tree.
+                    /// Constructs a new <see cref="KinematicsSimulationNavigation" /> navigation tree.
                     /// </summary>
-                    /// <param name="parent">Reference to the parent branch <see cref="KinematicsSimulationNavigation"/></param>
-                    public ExampleNavigation(KinematicsSimulationNavigation parent) : base("Example", parent) { }
+                    /// <param name="parent">Reference to the parent branch <see cref="OtherExamplesNavigation"/></param>
+                    public KinematicsSimulationNavigation(OtherExamplesNavigation parent) : base("Kinematics Simulation", parent) { }
+                }
+
+                private MillwSmoothGNavigation? _MillwSmoothG;
+                /// <summary>
+                /// <inheritdoc cref="MillwSmoothG" /> to <c>Mill w/SmoothG</c>
+                /// </summary>
+                public MillwSmoothGNavigation MillwSmoothG => _MillwSmoothG ??= new MillwSmoothGNavigation(this);
+                /// <summary>
+                /// <inheritdoc cref="NavigationItem" /> to <c>Mill w/SmoothG</c>
+                /// </summary>
+                public class MillwSmoothGNavigation : NavigationItem
+                {
+                    private NavigationItem? _Representation;
+                    /// <summary>
+                    /// <inheritdoc cref="NavigationItem" /> to <c>Representation</c>
+                    /// </summary>
+                    public NavigationItem Representation => _Representation ??= (this, "Representation");
+
+
+
+                    /// <summary>
+                    /// Constructs a new <see cref="MillwSmoothGNavigation" /> navigation tree.
+                    /// </summary>
+                    /// <param name="parent">Reference to the parent branch <see cref="OtherExamplesNavigation"/></param>
+                    public MillwSmoothGNavigation(OtherExamplesNavigation parent) : base("Mill w/SmoothG", parent) { }
                 }
 
 
                 /// <summary>
-                /// Constructs a new <see cref="KinematicsSimulationNavigation" /> navigation tree.
+                /// Constructs a new <see cref="OtherExamplesNavigation" /> navigation tree.
                 /// </summary>
-                /// <param name="parent">Reference to the parent branch <see cref="ExamplesNavigation"/></param>
-                public KinematicsSimulationNavigation(ExamplesNavigation parent) : base("Kinematics Simulation", parent) { }
+                /// <param name="parent">Reference to the parent branch <see cref="WIPBestPracticeswithExamplesNavigation"/></param>
+                public OtherExamplesNavigation(WIPBestPracticeswithExamplesNavigation parent) : base("Other Examples", parent) { }
             }
 
-            private NavigationItem? _Example;
+            private NavigationItem? _Thermal;
             /// <summary>
-            /// <inheritdoc cref="NavigationItem" /> to <c>Example</c>
+            /// <inheritdoc cref="NavigationItem" /> to <c>Thermal</c>
             /// </summary>
-            public NavigationItem Example => _Example ??= (this, "Example");
+            public NavigationItem Thermal => _Thermal ??= (this, "Thermal");
+
+
+            private NavigationItem? _RobotArms;
+            /// <summary>
+            /// <inheritdoc cref="NavigationItem" /> to <c>Robot Arms</c>
+            /// </summary>
+            public NavigationItem RobotArms => _RobotArms ??= (this, "Robot Arms");
+
+
+            private NavigationItem? _Additive;
+            /// <summary>
+            /// <inheritdoc cref="NavigationItem" /> to <c>Additive</c>
+            /// </summary>
+            public NavigationItem Additive => _Additive ??= (this, "Additive");
 
 
 
             /// <summary>
-            /// Constructs a new <see cref="ExamplesNavigation" /> navigation tree.
+            /// Constructs a new <see cref="WIPBestPracticeswithExamplesNavigation" /> navigation tree.
             /// </summary>
-            public ExamplesNavigation() : base("Examples") { }
+            public WIPBestPracticeswithExamplesNavigation() : base("WIP: Best Practices with Examples") { }
         }
 
         private NavigationItem? _MTConnectDeviceValidationSuite;
@@ -854,6 +950,20 @@ namespace MtconnectTranspiler.Contracts.Navigation
                 /// <inheritdoc cref="NavigationItem" /> to <c>SolidModel</c>
                 /// </summary>
                 public NavigationItem SolidModel => _SolidModel ??= (this, "SolidModel");
+
+
+                private NavigationItem? _ImageFiles;
+                /// <summary>
+                /// <inheritdoc cref="NavigationItem" /> to <c>ImageFiles</c>
+                /// </summary>
+                public NavigationItem ImageFiles => _ImageFiles ??= (this, "ImageFiles");
+
+
+                private NavigationItem? _PowerSource;
+                /// <summary>
+                /// <inheritdoc cref="NavigationItem" /> to <c>PowerSource</c>
+                /// </summary>
+                public NavigationItem PowerSource => _PowerSource ??= (this, "PowerSource");
 
 
 

@@ -162,7 +162,8 @@ namespace MtconnectTranspiler.Console.Views
             return input
                 ?.Replace(" ", string.Empty)
                 ?.Replace("/", string.Empty)
-                ?.Replace("-", string.Empty);
+                ?.Replace("-", string.Empty)
+                ?.Replace(":", string.Empty);
         }
         private static string BuildNavigationItem(PackagedElement? package, bool hasParent)
         {
