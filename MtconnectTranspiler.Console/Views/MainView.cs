@@ -42,15 +42,24 @@ namespace MtconnectTranspiler.Console.Views
             options.Filepath = Consoul.PromptForFilepath("Please provide the filepath to the copy of the mtconnect_sysml_model XMI", true);
 
             Deserialize(options);
+            Consoul.Wait();
         }
 
 
         [ViewOption("Build Navigation Structure")]
         public void TranspilePackageNavigation()
         {
-            var options = new FromGitHubOptions() { GitHubRelease = "latest" };
+            XmiDeserializer? deserializer = null;
+            if (Consoul.Ask("Would you like to use GitHub's latest version?"))
+            {
+                var options = new FromGitHubOptions() { GitHubRelease = "latest" };
+                deserializer = options.GetDeserializer();
+            } else
+            {
+                var options = new FromFileOptions() { Filepath = Consoul.PromptForFilepath("Please enter path for SysML model", true) };
+                deserializer = options.GetDeserializer();
+            }
 
-            var deserializer = options.GetDeserializer();
             var result = deserializer.Deserialize(default);
             StringBuilder sb = new();
 

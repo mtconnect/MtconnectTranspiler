@@ -32,6 +32,9 @@ namespace MtconnectTranspiler.Contracts
             { MTConnectVersion.v2_0_1, new SemanticVersion(2, 0, 1, new DateTime(2022, 05, 24)) },
             { MTConnectVersion.v2_1, new SemanticVersion(2, 1, 0, new DateTime(2023, 01, 14)) },
             { MTConnectVersion.v2_1_1, new SemanticVersion(2, 1, 1, new DateTime(2023, 01, 14)) },
+            { MTConnectVersion.v2_2, new SemanticVersion(2, 2, 0, new DateTime(2023, 07,26)) },
+            { MTConnectVersion.v2_2_1, new SemanticVersion(2, 2, 1, new DateTime(2023,07, 26)) },
+            //{ MTConnectVersion.v2_3, new SemanticVersion(2,3,0, new DateTime()) }
         };
 
         /// <summary>

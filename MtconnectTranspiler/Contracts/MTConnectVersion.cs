@@ -88,6 +88,10 @@
         /// <summary>
         /// Refers to Version 2.2.1 of MTConnect
         /// </summary>
-        v2_2_1
+        v2_2_1,
+        /// <summary>
+        /// Refers to Version 2.3.0 of MTConnect
+        /// </summary>
+        v2_3,
     }
 }
