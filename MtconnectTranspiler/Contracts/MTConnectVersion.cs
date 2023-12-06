@@ -93,5 +93,9 @@
         /// Refers to Version 2.3.0 of MTConnect
         /// </summary>
         v2_3,
+        /// <summary>
+        /// Refers to Version 2.3.1 of MTConnect
+        /// </summary>
+        v2_3_1
     }
 }
