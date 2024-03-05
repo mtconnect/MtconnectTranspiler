@@ -2,6 +2,7 @@
 using MtconnectTranspiler.Xmi.Profile;
 using MtconnectTranspiler.Xmi.UML;
 using System;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace MtconnectTranspiler.Xmi
@@ -12,6 +13,8 @@ namespace MtconnectTranspiler.Xmi
     [Serializable, XmlRoot(ElementName = "XMI", Namespace = XmlHelper.XmiNamespace)]
     public class XmiDocument
     {
+        public XmlDocument SourceDocument { get; set; }
+
         /// <summary>
         /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.XmiDocumentation"/>
         /// </summary>
