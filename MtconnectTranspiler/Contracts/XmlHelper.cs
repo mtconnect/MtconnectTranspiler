@@ -16,6 +16,80 @@
         public const string Md_Customization_for_SysML__additional_stereotypesNamespace = "http://www.magicdraw.com/spec/Customization/180/SysML";
         public const string SimulationProfileNamespace = "http://www.magicdraw.com/schemas/SimulationProfile.xmi";
 
+        public static class MDCustomizationForSysMLAdditionalStereoTypes
+        {
+            #region XML Tags
+            public const string VALUE_PROPERTY = "ValueProperty";
+            public const string PART_PROPERTY = "PartProperty";
+            public const string REFERENCE_PROPERTY = "ReferenceProperty";
+            public const string CONSTRAINT_PROPERTY = "ConstraintProperty";
+            public const string CONSTRAINT_PARAMETER = "ConstraintParameter";
+            #endregion
+
+            #region XML Attributes
+            public const string baseProperty = "base_Property";
+            public const string basePort = "base_Port";
+            #endregion
+        }
+
+        public static class ConceptModelingProfileStructure
+        {
+            #region XML Tags
+            public const string LITERAL_ANNOTATION = "Literal_Annotation";
+            public const string RESTRICTION = "Restriction";
+            public const string EQUIVALENT_CLASS = "Equivalent_Class";
+            public const string FUNCTIONAL = "Functional";
+            public const string RESOURCE = "Resource";
+            public const string DISJOINT_WITH = "Disjoint_With";
+            public const string ANYTHING = "Anything";
+            #endregion
+
+            #region XML Attributes
+            public const string baseComment = "base_Comment";
+            public const string baseClass = "base_Class";
+            public const string baseProperty = "base_Property";
+            public const string baseGeneralization = "base_Generalization";
+            public const string IRI = "IRI";
+            public const string baseDependency = "base_Dependency";
+            #endregion
+        }
+
+        public static class MagicDrawProfileStructure
+        {
+            #region XML Tags
+            public const string ADDITIONAL_ELEMENT_IMPORT = "additionalElementImport";
+            public const string ADDITIONAL_PACKAGE_IMPORT = "additionalPackageImport";
+            public const string DIAGRAM_INFO = "DiagramInfo";
+            public const string DIAGRAM_TABLE = "DiagramTable";
+            public const string CUSTOM_SORT = "CustomSort";
+            public const string ROW_ELEMENTS = "rowElements";
+            public const string SORT = "sort";
+            #endregion
+
+            #region XML Attributes
+            public const string baseElementImport = "base_ElementImport";
+            public const string basePackageImport = "base_PackageImport";
+            public const string treatAsAuxiliaryInOwningProject = "treatAsAuxiliaryInOwningProject";
+            public const string baseDiagram = "base_Diagram";
+            public const string author = "Author";
+            public const string creationDate = "Creation_date";
+            public const string modificationDate = "Modification_date";
+            public const string lastModifiedBy = "Last_modified_by";
+            public const string baseElement = "base_Element";
+            public const string sortPriority = "sortPriority";
+            public const string showDetailedColumnName = "showDetailedColumnName";
+            public const string typesIncludeSubtypes = "typesIncludeSubtypes";
+            public const string displayMode = "displayMode";
+            public const string showElementNumber = "showElementNumber";
+            public const string showColumnIcons = "showColumnIcons";
+            public const string showScopeAsRoot = "showScopeRoot";
+            public const string showScope = "showScope";
+            public const string showFilter = "showFilter";
+            public const string showElementType = "showElementType";
+            public const string additionalElements = "additionalElements";
+            #endregion
+        }
+
         public static class ProfileStructure
         {
             #region XML Tags
@@ -32,6 +106,7 @@
         public static class XmiStructure
         {
             #region XML Tags
+            public const string FILE_PART = "filePart";
             public const string PACKAGED_ELEMENT = "packagedElement";
             public const string PACKAGE_IMPORT = "packageImport";
             public const string OWNED_COMMENT = "ownedComment";
@@ -66,6 +141,7 @@
             #endregion
 
             #region XML Attributes
+            public const string header = "header";
             public const string visibility = "visibility";
             public const string isQuery = "isQuery";
             public const string isAbstract = "isAbstract";
@@ -89,6 +165,25 @@
             public const string isReadOnly = "isReadOnly";
             public const string value = "value";
             public const string extender = "extender";
+            #endregion
+        }
+
+        public static class SysMLStructure
+        {
+            #region XML Tags
+            public const string BLOCK = "Block";
+            public const string VALUE_TYPE = "ValueType";
+            public const string BINDING_CONNECTOR = "BindingConnector";
+            public const string NESTED_CONNECTOR_END = "NestedConnectorEnd";
+            #endregion
+
+            #region XML Attributes
+            public const string baseClass = "base_Class";
+            public const string baseElement = "base_Element";
+            public const string baseDataType = "base_DataType";
+            public const string baseConnector = "base_Connector";
+            public const string baseConnectorEnd = "base_ConnectorEnd";
+            public const string propertyPath = "propertyPath";
             #endregion
         }
 

@@ -11,7 +11,7 @@ namespace MtconnectTranspiler.Console.Views
 {
     internal class MainView : StaticView
     {
-        private ILogger<TranspilerDispatcher> _logger;
+        private ILogger<XmiDeserializer> _logger;
 
         public MainView()
         {
@@ -19,7 +19,7 @@ namespace MtconnectTranspiler.Console.Views
 
             // Uses Microsoft.Extensions.Logging for the LoggerFactory and ILogger
             // Uses the Consoul library for color formatting
-            _logger = LoggerFactory.Create((o) => o.AddConsoulLogger()).CreateLogger<TranspilerDispatcher>();
+            _logger = LoggerFactory.Create((o) => o.AddConsoulLogger()).CreateLogger<XmiDeserializer>();
         }
 
         [ViewOption("Transpile From GitHub Latest")]
@@ -40,6 +40,15 @@ namespace MtconnectTranspiler.Console.Views
         {
             var options = new FromFileOptions();
             options.Filepath = Consoul.PromptForFilepath("Please provide the filepath to the copy of the mtconnect_sysml_model XMI", true);
+
+            Deserialize(options);
+            Consoul.Wait();
+        }
+
+        [ViewOption("Transpile From model.MTConnect.org")]
+        public void TranspileFromMtconnectOrg()
+        {
+            var options = new FromMtconnectOrg();
 
             Deserialize(options);
             Consoul.Wait();
@@ -193,7 +202,7 @@ namespace MtconnectTranspiler.Console.Views
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             using var cancellationSource = new CancellationTokenSource();
-            var deserializer = options.GetDeserializer();
+            var deserializer = options.GetDeserializer(_logger);
 
             var task = Task.Run(() => Deserialize(deserializer, cancellationSource.Token)).ContinueWith((t) => cancellationSource.Cancel());
 

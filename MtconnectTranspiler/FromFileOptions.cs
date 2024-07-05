@@ -1,4 +1,5 @@
-﻿using MtconnectTranspiler.Contracts;
+﻿using Microsoft.Extensions.Logging;
+using MtconnectTranspiler.Contracts;
 using System.IO;
 
 namespace MtconnectTranspiler
@@ -15,14 +16,15 @@ namespace MtconnectTranspiler
 
         /// <inheritdoc />
         /// <exception cref="FileNotFoundException"></exception>
-        public override XmiDeserializer GetDeserializer()
+        public override XmiDeserializer GetDeserializer(ILogger<XmiDeserializer> logger = null)
         {
-            if (!File.Exists(Filepath)) throw new FileNotFoundException("Could not find specified XMI file", Filepath);
+            if (!File.Exists(Filepath))
+                throw new FileNotFoundException("Could not find specified XMI file", Filepath);
 
             // NOTE: It's important for this method to handle transpile multiple languages at once isntead of iterating through the XMI multiple times for each language.
             // NOTE: Make sure multiple project options cane be supplied to this class to handle concurrently processing multiple languages as we process the XMI.
 
-            var deserializer = XmiDeserializer.FromFile(Filepath);
+            var deserializer = XmiDeserializer.FromFile(Filepath, logger);
             return deserializer;
         }
     }

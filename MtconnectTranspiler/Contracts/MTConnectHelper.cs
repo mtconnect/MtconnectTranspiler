@@ -47,18 +47,17 @@ namespace MtconnectTranspiler.Contracts
         /// <param name="version">Reference to the MTConnect Version to lookup</param>
         /// <returns>Formatted URI to download the XML of the SysML model for the requested version of MTConnect.</returns>
         /// <exception cref="KeyNotFoundException"></exception>
-        public static Uri BuildModelUri(MTConnectVersion version)
+        public static Uri BuildModelGitHubUri(MTConnectVersion version)
         {
             if (!VersionGitTags.TryGetValue(version, out string tag)) throw new KeyNotFoundException();
-            return BuildModelUri(tag);
+            return BuildModelGitHubUri(tag);
         }
-
         /// <summary>
         /// Builds the reference address for a released version of the SysML model on GitHub.
         /// </summary>
         /// <param name="tag">The raw tag name of the released version on GitHub.</param>
-        /// <returns><inheritdoc cref="BuildModelUri(MTConnectVersion)" path="/returns"/></returns>
-        public static Uri BuildModelUri(string tag)
+        /// <returns><inheritdoc cref="BuildModelGitHubUri(MTConnectVersion)" path="/returns"/></returns>
+        public static Uri BuildModelGitHubUri(string tag)
             => tag.Equals("latest", StringComparison.OrdinalIgnoreCase)
             ? new Uri($"https://github.com/mtconnect/mtconnect_sysml_model/releases/latest/download/Model.xml")
             : new Uri($"https://github.com/mtconnect/mtconnect_sysml_model/releases/download/{tag}/Model.xml");
@@ -75,10 +74,10 @@ namespace MtconnectTranspiler.Contracts
             if (string.IsNullOrEmpty(id))
                 return null;
 
-            NormativeCache ??= model.NormativeIntroductions?.Select((o, i) => (o.BaseElement, i))?.ToDictionary(o => o.BaseElement!, o => o.i);
+            NormativeCache ??= model.Introductions?.Select((o, i) => (o.BaseElement, i))?.ToDictionary(o => o.BaseElement!, o => o.i);
 
             if (NormativeCache != null && NormativeCache.TryGetValue(id!, out int index))
-                return model.NormativeIntroductions?.ElementAt(index);
+                return model.Introductions?.ElementAt(index);
             return null;
         }
 

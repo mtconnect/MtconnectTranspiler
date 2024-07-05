@@ -1,4 +1,5 @@
-﻿using MtconnectTranspiler.Contracts;
+﻿using Microsoft.Extensions.Logging;
+using MtconnectTranspiler.Contracts;
 
 namespace MtconnectTranspiler
 {
@@ -11,6 +12,6 @@ namespace MtconnectTranspiler
         /// Returns an instance of <see cref="XmiDeserializer"/> that has a copy of the SysML model in memory.
         /// </summary>
         /// <returns>Instance of <see cref="XmiDeserializer"/></returns>
-        public abstract XmiDeserializer GetDeserializer();
+        public abstract XmiDeserializer GetDeserializer(ILogger<XmiDeserializer> logger = null);
     }
 }

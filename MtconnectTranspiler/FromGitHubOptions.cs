@@ -1,4 +1,5 @@
-﻿using MtconnectTranspiler.Contracts;
+﻿using Microsoft.Extensions.Logging;
+using MtconnectTranspiler.Contracts;
 using System;
 using System.ComponentModel;
 using System.Net.Http;
@@ -17,11 +18,12 @@ namespace MtconnectTranspiler
         public string GitHubRelease { get; set; } = "latest";
 
         /// <inheritdoc />
-        public override XmiDeserializer GetDeserializer()
+        public override XmiDeserializer GetDeserializer(ILogger<XmiDeserializer> logger = null)
         {
-            if (string.IsNullOrEmpty(GitHubRelease)) throw new ArgumentNullException();
+            if (string.IsNullOrEmpty(GitHubRelease))
+                throw new ArgumentNullException();
 
-            var gitUrl = MTConnectHelper.BuildModelUri(GitHubRelease);
+            var gitUrl = MTConnectHelper.BuildModelGitHubUri(GitHubRelease);
 
             using (var client = new HttpClient())
             {
@@ -30,7 +32,7 @@ namespace MtconnectTranspiler
                 {
                     string xml = response.Content.ReadAsStringAsync().Result;
 
-                    var deserializer = XmiDeserializer.FromXml(xml);
+                    var deserializer = XmiDeserializer.FromXml(xml, logger);
                     return deserializer;
                 } else
                 {
