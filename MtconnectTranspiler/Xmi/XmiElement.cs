@@ -25,5 +25,12 @@ namespace MtconnectTranspiler.Xmi
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.type, Namespace = XmlHelper.XmiNamespace)]
         public virtual string? Type { get; set; }
+
+        public virtual XmiElement? FindById(string id)
+        {
+            if (Id == id)
+                return this;
+            return null;
+        }
     }
 }

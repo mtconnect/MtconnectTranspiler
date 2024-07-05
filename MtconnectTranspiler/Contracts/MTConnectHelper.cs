@@ -161,7 +161,39 @@ namespace MtconnectTranspiler.Contracts
             }
             return package;
         }
-    
+
+        public static XmiElement FindById(this XmiDocument model, string id)
+        {
+
+        }
+
+        private static XmiElement? FindById(this UmlProfile profile, string id)
+        {
+            if (profile.Id == id)
+                return profile;
+
+            var package = profile.Packages.GetById(id);
+            if (package != null)
+                return package.FindById(id);
+
+            return null;
+        }
+        private static XmiElement? FindById(this UmlPackage package, string id)
+        {
+            if (package.Id == id)
+                return package;
+
+            var packageElement = package.Packages.FirstOrDefault(o => o.FindById(id) != null);
+            if (packageElement != null)
+                return packageElement.FindById(id);
+
+            var classElement = package.Classes.FirstOrDefault(o => o.Id == id);
+            if (classElement != null)
+                return classElement;
+            return null;
+        }
+
+
         /// <summary>
         /// Clears all internal caches in this helper class.
         /// </summary>
