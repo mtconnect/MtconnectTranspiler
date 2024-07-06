@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using MtconnectTranspiler.Contracts.Navigation;
 using MtconnectTranspiler.Xmi;
-using System;
 using System.Threading;
 using System.Xml;
 using System.Xml.Serialization;
@@ -59,7 +58,6 @@ namespace MtconnectTranspiler.Contracts
                 xRoot.Namespace = XmlHelper.XmiNamespace;
                 XmlSerializer serial = new XmlSerializer(typeof(Xmi.XmiDocument), xRoot);
                 // Deserialize the XmlNode
-                // QUESTION: Can I wrap this using with some sort of 'IdCacheContext' that entities like XmiElement can store their Id properties in?
                 using (XmlNodeReader xReader = new XmlNodeReader(xDoc.DocumentElement))
                 {
                     object? deserializedObject = serial.Deserialize(xReader, new DeserializationHandlers(_logger).ToDeserializationEvents());
@@ -72,7 +70,6 @@ namespace MtconnectTranspiler.Contracts
                     }
                 }
             }
-
 
             return result;
         }
@@ -104,47 +101,5 @@ namespace MtconnectTranspiler.Contracts
 
             return new XmiDeserializer(xDoc, logger);
         }
-    }
-    public class DeserializationHandlers
-    {
-        private ILogger<XmiDeserializer>? _logger;
-
-        public DeserializationHandlers(ILogger<XmiDeserializer>? logger = null)
-        {
-            _logger = logger;
-        }
-
-        public void OnUnknownAttribute(object sender, XmlAttributeEventArgs e)
-        {
-            _logger?.LogWarning("Unknown Attribute: {AttributeName} = {AttributeValue}; Parent Element = ", e.Attr.Name, e.Attr.Value, e.Attr.OwnerElement?.Name);
-            //Console.WriteLine($"Unknown Attribute: {e.Attr.Name} = {e.Attr.Value}");
-        }
-
-        public void OnUnknownElement(object sender, XmlElementEventArgs e)
-        {
-            _logger?.LogWarning("Unknown Element: {ElementName} (Parent: {ParentName})", e.Element.Name, e.Element.ParentNode?.Name);
-            //Console.WriteLine($"Unknown Element: {e.Element.Name}");
-        }
-
-        public void OnUnknownNode(object sender, XmlNodeEventArgs e)
-        {
-            _logger?.LogWarning("Unknown Node: {NodeName} = {NodeType}", e.Name, e.NodeType);
-            //Console.WriteLine($"Unknown Node: {e.Name} = {e.Text}");
-        }
-
-        public void OnUnreferencedObject(object sender, UnreferencedObjectEventArgs e)
-        {
-            _logger?.LogWarning("Unreferenced Object: {Id} = {Object}", e.UnreferencedId, e.UnreferencedObject);
-            //Console.WriteLine($"Unreferenced Object: {e.UnreferencedId} = {e.UnreferencedObject}");
-        }
-
-        public XmlDeserializationEvents ToDeserializationEvents()
-            => new XmlDeserializationEvents()
-            {
-                OnUnknownAttribute = new XmlAttributeEventHandler(this.OnUnknownAttribute),
-                OnUnknownElement = new XmlElementEventHandler(this.OnUnknownElement),
-                OnUnknownNode = new XmlNodeEventHandler(this.OnUnknownNode),
-                OnUnreferencedObject = new UnreferencedObjectEventHandler(this.OnUnreferencedObject),
-            };
     }
 }
