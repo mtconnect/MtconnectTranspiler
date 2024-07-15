@@ -16,6 +16,12 @@ namespace MtconnectTranspiler.Xmi.UML
         [XmlElement(ElementName = XmlHelper.XmiStructure.MEMBER_END, Namespace = "")]
         public MemberEnd[]? MemberEnds { get; set; }
 
+        /// <summary>
+        /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.OwnedComment"/>
+        /// </summary>
+        [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_COMMENT, Namespace = "")]
+        public OwnedComment? SubComment { get; set; }
+
         // TODO: Add <ownedEnd xmi:type='uml:Property' />
     }
 }

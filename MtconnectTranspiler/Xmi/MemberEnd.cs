@@ -13,7 +13,7 @@ namespace MtconnectTranspiler.Xmi
         /// <summary>
         /// <c>xmi:idref</c> attribute
         /// </summary>
-        [XmlElement(ElementName = XmlHelper.XmiStructure.idRef, Namespace = XmlHelper.XmiNamespace)]
+        [XmlAttribute(AttributeName = XmlHelper.XmiStructure.idRef, Namespace = XmlHelper.XmiNamespace)]
         public string? IdRef { get; set; }
     }
 }
