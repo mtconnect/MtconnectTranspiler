@@ -96,68 +96,71 @@ namespace MtconnectTranspiler.Interpreters
         private string composeComment(OwnedComment comment, int headerDepth = 1)
         {
             StringBuilder sb = new StringBuilder();
-            string headerPrefix = new string('#', headerDepth);
-            sb.AppendLine($"{headerPrefix} {comment.Name}");
-            sb.AppendLine(comment.Body);
+            if (!string.IsNullOrEmpty(comment.Name))
+            {
+                string headerPrefix = new string('#', headerDepth);
+                sb.AppendLine($"{headerPrefix} {comment.Name}&#10;");
+            }
+            sb.AppendLine(comment.Body + "&#10;");
             if (comment.SubComment != null)
             {
-                sb.AppendLine(composeComment(comment.SubComment, headerDepth + 1));
+                sb.AppendLine(composeComment(comment.SubComment, headerDepth + 1) + "&#10;");
             }
             return sb.ToString();
         }
 
         #region Nothing to see here...
         // 0 parameters
-        public void AddInterpreter(Regex regex, Func<string> interpreter) => AddInterpreter(regex, interpreter);
-        public void AddInterpreter(string expression, Func<string> interpreter) => AddInterpreter(new Regex(expression), interpreter);
+        public void AddInterpreter(Regex regex, Func<string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        public void AddInterpreter(string expression, Func<string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
         // 1 parameter
-        public void AddInterpreter(Regex regex, Func<string, string> interpreter) => AddInterpreter(regex, interpreter);
+        public void AddInterpreter(Regex regex, Func<string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
         public void AddInterpreter(string expression, Func<string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter);
         // 2 parameters
-        public void AddInterpreter(Regex regex, Func<string, string, string> interpreter) => AddInterpreter(regex, interpreter);
-        public void AddInterpreter(string expression, Func<string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter);
+        public void AddInterpreter(Regex regex, Func<string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        public void AddInterpreter(string expression, Func<string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
         // 3 parameters
-        public void AddInterpreter(Regex regex, Func<string, string, string, string> interpreter) => AddInterpreter(regex, interpreter);
-        public void AddInterpreter(string expression, Func<string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter);
+        public void AddInterpreter(Regex regex, Func<string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        public void AddInterpreter(string expression, Func<string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
         // 4 parameters
-        public void AddInterpreter(Regex regex, Func<string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter);
-        public void AddInterpreter(string expression, Func<string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter);
+        public void AddInterpreter(Regex regex, Func<string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        public void AddInterpreter(string expression, Func<string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
         // 5 parameters
-        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter);
-        public void AddInterpreter(string expression, Func<string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter);
+        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        public void AddInterpreter(string expression, Func<string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
         // 6 parameters
-        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter);
-        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter);
+        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
         // 7 parameters
-        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter);
-        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter);
+        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
         // 8 parameters
-        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter);
-        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter);
+        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
         // 9 parameters
-        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter);
-        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter);
+        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
         // 10 parameters
-        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter);
-        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter);
+        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
         // 11 parameters
-        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter);
-        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter);
+        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
         // 12 parameters
-        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter);
-        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter);
+        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
         // 13 parameters
-        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter);
-        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter);
+        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
         // 14 parameters
-        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter);
-        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter);
+        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
         // 15 parameters
-        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter);
-        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter);
+        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
         // 16 parameters
-        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter);
-        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter);
+        public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
         #endregion
     }
 

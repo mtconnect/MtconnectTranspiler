@@ -1,75 +1,107 @@
 ﻿namespace MtconnectTranspiler.Interpreters
 {
     /// <summary>
-    /// An interpreter that converts the SysML markdown to a basic Custom DSL (domain-specific language).
+    /// An interpreter that converts the SysML markdown to a custom DSL format.
     /// </summary>
-    public partial class CustomDslInterpreter : MarkdownInterpreter
+    public partial class CustomDslInterpreter : CommonMarkdownInterpreter
     {
+        /// <inheritdoc />
+        public CustomDslInterpreter() : base() { }
+
+        /// <inheritdoc />
+        public override string AppendixInterpreter(string contents)
+            => $"Appendix: {contents}";
+
+        /// <inheritdoc />
+        public override string BlockInterpreter(string name)
+            => $"Block: {name}";
+
+        /// <inheritdoc />
+        public override string BoldInterpreter(string text)
+            => $"**{text}**"; // Retaining markdown-style bold for the DSL
+
+        /// <inheritdoc />
+        public override string CiteInterpreter(string citation)
+            => $"Cite: {citation}";
+
+        /// <inheritdoc />
+        public override string CodeBlockInterpreter(string language, string code)
+            => $"Code({language}):\n{code}";
+
+        /// <inheritdoc />
+        public override string DefInterpreter(string enumuration, string value)
+            => $"{enumuration}::{value}";
+
+        /// <inheritdoc />
+        public override string EmphasisInterpreter(string text)
+            => $"*{text}*"; // Retaining markdown-style emphasis for the DSL
+
+        /// <inheritdoc />
+        public override string InlineCodeInterpreter(string code)
+            => $"`{code}`"; // Retaining markdown-style inline code for the DSL
+
+        /// <inheritdoc />
+        public override string LineBreakInterpreter()
+            => "\n";
+
+        /// <inheritdoc />
+        public override string MathInterpreter(string expression)
+            => $"Math: {expression}";
+
+        /// <inheritdoc />
+        public override string NewAcronymInterpreter(string acronym1, string contents, string definition)
+            => $"{contents} ({acronym1}: {definition})";
+
+        /// <inheritdoc />
+        public override string OrderedListInterpreter(string contents)
+            => $"1. {contents}"; // Simple numbered list format for the DSL
+
+        /// <inheritdoc />
+        public override string PackageInterpreter(string name)
+            => $"Package: {name}";
+
+        /// <inheritdoc />
+        public override string PropertyInterpreter(string class_name, string property_name)
+            => $"{class_name}.{property_name}";
+
+        /// <inheritdoc />
+        public override string QuoteInterpreter(string contents)
+            => $"> {contents}";
+
+        /// <inheritdoc />
+        public override string SectInterpreter(string contents)
+            => $"Section: {contents}";
+
+        /// <inheritdoc />
+        public override string SectionInterpreter(string title)
+            => $"Section: {title}";
+
+        /// <inheritdoc />
+        public override string TableInterpreter(string contents)
+            => $"Table: {contents.Replace("|", " ").Trim()}"; // Convert table row to simple space-separated content
+
+        /// <inheritdoc />
+        public override string TermInterpreter(string term)
+            => $"Term: {term}";
+
+        /// <inheritdoc />
+        public override string TermPluralInterpreter(string term)
+            => $"Terms: {term}s";
+
+        /// <inheritdoc />
+        public override string UnorderedListInterpreter(string contents)
+            => $"- {contents}"; // Simple bullet list format for the DSL
+
+        /// <inheritdoc />
+        public override string UrlInterpreter(string address)
+            => $"URL: {address}";
+
         /// <summary>
-        /// Constructs the interpreter
+        /// Handles any unhandled markdown by wrapping it in a comment for the DSL.
         /// </summary>
-        public CustomDslInterpreter() : base()
-        {
-            // Bold text: **text** -> BOLD(text)
-            AddInterpreter(@"(?<block>\*\*(?<contents>.*?)\*\*)", BoldInterpreter);
-
-            // Italic text: *text* -> ITALIC(text)
-            AddInterpreter(@"(?<block>\*(?<contents>.*?)\*)", ItalicInterpreter);
-
-            // Header 1: # Header -> HEADER1(Header)
-            AddInterpreter(@"(?<block>^\# (?<contents>.*?)$)", Header1Interpreter);
-
-            // Header 2: ## Header -> HEADER2(Header)
-            AddInterpreter(@"(?<block>^\#\# (?<contents>.*?)$)", Header2Interpreter);
-
-            // Header 3: ### Header -> HEADER3(Header)
-            AddInterpreter(@"(?<block>^\#\#\# (?<contents>.*?)$)", Header3Interpreter);
-
-            // Link: [text](url) -> LINK(text, url)
-            AddInterpreter(@"(?<block>\[(?<contents>.*?)\]\((?<url>.*?)\))", LinkInterpreter);
-
-            // Image: ![alt](url) -> IMAGE(alt, url)
-            AddInterpreter(@"(?<block>!\[(?<contents>.*?)\]\((?<url>.*?)\))", ImageInterpreter);
-
-            // Inline code: `code` -> CODE(code)
-            AddInterpreter(@"(?<block>`(?<contents>.*?)`)", InlineCodeInterpreter);
-
-            // List item: - Item -> LIST_ITEM(Item)
-            AddInterpreter(@"(?<block>^\-\s(?<contents>.*?)$)", ListItemInterpreter);
-
-            // Line breaks: double newline -> NEWLINE
-            AddInterpreter(@"(?<block>\n{2,})", LineBreakInterpreter);
-        }
-
-        public string BoldInterpreter(string contents)
-            => $"BOLD({contents})";
-
-        public string ItalicInterpreter(string contents)
-            => $"ITALIC({contents})";
-
-        public string Header1Interpreter(string contents)
-            => $"HEADER1({contents})";
-
-        public string Header2Interpreter(string contents)
-            => $"HEADER2({contents})";
-
-        public string Header3Interpreter(string contents)
-            => $"HEADER3({contents})";
-
-        public string LinkInterpreter(string contents, string url)
-            => $"LINK({contents}, {url})";
-
-        public string ImageInterpreter(string contents, string url)
-            => $"IMAGE({contents}, {url})";
-
-        public string InlineCodeInterpreter(string contents)
-            => $"CODE({contents})";
-
-        public string ListItemInterpreter(string contents)
-            => $"LIST_ITEM({contents})";
-
-        public string LineBreakInterpreter()
-            => "NEWLINE";
+        /// <param name="contents">The unhandled content.</param>
+        /// <returns>A comment in the DSL indicating unhandled content.</returns>
+        public string UnhandledInterpreter(string contents)
+            => $"// UNHANDLED: {contents}";
     }
-
 }

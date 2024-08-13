@@ -3,55 +3,113 @@
     /// <summary>
     /// An interpreter that converts the SysML markdown to Javadoc comments.
     /// </summary>
-    public partial class JavadocInterpreter : MarkdownInterpreter
+    public partial class JavadocInterpreter : CommonMarkdownInterpreter
     {
+        /// <inheritdoc />
+        public JavadocInterpreter() : base() { }
+
+        /// <inheritdoc />
+        public override string AppendixInterpreter(string contents)
+            => UnhandledInterpreter(contents);
+
+        /// <inheritdoc />
+        public override string BlockInterpreter(string name)
+            => SeeInterpreter(name);
+
+        /// <inheritdoc />
+        public override string BoldInterpreter(string text)
+            => $"<b>{text}</b>";
+
+        /// <inheritdoc />
+        public override string CiteInterpreter(string citation)
+            => SeeInterpreter(citation);
+
+        /// <inheritdoc />
+        public override string CodeBlockInterpreter(string language, string code)
+            => $"<pre>{code}</pre>";
+
+        /// <inheritdoc />
+        public override string DefInterpreter(string enumuration, string value)
+            => SeeInterpreter($"{enumuration}.{value}");
+
+        /// <inheritdoc />
+        public override string EmphasisInterpreter(string text)
+            => $"<i>{text}</i>";
+
+        /// <inheritdoc />
+        public override string InlineCodeInterpreter(string code)
+            => $"<code>{code}</code>";
+
+        /// <inheritdoc />
+        public override string LineBreakInterpreter()
+            => "<br/>";
+
+        /// <inheritdoc />
+        public override string MathInterpreter(string expression)
+            => EmphasisInterpreter(expression); // Javadoc doesn't have native math support
+
+        /// <inheritdoc />
+        public override string NewAcronymInterpreter(string acronym1, string contents, string definition)
+            => EmphasisInterpreter($"{contents} ({acronym1}: {definition})");
+
+        /// <inheritdoc />
+        public override string OrderedListInterpreter(string contents)
+            => $"<ol><li>{contents}</li></ol>";
+
+        /// <inheritdoc />
+        public override string PackageInterpreter(string name)
+            => SeeInterpreter(name);
+
+        /// <inheritdoc />
+        public override string PropertyInterpreter(string class_name, string property_name)
+            => SeeInterpreter($"{class_name}.{property_name}");
+
+        /// <inheritdoc />
+        public override string QuoteInterpreter(string contents)
+            => $"<blockquote>{contents}</blockquote>";
+
+        /// <inheritdoc />
+        public override string SectInterpreter(string contents)
+            => SeeInterpreter(contents);
+
+        /// <inheritdoc />
+        public override string SectionInterpreter(string title)
+            => UnhandledInterpreter(title);
+
+        /// <inheritdoc />
+        public override string TableInterpreter(string contents)
+            => $"<table>{contents.Replace("|", "").Trim()}</table>";
+
+        /// <inheritdoc />
+        public override string TermInterpreter(string term)
+            => EmphasisInterpreter(term);
+
+        /// <inheritdoc />
+        public override string TermPluralInterpreter(string term)
+            => EmphasisInterpreter(term) + "s";
+
+        /// <inheritdoc />
+        public override string UnorderedListInterpreter(string contents)
+            => $"<ul><li>{contents}</li></ul>";
+
+        /// <inheritdoc />
+        public override string UrlInterpreter(string address)
+            => $"<a href=\"{address}\">{address}</a>";
+
         /// <summary>
-        /// Constructs the interpreter
+        /// Provides a `@see` reference for a Javadoc link.
         /// </summary>
-        public JavadocInterpreter() : base()
-        {
-            // Bold text: **text** -> <b>text</b>
-            AddInterpreter(@"(?<block>\*\*(?<contents>.*?)\*\*)", BoldInterpreter);
+        /// <param name="name">The name of the reference.</param>
+        /// <returns>A formatted `@see` reference string.</returns>
+        public string SeeInterpreter(string name)
+            => $"@see {name}";
 
-            // Italic text: *text* -> <i>text</i>
-            AddInterpreter(@"(?<block>\*(?<contents>.*?)\*)", ItalicInterpreter);
-
-            // Code block: `code` -> <code>code</code>
-            AddInterpreter(@"(?<block>`(?<contents>.*?)`)", InlineCodeInterpreter);
-
-            // Link: [text](url) -> {@link url text}
-            AddInterpreter(@"(?<block>\[(?<contents>.*?)\]\((?<url>.*?)\))", LinkInterpreter);
-
-            // Inline Math: $math$ -> <code>math</code>
-            AddInterpreter(@"(?<block>\$(?<contents>.*?)\$)", InlineMathInterpreter);
-
-            // List item: - Item -> <li>Item</li>
-            AddInterpreter(@"(?<block>^\-\s(?<contents>.*?)$)", ListItemInterpreter);
-
-            // Paragraphs: Multiple new lines -> <p>Text</p>
-            AddInterpreter(@"(?<block>\n{2,})", ParagraphInterpreter);
-        }
-
-        public string BoldInterpreter(string contents)
-            => $"<b>{contents}</b>";
-
-        public string ItalicInterpreter(string contents)
-            => $"<i>{contents}</i>";
-
-        public string InlineCodeInterpreter(string contents)
-            => $"<code>{contents}</code>";
-
-        public string LinkInterpreter(string contents, string url)
-            => $"{{@link {url} {contents}}}";
-
-        public string InlineMathInterpreter(string contents)
-            => $"<code>{contents}</code>";
-
-        public string ListItemInterpreter(string contents)
-            => $"<li>{contents}</li>";
-
-        public string ParagraphInterpreter()
-            => "<p>";
+        /// <summary>
+        /// Handles any unhandled markdown by wrapping it in a Javadoc comment.
+        /// </summary>
+        /// <param name="contents">The unhandled content.</param>
+        /// <returns>A Javadoc comment indicating unhandled content.</returns>
+        public string UnhandledInterpreter(string contents)
+            => $"<!-- UNHANDLED MARKDOWN: {contents} -->";
     }
-
 }

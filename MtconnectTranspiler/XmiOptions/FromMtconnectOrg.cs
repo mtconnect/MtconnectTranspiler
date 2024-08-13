@@ -3,7 +3,7 @@ using MtconnectTranspiler.Contracts;
 using System.ComponentModel;
 using System.Net.Http;
 
-namespace MtconnectTranspiler
+namespace MtconnectTranspiler.XmiOptions
 {
     /// <summary>
     /// Options for constructing an instance of <see cref="TranspilerDispatcher"/> by retrieving the <see cref="XmiDeserializer"/> using the latest XML hosted on the MTConnect Model Browser site.

@@ -3,73 +3,109 @@
     /// <summary>
     /// An interpreter that converts the SysML markdown to Rich Text Format (RTF).
     /// </summary>
-    public partial class RtfInterpreter : MarkdownInterpreter
+    public partial class RtfInterpreter : CommonMarkdownInterpreter
     {
-        /// <summary>
-        /// Constructs the interpreter
-        /// </summary>
-        public RtfInterpreter() : base()
+        /// <inheritdoc />
+        public RtfInterpreter() : base() { }
+
+        /// <inheritdoc />
+        public override string AppendixInterpreter(string contents)
+            => $"\\pard\\sa200\\sl276\\slmult1\\b\\fs24 Appendix\\par {contents}\\par";
+
+        /// <inheritdoc />
+        public override string BlockInterpreter(string name)
+            => $"\\b {name} \\b0";
+
+        /// <inheritdoc />
+        public override string BoldInterpreter(string text)
+            => $"\\b {text} \\b0";
+
+        /// <inheritdoc />
+        public override string CiteInterpreter(string citation)
+            => $"\\i {citation} \\i0";
+
+        /// <inheritdoc />
+        public override string CodeBlockInterpreter(string language, string code)
+            => $"\\f1\\fs20 {code.Replace("\n", "\\line ")} \\f0\\fs24\\par";
+
+        /// <inheritdoc />
+        public override string DefInterpreter(string enumuration, string value)
+            => $"\\b {enumuration}::{value} \\b0";
+
+        /// <inheritdoc />
+        public override string EmphasisInterpreter(string text)
+            => $"\\i {text} \\i0";
+
+        /// <inheritdoc />
+        public override string InlineCodeInterpreter(string code)
+            => $"\\f1\\fs20 {code} \\f0\\fs24";
+
+        /// <inheritdoc />
+        public override string LineBreakInterpreter()
+            => "\\line ";
+
+        /// <inheritdoc />
+        public override string MathInterpreter(string expression)
+            => $"\\i {expression} \\i0";
+
+        /// <inheritdoc />
+        public override string NewAcronymInterpreter(string acronym1, string contents, string definition)
+            => $"{contents} ({acronym1}: {definition})";
+
+        /// <inheritdoc />
+        public override string OrderedListInterpreter(string contents)
+            => $"\\par\\pard\\li720 1. {contents}\\par";
+
+        /// <inheritdoc />
+        public override string PackageInterpreter(string name)
+            => $"\\b {name} \\b0";
+
+        /// <inheritdoc />
+        public override string PropertyInterpreter(string class_name, string property_name)
+            => $"\\b {class_name}::{property_name} \\b0";
+
+        /// <inheritdoc />
+        public override string QuoteInterpreter(string contents)
+            => $"\\par\\pard\\li720\\i {contents} \\i0\\par";
+
+        /// <inheritdoc />
+        public override string SectInterpreter(string contents)
+            => $"\\par\\pard\\sa200\\sl276\\slmult1\\b\\fs24 {contents}\\par\\b0";
+
+        /// <inheritdoc />
+        public override string SectionInterpreter(string title)
+            => $"\\par\\pard\\sa200\\sl276\\slmult1\\b\\fs28 {title}\\par\\b0";
+
+        /// <inheritdoc />
+        public override string TableInterpreter(string contents)
         {
-            // Bold text: **text** -> \b text\b0
-            AddInterpreter(@"(?<block>\*\*(?<contents>.*?)\*\*)", BoldInterpreter);
-
-            // Italic text: *text* -> \i text\i0
-            AddInterpreter(@"(?<block>\*(?<contents>.*?)\*)", ItalicInterpreter);
-
-            // Header 1: # Header -> \fs48\b Header\b0\fs24
-            AddInterpreter(@"(?<block>^\# (?<contents>.*?)$)", Header1Interpreter);
-
-            // Header 2: ## Header -> \fs36\b Header\b0\fs24
-            AddInterpreter(@"(?<block>^\#\# (?<contents>.*?)$)", Header2Interpreter);
-
-            // Header 3: ### Header -> \fs28\b Header\b0\fs24
-            AddInterpreter(@"(?<block>^\#\#\# (?<contents>.*?)$)", Header3Interpreter);
-
-            // Link: [text](url) -> \ul text\ulnone
-            AddInterpreter(@"(?<block>\[(?<contents>.*?)\]\((?<url>.*?)\))", LinkInterpreter);
-
-            // Image: ![alt](url) -> (Images are typically handled outside basic RTF, so this might be custom)
-            AddInterpreter(@"(?<block>!\[(?<contents>.*?)\]\((?<url>.*?)\))", ImageInterpreter);
-
-            // Inline code: `code` -> \f1 code\f0 (assuming \f1 is a monospace font)
-            AddInterpreter(@"(?<block>`(?<contents>.*?)`)", InlineCodeInterpreter);
-
-            // List item: - Item -> \bullet Item
-            AddInterpreter(@"(?<block>^\-\s(?<contents>.*?)$)", ListItemInterpreter);
-
-            // Line breaks: double newline -> \par
-            AddInterpreter(@"(?<block>\n{2,})", LineBreakInterpreter);
+            var rows = contents.Trim().Split('\n');
+            var rtfTable = string.Join("\\par ", rows);
+            return rtfTable;
         }
 
-        public string BoldInterpreter(string contents)
-            => $@"\b {contents}\b0";
+        /// <inheritdoc />
+        public override string TermInterpreter(string term)
+            => $"\\i {term} \\i0";
 
-        public string ItalicInterpreter(string contents)
-            => $@"\i {contents}\i0";
+        /// <inheritdoc />
+        public override string TermPluralInterpreter(string term)
+            => $"\\i {term}s \\i0";
 
-        public string Header1Interpreter(string contents)
-            => $@"\fs48\b {contents}\b0\fs24";
+        /// <inheritdoc />
+        public override string UnorderedListInterpreter(string contents)
+            => $"\\par\\pard\\li720\\bullet {contents}\\par";
 
-        public string Header2Interpreter(string contents)
-            => $@"\fs36\b {contents}\b0\fs24";
+        /// <inheritdoc />
+        public override string UrlInterpreter(string address)
+            => $"\\ul {address} \\ulnone";
 
-        public string Header3Interpreter(string contents)
-            => $@"\fs28\b {contents}\b0\fs24";
-
-        public string LinkInterpreter(string contents, string url)
-            => $@"\ul {contents}\ulnone"; // In basic RTF, links are not clickable; underline is used.
-
-        public string ImageInterpreter(string contents, string url)
-            => $@"{{\field{{\*\fldinst INCLUDEPICTURE ""{url}"" \d }}{{\fldrslt {contents}}}}}"; // Basic RTF image placeholder
-
-        public string InlineCodeInterpreter(string contents)
-            => $@"\f1 {contents}\f0"; // Assuming \f1 is a monospace font, \f0 returns to the default font
-
-        public string ListItemInterpreter(string contents)
-            => $@"\bullet {contents}";
-
-        public string LineBreakInterpreter()
-            => @"\par";
+        /// <summary>
+        /// Handles any unhandled markdown by wrapping it in an RTF comment.
+        /// </summary>
+        /// <param name="contents">The unhandled content.</param>
+        /// <returns>An RTF comment indicating unhandled content.</returns>
+        public string UnhandledInterpreter(string contents)
+            => $"{{\\*\\comment UNHANDLED MARKDOWN: {contents}}}";
     }
-
 }

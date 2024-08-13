@@ -1,69 +1,107 @@
 ﻿namespace MtconnectTranspiler.Interpreters
 {
     /// <summary>
-    /// An interpreter that converts the SysML markdown to Hyper Text Markup Language (HTML).
+    /// An interpreter that converts the SysML markdown to HTML.
     /// </summary>
-    public partial class HtmlInterpreter : MarkdownInterpreter
+    public partial class HtmlInterpreter : CommonMarkdownInterpreter
     {
-        /// <summary>
-        /// Constructs the interpreter
-        /// </summary>
-        public HtmlInterpreter() : base()
-        {
-            // Bold text: **text** -> <strong>text</strong>
-            AddInterpreter(@"(?<block>\*\*(?<contents>.*?)\*\*)", BoldInterpreter);
+        /// <inheritdoc />
+        public HtmlInterpreter() : base() { }
 
-            // Italic text: *text* -> <em>text</em>
-            AddInterpreter(@"(?<block>\*(?<contents>.*?)\*)", ItalicInterpreter);
+        /// <inheritdoc />
+        public override string AppendixInterpreter(string contents)
+            => $"<section class=\"appendix\">{contents}</section>";
 
-            // Header 1: # Header -> <h1>Header</h1>
-            AddInterpreter(@"(?<block>^\# (?<contents>.*?)$)", Header1Interpreter);
+        /// <inheritdoc />
+        public override string BlockInterpreter(string name)
+            => $"<div id=\"{name}\">{name}</div>";
 
-            // Header 2: ## Header -> <h2>Header</h2>
-            AddInterpreter(@"(?<block>^\#\# (?<contents>.*?)$)", Header2Interpreter);
+        /// <inheritdoc />
+        public override string BoldInterpreter(string text)
+            => $"<strong>{text}</strong>";
 
-            // Header 3: ### Header -> <h3>Header</h3>
-            AddInterpreter(@"(?<block>^\#\#\# (?<contents>.*?)$)", Header3Interpreter);
+        /// <inheritdoc />
+        public override string CiteInterpreter(string citation)
+            => $"<cite>{citation}</cite>";
 
-            // Link: [text](url) -> <a href="url">text</a>
-            AddInterpreter(@"(?<block>\[(?<contents>.*?)\]\((?<url>.*?)\))", LinkInterpreter);
+        /// <inheritdoc />
+        public override string CodeBlockInterpreter(string language, string code)
+            => $"<pre><code class=\"{language}\">{code}</code></pre>";
 
-            // Image: ![alt](url) -> <img src="url" alt="alt" />
-            AddInterpreter(@"(?<block>!\[(?<contents>.*?)\]\((?<url>.*?)\))", ImageInterpreter);
+        /// <inheritdoc />
+        public override string DefInterpreter(string enumuration, string value)
+            => $"<dfn>{enumuration}.{value}</dfn>";
 
-            // Code block: ```code``` -> <code>code</code>
-            AddInterpreter(@"(?<block>`(?<contents>.*?)`)", InlineCodeInterpreter);
+        /// <inheritdoc />
+        public override string EmphasisInterpreter(string text)
+            => $"<em>{text}</em>";
 
-            // Line breaks: double newline -> <br/>
-            AddInterpreter(@"(?<block>\n{2,})", LineBreakInterpreter);
-        }
+        /// <inheritdoc />
+        public override string InlineCodeInterpreter(string code)
+            => $"<code>{code}</code>";
 
-        public string BoldInterpreter(string contents)
-            => $"<strong>{contents}</strong>";
-
-        public string ItalicInterpreter(string contents)
-            => $"<em>{contents}</em>";
-
-        public string Header1Interpreter(string contents)
-            => $"<h1>{contents}</h1>";
-
-        public string Header2Interpreter(string contents)
-            => $"<h2>{contents}</h2>";
-
-        public string Header3Interpreter(string contents)
-            => $"<h3>{contents}</h3>";
-
-        public string LinkInterpreter(string contents, string url)
-            => $"<a href=\"{url}\">{contents}</a>";
-
-        public string ImageInterpreter(string contents, string url)
-            => $"<img src=\"{url}\" alt=\"{contents}\" />";
-
-        public string InlineCodeInterpreter(string contents)
-            => $"<code>{contents}</code>";
-
-        public string LineBreakInterpreter()
+        /// <inheritdoc />
+        public override string LineBreakInterpreter()
             => "<br/>";
-    }
 
+        /// <inheritdoc />
+        public override string MathInterpreter(string expression)
+            => $"<span class=\"math\">{expression}</span>";
+
+        /// <inheritdoc />
+        public override string NewAcronymInterpreter(string acronym1, string contents, string definition)
+            => $"<abbr title=\"{definition}\">{contents} ({acronym1})</abbr>";
+
+        /// <inheritdoc />
+        public override string OrderedListInterpreter(string contents)
+            => $"<ol><li>{contents}</li></ol>";
+
+        /// <inheritdoc />
+        public override string PackageInterpreter(string name)
+            => $"<span class=\"package\">{name}</span>";
+
+        /// <inheritdoc />
+        public override string PropertyInterpreter(string class_name, string property_name)
+            => $"<code>{class_name}.{property_name}</code>";
+
+        /// <inheritdoc />
+        public override string QuoteInterpreter(string contents)
+            => $"<blockquote>{contents}</blockquote>";
+
+        /// <inheritdoc />
+        public override string SectInterpreter(string contents)
+            => $"<section>{contents}</section>";
+
+        /// <inheritdoc />
+        public override string SectionInterpreter(string title)
+            => $"<h2>{title}</h2>";
+
+        /// <inheritdoc />
+        public override string TableInterpreter(string contents)
+            => $"<table>{contents.Replace("|", "").Trim()}</table>";
+
+        /// <inheritdoc />
+        public override string TermInterpreter(string term)
+            => $"<span class=\"term\">{term}</span>";
+
+        /// <inheritdoc />
+        public override string TermPluralInterpreter(string term)
+            => $"<span class=\"term\">{term}s</span>";
+
+        /// <inheritdoc />
+        public override string UnorderedListInterpreter(string contents)
+            => $"<ul><li>{contents}</li></ul>";
+
+        /// <inheritdoc />
+        public override string UrlInterpreter(string address)
+            => $"<a href=\"{address}\">{address}</a>";
+
+        /// <summary>
+        /// Handles any unhandled markdown by wrapping it in a comment for HTML.
+        /// </summary>
+        /// <param name="contents">The unhandled content.</param>
+        /// <returns>An HTML comment indicating unhandled content.</returns>
+        public string UnhandledInterpreter(string contents)
+            => $"<!-- UNHANDLED MARKDOWN: {contents} -->";
+    }
 }

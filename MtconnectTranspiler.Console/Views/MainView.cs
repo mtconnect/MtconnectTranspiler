@@ -2,8 +2,10 @@
 using ConsoulLibrary.Views;
 using Microsoft.Extensions.Logging;
 using MtconnectTranspiler.Contracts;
+using MtconnectTranspiler.Interpreters;
 using MtconnectTranspiler.Xmi;
 using MtconnectTranspiler.Xmi.UML;
+using MtconnectTranspiler.XmiOptions;
 using System.Text;
 using System.Threading;
 
@@ -54,6 +56,66 @@ namespace MtconnectTranspiler.Console.Views
             Consoul.Wait();
         }
 
+        [ViewOption("Test Markdown Interpreter")]
+        public void TestMarkdownInterpreter()
+        {
+            string[] interpreterOptions = new string[]
+            {
+                typeof(CustomDslInterpreter).FullName,
+                typeof(HtmlInterpreter).FullName,
+                typeof(JavadocInterpreter).FullName,
+                typeof(MediaWikiInterpreter).FullName,
+                typeof(OpenDocumentTextInterpreter).FullName,
+                typeof(PdfInterpreter).FullName,
+                typeof(PlainTextInterpreter).FullName,
+                typeof(RSTInterpreter).FullName,
+                typeof(RtfInterpreter).FullName,
+                typeof(SwaggerInterpreter).FullName,
+                typeof(VisualStudioSummaryInterpreter).FullName,
+                typeof(YamlInterpreter).FullName
+            };
+            var chooseInterpreter = new Prompt("Choose an interpreter", true, interpreterOptions);
+            var interpreterName = interpreterOptions[chooseInterpreter.Run()];
+            var assembly = typeof(MarkdownInterpreter).Assembly;
+
+            var instance = Activator.CreateInstance(assembly.GetType(interpreterName)) as MarkdownInterpreter;
+
+            var options = new FromGitHubOptions() { GitHubRelease = "latest" };
+            Consoul.Write("Getting model from GitHub...", ConsoleColor.Yellow, false);
+            var deserializer = options.GetDeserializer();
+            Consoul.Write("Done!", ConsoleColor.Green);
+            Consoul.Write("Deserializing XMI...", ConsoleColor.Yellow);
+            var result = deserializer.Deserialize(default);
+            Consoul.Write("Done!", ConsoleColor.Green);
+
+            var path = MTConnectHelper.PackageNavigationTree.ObservationInformationModel.ObservationTypes.EventTypes;
+            Consoul.Write("Path: " + path);
+            var package = MTConnectHelper.JumpToPackage(result!, path);
+
+            StringBuilder sb = new StringBuilder();
+            Consoul.Write("Interpreting...", ConsoleColor.Yellow, false);
+            foreach (var item in package.Classes)
+            {
+                foreach (var comment in item.Comments)
+                {
+                    sb.AppendLine(instance.Interpret(comment));
+                }
+            }
+            Consoul.Write("Done!", ConsoleColor.Green);
+
+            if (Consoul.Ask("Would you like to save the output?"))
+            {
+                string filepath = Consoul.PromptForFilepath("Enter filepath", false);
+                Consoul.Write("Writing...", ConsoleColor.Yellow, false);
+                File.WriteAllText(filepath, sb.ToString(), Encoding.UTF8);
+                Consoul.Write("Done!", ConsoleColor.Green);
+                Consoul.Write("Saved to\r\n\t" + filepath);
+                Consoul.Write("Filepath saved to clipboard!", ConsoleColor.Gray);
+                TextCopy.ClipboardService.SetText(filepath);
+            }
+
+            Consoul.Wait();
+        }
 
         [ViewOption("Build Navigation Structure")]
         public void TranspilePackageNavigation()

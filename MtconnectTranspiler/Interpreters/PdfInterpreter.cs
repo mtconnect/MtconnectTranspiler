@@ -1,55 +1,54 @@
 ﻿using System.Linq;
-using System.Text;
 
 namespace MtconnectTranspiler.Interpreters
 {
     /// <summary>
-    /// An interpreter that converts the SysML markdown to YAML format.
+    /// An interpreter that converts the SysML markdown to LaTeX format for PDF generation.
     /// </summary>
-    public partial class YamlInterpreter : CommonMarkdownInterpreter
+    public partial class PdfInterpreter : CommonMarkdownInterpreter
     {
         /// <inheritdoc />
-        public YamlInterpreter() : base() { }
+        public PdfInterpreter() : base() { }
 
         /// <inheritdoc />
         public override string AppendixInterpreter(string contents)
-            => $"# Appendix\n{contents}";
+            => $"\\appendix\n{contents}\n";
 
         /// <inheritdoc />
         public override string BlockInterpreter(string name)
-            => $"{name}";
+            => $"\\texttt{{{name}}}";
 
         /// <inheritdoc />
         public override string BoldInterpreter(string text)
-            => $"**{text}**"; // YAML doesn't support rich text, so fallback to markdown
+            => $"\\textbf{{{text}}}";
 
         /// <inheritdoc />
         public override string CiteInterpreter(string citation)
-            => $"# See: {citation}";
+            => $"\\cite{{{citation}}}";
 
         /// <inheritdoc />
         public override string CodeBlockInterpreter(string language, string code)
-            => $"```{language}\n{code}\n```"; // Preserving code blocks in markdown
+            => $"\\begin{{verbatim}}\n{EscapeLatex(code)}\n\\end{{verbatim}}";
 
         /// <inheritdoc />
         public override string DefInterpreter(string enumuration, string value)
-            => $"{enumuration}::{value}";
+            => $"\\texttt{{{enumuration}::{value}}}";
 
         /// <inheritdoc />
         public override string EmphasisInterpreter(string text)
-            => $"*{text}*"; // YAML doesn't support rich text, so fallback to markdown
+            => $"\\textit{{{text}}}";
 
         /// <inheritdoc />
         public override string InlineCodeInterpreter(string code)
-            => $"`{code}`"; // Preserving inline code in markdown
+            => $"\\texttt{{{EscapeLatex(code)}}}";
 
         /// <inheritdoc />
         public override string LineBreakInterpreter()
-            => "\n";
+            => "\\newline\n";
 
         /// <inheritdoc />
         public override string MathInterpreter(string expression)
-            => $"{expression}"; // Plain text for math expressions
+            => $"\\({EscapeLatex(expression)}\\)";
 
         /// <inheritdoc />
         public override string NewAcronymInterpreter(string acronym1, string contents, string definition)
@@ -57,73 +56,83 @@ namespace MtconnectTranspiler.Interpreters
 
         /// <inheritdoc />
         public override string OrderedListInterpreter(string contents)
-            => $"- {contents}"; // YAML uses '-' for lists
+            => $"\\begin{{enumerate}}\n\\item {contents}\n\\end{{enumerate}}";
 
         /// <inheritdoc />
         public override string PackageInterpreter(string name)
-            => $"{name}";
+            => $"\\texttt{{{name}}}";
 
         /// <inheritdoc />
         public override string PropertyInterpreter(string class_name, string property_name)
-            => $"{class_name}.{property_name}";
+            => $"\\texttt{{{class_name}::{property_name}}}";
 
         /// <inheritdoc />
         public override string QuoteInterpreter(string contents)
-            => $"> {contents}"; // Quoting in YAML is similar to markdown
+            => $"\\begin{{quote}}\n{contents}\n\\end{{quote}}";
 
         /// <inheritdoc />
         public override string SectInterpreter(string contents)
-            => $"# {contents}";
+            => $"\\section*{{{contents}}}";
 
         /// <inheritdoc />
         public override string SectionInterpreter(string title)
-            => $"# {title}";
+            => $"\\section{{{title}}}";
 
         /// <inheritdoc />
         public override string TableInterpreter(string contents)
         {
-            // Convert markdown table to YAML-friendly format
             var rows = contents.Trim().Split('\n');
-            var header = rows[0].Split('|');
-            var separator = rows[1].Split('|');
-            var tableRows = rows.Skip(2);
-
-            var yamlTable = new StringBuilder();
-            yamlTable.AppendLine(header.Select(h => h.Trim()).Aggregate((a, b) => $"{a}: {b}"));
-            foreach (var row in tableRows)
+            var table = "\\begin{tabular}{|c|c|c|}\n\\hline\n";
+            foreach (var row in rows)
             {
-                var columns = row.Split('|');
-                for (int i = 0; i < columns.Length; i++)
-                {
-                    yamlTable.AppendLine($"  - {header[i].Trim()}: {columns[i].Trim()}");
-                }
+                var columns = row.Split('|').Select(col => EscapeLatex(col.Trim())).ToArray();
+                table += $"{string.Join(" & ", columns)} \\\\ \\hline\n";
             }
-
-            return yamlTable.ToString();
+            table += "\\end{tabular}\n";
+            return table;
         }
 
         /// <inheritdoc />
         public override string TermInterpreter(string term)
-            => $"{term}";
+            => $"\\textit{{{term}}}";
 
         /// <inheritdoc />
         public override string TermPluralInterpreter(string term)
-            => $"{term}s";
+            => $"\\textit{{{term}}}s";
 
         /// <inheritdoc />
         public override string UnorderedListInterpreter(string contents)
-            => $"- {contents}"; // YAML uses '-' for unordered lists
+            => $"\\begin{{itemize}}\n\\item {contents}\n\\end{{itemize}}";
 
         /// <inheritdoc />
         public override string UrlInterpreter(string address)
-            => address; // No special formatting needed for URLs
+            => $"\\url{{{address}}}";
 
         /// <summary>
-        /// Handles any unhandled markdown by commenting it out in YAML.
+        /// Handles any unhandled markdown by wrapping it in a LaTeX comment.
         /// </summary>
         /// <param name="contents">The unhandled content.</param>
-        /// <returns>A YAML comment indicating unhandled content.</returns>
+        /// <returns>A LaTeX comment indicating unhandled content.</returns>
         public string UnhandledInterpreter(string contents)
-            => $"# UNHANDLED MARKDOWN: {contents}";
+            => $"% UNHANDLED MARKDOWN: {EscapeLatex(contents)}";
+
+        /// <summary>
+        /// Escapes special LaTeX characters to ensure valid output.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <returns>The escaped string.</returns>
+        private string EscapeLatex(string input)
+        {
+            return input.Replace("\\", "\\textbackslash{}")
+                        .Replace("&", "\\&")
+                        .Replace("%", "\\%")
+                        .Replace("$", "\\$")
+                        .Replace("#", "\\#")
+                        .Replace("_", "\\_")
+                        .Replace("{", "\\{")
+                        .Replace("}", "\\}")
+                        .Replace("~", "\\textasciitilde{}")
+                        .Replace("^", "\\textasciicircum{}");
+        }
     }
 }

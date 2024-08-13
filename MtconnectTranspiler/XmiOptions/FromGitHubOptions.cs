@@ -4,10 +4,10 @@ using System;
 using System.ComponentModel;
 using System.Net.Http;
 
-namespace MtconnectTranspiler
+namespace MtconnectTranspiler.XmiOptions
 {
     /// <summary>
-    /// Options for constructing an instance of <see cref="TranspilerDispatcher"/> by retrieving the <see cref="XmiDeserializer"/> using the <see cref="FromGitHubOptions.GitHubRelease"/> as a reference to the Release on GitHub to fetch the <c>.xmi</c> of the MTConnect Standard SysML model.
+    /// Options for constructing an instance of <see cref="TranspilerDispatcher"/> by retrieving the <see cref="XmiDeserializer"/> using the <see cref="GitHubRelease"/> as a reference to the Release on GitHub to fetch the <c>.xmi</c> of the MTConnect Standard SysML model.
     /// </summary>
     public class FromGitHubOptions : TranspilerDispatcherOptions
     {
@@ -34,7 +34,8 @@ namespace MtconnectTranspiler
 
                     var deserializer = XmiDeserializer.FromXml(xml, logger);
                     return deserializer;
-                } else
+                }
+                else
                 {
                     throw new InvalidEnumArgumentException();
                 }

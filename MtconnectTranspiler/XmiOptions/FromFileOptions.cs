@@ -2,10 +2,10 @@
 using MtconnectTranspiler.Contracts;
 using System.IO;
 
-namespace MtconnectTranspiler
+namespace MtconnectTranspiler.XmiOptions
 {
     /// <summary>
-    /// Options for constructing an instance of <see cref="TranspilerDispatcher"/> by retrieving the <see cref="XmiDeserializer"/> using the <see cref="FromFileOptions.Filepath"/> as a reference to the <c>.xmi</c> of the MTConnect Standard SysML model.
+    /// Options for constructing an instance of <see cref="TranspilerDispatcher"/> by retrieving the <see cref="XmiDeserializer"/> using the <see cref="Filepath"/> as a reference to the <c>.xmi</c> of the MTConnect Standard SysML model.
     /// </summary>
     public class FromFileOptions : TranspilerDispatcherOptions
     {
