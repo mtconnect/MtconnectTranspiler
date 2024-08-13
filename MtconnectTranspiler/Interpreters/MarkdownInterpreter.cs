@@ -95,16 +95,17 @@ namespace MtconnectTranspiler.Interpreters
 
         private string composeComment(OwnedComment comment, int headerDepth = 1)
         {
+            const string newline = "&#10;";
             StringBuilder sb = new StringBuilder();
             if (!string.IsNullOrEmpty(comment.Name))
             {
                 string headerPrefix = new string('#', headerDepth);
-                sb.AppendLine($"{headerPrefix} {comment.Name}&#10;");
+                sb.Append($"{newline}{headerPrefix} {comment.Name}{newline}{newline}");
             }
-            sb.AppendLine(comment.Body + "&#10;");
+            sb.Append(comment.Body + newline);
             if (comment.SubComment != null)
             {
-                sb.AppendLine(composeComment(comment.SubComment, headerDepth + 1) + "&#10;");
+                sb.Append(composeComment(comment.SubComment, headerDepth + 1) + newline);
             }
             return sb.ToString();
         }
