@@ -93,6 +93,21 @@ namespace MtconnectTranspiler.Interpreters
         public virtual string Interpret(OwnedComment comment)
             => Interpret(composeComment(comment));
 
+        /// <summary>
+        /// Evaluates the input text against all interpreters and performs text replacement when matches are found.
+        /// </summary>
+        /// <param name="comments">Composes markdown for a multiple <c>uml:Comment</c> at once.</param>
+        /// <returns>Interpreted string.</returns>
+        public virtual string Interpret(OwnedComment[] comments)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var comment in comments)
+            {
+                sb.Append(Interpret(composeComment(comment)) + "&#10;");
+            }
+            return sb.ToString();
+        }
+
         private string composeComment(OwnedComment comment, int headerDepth = 1)
         {
             const string newline = "&#10;";
