@@ -9,6 +9,13 @@
         public VisualStudioSummaryInterpreter() : base() { }
 
         /// <inheritdoc />
+        public override string Interpret(string input)
+        {
+            input = input.Replace("<", "&lt;").Replace(">", "&gt;");
+            return base.Interpret(input);
+        }
+
+        /// <inheritdoc />
         public override string AppendixInterpreter(string contents)
             => UnhandledInterpreter(contents);
 
