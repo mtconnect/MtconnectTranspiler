@@ -29,7 +29,7 @@
 
         /// <inheritdoc />
         public override string CiteInterpreter(string citation)
-            => $"<seealso href=\"https://www.google.com/search?q={citation}&btnI=I\">{citation}</seealso>";
+            => $"<seealso href=\"https://www.google.com/search?q={citation}&amp;btnI=I\">{citation}</seealso>";
 
         /// <inheritdoc />
         public override string CodeBlockInterpreter(string language, string code)
