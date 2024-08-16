@@ -11,7 +11,7 @@
         /// <inheritdoc />
         public override string Interpret(string input)
         {
-            input = input.Replace("<", "&lt;").Replace(">", "&gt;");
+            input = input.Replace("&#10;", "\r\n").Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;");
             return base.Interpret(input);
         }
 
