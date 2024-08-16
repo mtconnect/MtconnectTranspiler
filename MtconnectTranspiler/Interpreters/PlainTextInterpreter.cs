@@ -49,8 +49,8 @@
             => expression; // No special formatting for math in plain text
 
         /// <inheritdoc />
-        public override string NewAcronymInterpreter(string acronym1, string contents, string definition)
-            => $"{contents} ({acronym1}: {definition})";
+        public override string NewAcronymInterpreter(string acronym1, string acronym2, string term)
+            => $"{acronym2} ({acronym1}: {term})";
 
         /// <inheritdoc />
         public override string OrderedListInterpreter(string contents)

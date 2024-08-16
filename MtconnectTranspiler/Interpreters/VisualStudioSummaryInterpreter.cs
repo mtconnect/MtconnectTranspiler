@@ -53,12 +53,12 @@
             => "<br/>";
 
         /// <inheritdoc />
-        public override string MathInterpreter(string contents)
-            => EmphasisInterpreter(contents);
+        public override string MathInterpreter(string expression)
+            => EmphasisInterpreter(expression);
 
         /// <inheritdoc />
-        public override string NewAcronymInterpreter(string acronym1, string contents, string definition)
-            => EmphasisInterpreter($"{contents} ({acronym1})");
+        public override string NewAcronymInterpreter(string acronym1, string acronym2, string term)
+            => EmphasisInterpreter($"{acronym2} ({acronym1})");
 
         /// <inheritdoc />
         public override string OrderedListInterpreter(string contents)
@@ -89,12 +89,12 @@
             => $"<para>{contents.Replace("|", "").Replace("\n", "<br/>")}</para>";
 
         /// <inheritdoc />
-        public override string TermInterpreter(string contents)
-            => EmphasisInterpreter(contents);
+        public override string TermInterpreter(string term)
+            => EmphasisInterpreter(term);
 
         /// <inheritdoc />
-        public override string TermPluralInterpreter(string contents)
-            => EmphasisPluralInterpreter(contents);
+        public override string TermPluralInterpreter(string term)
+            => EmphasisPluralInterpreter(term);
 
         /// <summary>
         /// <inheritdoc cref="VisualStudioSummaryInterpreter" path="/interpreter"/>
