@@ -61,24 +61,24 @@ namespace MtconnectTranspiler.Console.Views
         {
             string[] interpreterOptions = new string[]
             {
-                typeof(CustomDslInterpreter).FullName,
-                typeof(HtmlInterpreter).FullName,
-                typeof(JavadocInterpreter).FullName,
-                typeof(MediaWikiInterpreter).FullName,
-                typeof(OpenDocumentTextInterpreter).FullName,
-                typeof(PdfInterpreter).FullName,
-                typeof(PlainTextInterpreter).FullName,
-                typeof(RSTInterpreter).FullName,
-                typeof(RtfInterpreter).FullName,
-                typeof(SwaggerInterpreter).FullName,
-                typeof(VisualStudioSummaryInterpreter).FullName,
-                typeof(YamlInterpreter).FullName
+                typeof(CustomDslInterpreter)!.FullName!,
+                typeof(HtmlInterpreter)!.FullName!,
+                typeof(JavadocInterpreter)!.FullName!,
+                typeof(MediaWikiInterpreter)!.FullName!,
+                typeof(OpenDocumentTextInterpreter)!.FullName!,
+                typeof(PdfInterpreter)!.FullName!,
+                typeof(PlainTextInterpreter)!.FullName!,
+                typeof(RSTInterpreter)!.FullName!,
+                typeof(RtfInterpreter)!.FullName!,
+                typeof(SwaggerInterpreter)!.FullName!,
+                typeof(VisualStudioSummaryInterpreter)!.FullName!,
+                typeof(YamlInterpreter)!.FullName!
             };
             var chooseInterpreter = new Prompt("Choose an interpreter", true, interpreterOptions);
             var interpreterName = interpreterOptions[chooseInterpreter.Run()];
             var assembly = typeof(MarkdownInterpreter).Assembly;
 
-            var instance = Activator.CreateInstance(assembly.GetType(interpreterName)) as MarkdownInterpreter;
+            var instance = Activator.CreateInstance(assembly.GetType(interpreterName)!) as MarkdownInterpreter;
 
             var options = new FromGitHubOptions() { GitHubRelease = "latest" };
             Consoul.Write("Getting model from GitHub...", ConsoleColor.Yellow, false);
@@ -94,11 +94,11 @@ namespace MtconnectTranspiler.Console.Views
 
             StringBuilder sb = new StringBuilder();
             Consoul.Write("Interpreting...", ConsoleColor.Yellow, false);
-            foreach (var item in package.Classes)
+            foreach (var item in package!.Classes!)
             {
-                foreach (var comment in item.Comments)
+                foreach (var comment in item!.Comments!)
                 {
-                    sb.AppendLine(instance.Interpret(comment));
+                    sb.AppendLine(instance!.Interpret(comment));
                 }
             }
             Consoul.Write("Done!", ConsoleColor.Green);
@@ -134,7 +134,7 @@ namespace MtconnectTranspiler.Console.Views
             var result = deserializer.Deserialize(default);
             StringBuilder sb = new();
 
-            var profile = result!.Model!.Profiles.FirstOrDefault()!;
+            var profile = result!.Model!.Profiles!.FirstOrDefault()!;
             sb.AppendLine(BuildNavigationClass(null, profile, profile.Packages));
 
             sb.AppendLine(BuildNavigationStructure(result.Model.Packages));
@@ -157,9 +157,9 @@ namespace MtconnectTranspiler.Console.Views
             var path = MTConnectHelper.PackageNavigationTree.ObservationInformationModel.ObservationTypes.SampleTypes;
             Consoul.Write("Path: " + path);
             var package = MTConnectHelper.JumpToPackage(result!, path);
-            var type = package.Classes.FirstOrDefault();
-            var units = type.Properties.FirstOrDefault(o => o.Name == "units");
-            var defaultValue = units.DefaultValue;
+            var type = package!.Classes!.FirstOrDefault();
+            var units = type!.Properties!.FirstOrDefault(o => o.Name == "units");
+            var defaultValue = units!.DefaultValue;
             Consoul.Write("Package ID: " + (package?.Id ?? "Not found"));
             Consoul.Wait();
         }
@@ -172,7 +172,7 @@ namespace MtconnectTranspiler.Console.Views
 
             foreach (var package in packages)
             {
-                if (package.Packages.Count > 0)
+                if (package!.Packages!.Count > 0)
                 {
                     sb.AppendLine(BuildNavigationClass(parent, package, package.Packages));
                 } else

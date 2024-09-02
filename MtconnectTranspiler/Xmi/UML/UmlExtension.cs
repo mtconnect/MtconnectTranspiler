@@ -25,5 +25,22 @@ namespace MtconnectTranspiler.Xmi.UML
         [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_END, Namespace = "")]
         public UmlExtensionEnd? End { get; set; }
 
+        /// <summary>
+        /// Collection of <c>&lt;stereotype /&gt;</c> elements
+        /// </summary>
+        [XmlElement(ElementName = XmlHelper.XmiStructure.STEREOTYPE, Namespace = "")]
+        public Stereotype[]? Stereotypes { get; set; }
+
+        /// <summary>
+        /// Collection of <c>&lt;tag /&gt;</c> elements
+        /// </summary>
+        [XmlElement(ElementName = XmlHelper.XmiStructure.TAG, Namespace = "")]
+        public Tag[]? Tags { get; set; }
+
+        /// <summary>
+        /// Child element not handled in deserialization.
+        /// </summary>
+        [XmlAnyElement]
+        public object[]? AllChildElements { get; set; }
     }
 }

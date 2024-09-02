@@ -58,7 +58,7 @@ namespace MtconnectTranspiler.Xmi.UML
         /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlExtension"/>
         /// </summary>
         [XmlIgnore]
-        public PackagedElementCollection<UmlExtension> Extensions => _extensions;// ??= PackagedElementCollection<UmlExtension>.Deserialize(PackagedElements, XmlHelper.UmlStructure.Extension);
+        public PackagedElementCollection<UmlExtension>? Extensions => _extensions;
 
         /// <summary>
         /// Internal switch property for <see cref="Stereotypes"/>.
@@ -69,7 +69,7 @@ namespace MtconnectTranspiler.Xmi.UML
         /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlStereotype"/>
         /// </summary>
         [XmlIgnore]
-        public PackagedElementCollection<UmlStereotype> Stereotypes => _stereotypes;// ??= PackagedElementCollection<UmlStereotype>.Deserialize(PackagedElements, XmlHelper.UmlStructure.Stereotype);
+        public PackagedElementCollection<UmlStereotype>? Stereotypes => _stereotypes;
 
         /// <summary>
         /// Internal switch property for <see cref="Classes"/>.
@@ -80,8 +80,7 @@ namespace MtconnectTranspiler.Xmi.UML
         /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlClass"/>
         /// </summary>
         [XmlIgnore]
-        public PackagedElementCollection<UmlClass> Classes => _classes;// ??= PackagedElementCollection<UmlClass>.Deserialize(PackagedElements, XmlHelper.UmlStructure.Class);
-
+        public PackagedElementCollection<UmlClass>? Classes => _classes;
         /// <summary>
         /// Internal switch property for <see cref="Enumerations"/>.
         /// </summary>
@@ -91,7 +90,7 @@ namespace MtconnectTranspiler.Xmi.UML
         /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlEnumeration"/>
         /// </summary>
         [XmlIgnore]
-        public PackagedElementCollection<UmlEnumeration> Enumerations => _enumerations;// ??= PackagedElementCollection<UmlEnumeration>.Deserialize(PackagedElements, XmlHelper.UmlStructure.Enumeration);
+        public PackagedElementCollection<UmlEnumeration>? Enumerations => _enumerations;
 
         /// <summary>
         /// Internal switch property for <see cref="Packages"/>.
@@ -102,7 +101,7 @@ namespace MtconnectTranspiler.Xmi.UML
         /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlPackage"/>
         /// </summary>
         [XmlIgnore]
-        public PackagedElementCollection<UmlPackage> Packages => _packages;// ??= PackagedElementCollection<UmlPackage>.Deserialize(PackagedElements, XmlHelper.UmlStructure.Package);
+        public PackagedElementCollection<UmlPackage>? Packages => _packages;
 
         /// <summary>
         /// Internal switch property for <see cref="DataTypes"/>.
@@ -113,7 +112,7 @@ namespace MtconnectTranspiler.Xmi.UML
         /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlDataType"/>
         /// </summary>
         [XmlIgnore]
-        public PackagedElementCollection<UmlDataType> DataTypes => _dataTypes;// ??= PackagedElementCollection<UmlDataType>.Deserialize(PackagedElements, XmlHelper.UmlStructure.DataType);
+        public PackagedElementCollection<UmlDataType>? DataTypes => _dataTypes;
 
         /// <summary>
         /// Internal switch property for <see cref="Associations"/>.
@@ -124,7 +123,7 @@ namespace MtconnectTranspiler.Xmi.UML
         /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlAssociation"/>
         /// </summary>
         [XmlIgnore]
-        public PackagedElementCollection<UmlAssociation> Associations => _associations;// ??= PackagedElementCollection<UmlAssociation>.Deserialize(PackagedElements, XmlHelper.UmlStructure.Association);
+        public PackagedElementCollection<UmlAssociation>? Associations => _associations;
 
         /// <summary>
         /// Internal switch property for <see cref="AssociationClasses"/>.
@@ -135,7 +134,8 @@ namespace MtconnectTranspiler.Xmi.UML
         /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlAssociationClass"/>
         /// </summary>
         [XmlIgnore]
-        public PackagedElementCollection<UmlAssociationClass> AssociationClasses => _associationClasses;// ??= PackagedElementCollection<UmlAssociationClass>.Deserialize(PackagedElements, XmlHelper.UmlStructure.AssociationClass);
+        public PackagedElementCollection<UmlAssociationClass>? AssociationClasses => _associationClasses;
+
         //// TODO: Add xmi:Extension
 
     }

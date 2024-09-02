@@ -93,7 +93,7 @@ namespace MtconnectTranspiler.Xmi
             if (!string.IsNullOrEmpty(item.Id) && !IdCache.ContainsKey(item.Id!))
             {
                 IdCache.Add(item.Id!, index);
-                IdCacheContextHolder.Current?.AddToCache(item.Id, item);
+                IdCacheContextHolder.Current?.AddToCache(item.Id!, item);
             }
 
             if (!Cache.Contains(index))

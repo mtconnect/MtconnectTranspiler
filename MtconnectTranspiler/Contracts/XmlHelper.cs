@@ -64,6 +64,9 @@
             public const string CUSTOM_SORT = "CustomSort";
             public const string ROW_ELEMENTS = "rowElements";
             public const string SORT = "sort";
+            public const string COLUMN_IDS = "columnIds";
+            public const string COLUMN_WIDTH = "columnWidth";
+            public const string CUSTOM_COLUMNS = "customColumns";
             #endregion
 
             #region XML Attributes
@@ -82,7 +85,7 @@
             public const string displayMode = "displayMode";
             public const string showElementNumber = "showElementNumber";
             public const string showColumnIcons = "showColumnIcons";
-            public const string showScopeAsRoot = "showScopeRoot";
+            public const string showScopeAsRoot = "showScopeAsRoot";
             public const string showScope = "showScope";
             public const string showFilter = "showFilter";
             public const string showElementType = "showElementType";
@@ -95,6 +98,7 @@
             #region XML Tags
             public const string NORMATIVE = "normative";
             public const string DEPRECATED = "deprecated";
+            public const string UPDATED = "updated";
             public const string EXTENSIBLE = "extensible";
             public const string INFORMATIVE = "informative";
             public const string OBSERVES = "observes";
@@ -138,6 +142,10 @@
             public const string DOCUMENTATION = "Documentation";
             public const string EXPORTER = "exporter";
             public const string EXPORTER_VERSION = "exporterVersion";
+            public const string PROFILE_APPLICATION = "profileApplication";
+            public const string APPLIED_PROFILE = "appliedProfile";
+            public const string TAG = "tag";
+            public const string STEREOTYPE = "stereotype";
             #endregion
 
             #region XML Attributes
@@ -165,6 +173,9 @@
             public const string isReadOnly = "isReadOnly";
             public const string value = "value";
             public const string extender = "extender";
+            public const string tagId = "tagID";
+            public const string tagUri = "tagURI";
+            public const string stereotypeHref = "stereotypeHREF";
             #endregion
         }
 
@@ -184,6 +195,7 @@
             public const string baseConnector = "base_Connector";
             public const string baseConnectorEnd = "base_ConnectorEnd";
             public const string propertyPath = "propertyPath";
+            public const string isEncapsulated = "isEncapsulated";
             #endregion
         }
 

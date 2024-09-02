@@ -11,7 +11,7 @@ namespace MtconnectTranspiler.XmiOptions
     public class FromMtconnectOrg : TranspilerDispatcherOptions
     {
         /// <inheritdoc />
-        public override XmiDeserializer GetDeserializer(ILogger<XmiDeserializer> logger = null)
+        public override XmiDeserializer GetDeserializer(ILogger<XmiDeserializer>? logger = null)
         {
             var mtconnectOrgUrl = "https://model.mtconnect.org/MTConnectSysMLModel.xml";
 

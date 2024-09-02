@@ -16,7 +16,7 @@ namespace MtconnectTranspiler.XmiOptions
 
         /// <inheritdoc />
         /// <exception cref="FileNotFoundException"></exception>
-        public override XmiDeserializer GetDeserializer(ILogger<XmiDeserializer> logger = null)
+        public override XmiDeserializer GetDeserializer(ILogger<XmiDeserializer>? logger = null)
         {
             if (!File.Exists(Filepath))
                 throw new FileNotFoundException("Could not find specified XMI file", Filepath);

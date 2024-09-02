@@ -88,5 +88,23 @@ namespace MtconnectTranspiler.Xmi.MagicDrawProfile
         /// </summary>
         [XmlElement(ElementName = XmlHelper.MagicDrawProfileStructure.SORT, Namespace = "")]
         public string[]? Sorts { get; set; }
+
+        /// <summary>
+        /// <c>&lt;columnIds /&gt;</c> elements
+        /// </summary>
+        [XmlElement(ElementName = XmlHelper.MagicDrawProfileStructure.COLUMN_IDS, Namespace = "")]
+        public string[]? ColumnIds { get; set; }
+
+        /// <summary>
+        /// <c>&lt;columnWidth /&gt;</c> elements
+        /// </summary>
+        [XmlElement(ElementName = XmlHelper.MagicDrawProfileStructure.COLUMN_WIDTH, Namespace = "")]
+        public string[]? ColumnWidth { get; set; }
+
+        /// <summary>
+        /// <c>&lt;customColumns /&gt;</c> elements
+        /// </summary>
+        [XmlElement(ElementName = XmlHelper.MagicDrawProfileStructure.CUSTOM_COLUMNS, Namespace = "")]
+        public string? CustomColumns { get; set; }
     }
 }

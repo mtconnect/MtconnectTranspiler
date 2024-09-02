@@ -18,7 +18,7 @@ namespace MtconnectTranspiler.XmiOptions
         public string GitHubRelease { get; set; } = "latest";
 
         /// <inheritdoc />
-        public override XmiDeserializer GetDeserializer(ILogger<XmiDeserializer> logger = null)
+        public override XmiDeserializer GetDeserializer(ILogger<XmiDeserializer>? logger = null)
         {
             if (string.IsNullOrEmpty(GitHubRelease))
                 throw new ArgumentNullException();

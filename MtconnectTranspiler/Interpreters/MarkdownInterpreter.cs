@@ -35,6 +35,12 @@ namespace MtconnectTranspiler.Interpreters
             interpreters.Add((regex, interpreter, targetGroup));
         }
 
+        /// <summary>
+        /// Adds a new interpreter for string processing. Note: The default string replacement processes <c>block</c> and <c>contents</c> groupings by replacing instances of <c>block</c> with <c>contents</c>.
+        /// </summary>
+        /// <param name="expression">Regex expression</param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='interpreter']"/></param>
+        /// <param name="targetGroup"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='targetGroup']"/></param>
         private void AddInterpreter(string expression, Delegate interpreter, string targetGroup = "block")
             => AddInterpreter(new Regex(expression), interpreter, targetGroup);
 
@@ -126,56 +132,243 @@ namespace MtconnectTranspiler.Interpreters
         }
 
         #region Nothing to see here...
-        // 0 parameters
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(Regex, Delegate, string)"/><br/>
+        /// Handles delegates with zero parameters.
+        /// </summary>
+        /// <param name="regex"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(Regex regex, Func<string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(string, Delegate, string)"/><br/>
+        /// Handles delegates with zero parameters.
+        /// </summary>
+        /// <param name="expression"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(string expression, Func<string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
-        // 1 parameter
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(Regex, Delegate, string)"/><br/>
+        /// Handles delegates with one parameter.
+        /// </summary>
+        /// <param name="regex"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(Regex regex, Func<string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(string, Delegate, string)"/><br/>
+        /// Handles delegates with one parameter.
+        /// </summary>
+        /// <param name="expression"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(string expression, Func<string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter);
-        // 2 parameters
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(Regex, Delegate, string)"/><br/>
+        /// Handles delegates with two parameters.
+        /// </summary>
+        /// <param name="regex"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(Regex regex, Func<string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(string, Delegate, string)"/><br/>
+        /// Handles delegates with two parameters.
+        /// </summary>
+        /// <param name="expression"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(string expression, Func<string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
-        // 3 parameters
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(Regex, Delegate, string)"/><br/>
+        /// Handles delegates with three parameters.
+        /// </summary>
+        /// <param name="regex"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(Regex regex, Func<string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(string, Delegate, string)"/><br/>
+        /// Handles delegates with three parameters.
+        /// </summary>
+        /// <param name="expression"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(string expression, Func<string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
-        // 4 parameters
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(Regex, Delegate, string)"/><br/>
+        /// Handles delegates with four parameters.
+        /// </summary>
+        /// <param name="regex"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(Regex regex, Func<string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(string, Delegate, string)"/><br/>
+        /// Handles delegates with four parameters.
+        /// </summary>
+        /// <param name="expression"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(string expression, Func<string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
-        // 5 parameters
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(Regex, Delegate, string)"/><br/>
+        /// Handles delegates with five parameters.
+        /// </summary>
+        /// <param name="regex"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(string, Delegate, string)"/><br/>
+        /// Handles delegates with five parameters.
+        /// </summary>
+        /// <param name="expression"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(string expression, Func<string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
-        // 6 parameters
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(Regex, Delegate, string)"/><br/>
+        /// Handles delegates with six parameters.
+        /// </summary>
+        /// <param name="regex"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(string, Delegate, string)"/><br/>
+        /// Handles delegates with six parameters.
+        /// </summary>
+        /// <param name="expression"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
-        // 7 parameters
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(Regex, Delegate, string)"/><br/>
+        /// Handles delegates with seven parameters.
+        /// </summary>
+        /// <param name="regex"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(string, Delegate, string)"/><br/>
+        /// Handles delegates with seven parameters.
+        /// </summary>
+        /// <param name="expression"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
-        // 8 parameters
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(Regex, Delegate, string)"/><br/>
+        /// Handles delegates with eight parameters.
+        /// </summary>
+        /// <param name="regex"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(string, Delegate, string)"/><br/>
+        /// Handles delegates with eight parameters.
+        /// </summary>
+        /// <param name="expression"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
-        // 9 parameters
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(Regex, Delegate, string)"/><br/>
+        /// Handles delegates with nine parameters.
+        /// </summary>
+        /// <param name="regex"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(string, Delegate, string)"/><br/>
+        /// Handles delegates with nine parameters.
+        /// </summary>
+        /// <param name="expression"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
-        // 10 parameters
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(Regex, Delegate, string)"/><br/>
+        /// Handles delegates with ten parameters.
+        /// </summary>
+        /// <param name="regex"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(string, Delegate, string)"/><br/>
+        /// Handles delegates with ten parameters.
+        /// </summary>
+        /// <param name="expression"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
-        // 11 parameters
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(Regex, Delegate, string)"/><br/>
+        /// Handles delegates with eleven parameters.
+        /// </summary>
+        /// <param name="regex"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(string, Delegate, string)"/><br/>
+        /// Handles delegates with eleven parameters.
+        /// </summary>
+        /// <param name="expression"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
-        // 12 parameters
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(Regex, Delegate, string)"/><br/>
+        /// Handles delegates with twelve parameters.
+        /// </summary>
+        /// <param name="regex"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(string, Delegate, string)"/><br/>
+        /// Handles delegates with twelve parameters.
+        /// </summary>
+        /// <param name="expression"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
-        // 13 parameters
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(Regex, Delegate, string)"/><br/>
+        /// Handles delegates with thirteen parameters.
+        /// </summary>
+        /// <param name="regex"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(string, Delegate, string)"/><br/>
+        /// Handles delegates with thirteen parameters.
+        /// </summary>
+        /// <param name="expression"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
-        // 14 parameters
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(Regex, Delegate, string)"/><br/>
+        /// Handles delegates with fourteen parameters.
+        /// </summary>
+        /// <param name="regex"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(string, Delegate, string)"/><br/>
+        /// Handles delegates with fourteen parameters.
+        /// </summary>
+        /// <param name="expression"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
-        // 15 parameters
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(Regex, Delegate, string)"/><br/>
+        /// Handles delegates with fifteen parameters.
+        /// </summary>
+        /// <param name="regex"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(string, Delegate, string)"/><br/>
+        /// Handles delegates with fifteen parameters.
+        /// </summary>
+        /// <param name="expression"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
-        // 16 parameters
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(Regex, Delegate, string)"/><br/>
+        /// Handles delegates with sixteen parameters.
+        /// </summary>
+        /// <param name="regex"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(Regex, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(Regex regex, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(regex, interpreter as Delegate);
+        /// <summary>
+        /// <inheritdoc cref="AddInterpreter(string, Delegate, string)"/><br/>
+        /// Handles delegates with sixteen parameters.
+        /// </summary>
+        /// <param name="expression"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='regex']"/></param>
+        /// <param name="interpreter"><inheritdoc cref="AddInterpreter(string, Delegate, string)" path="/param[@name='interpreter']"/></param>
         public void AddInterpreter(string expression, Func<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string> interpreter) => AddInterpreter(new Regex(expression), interpreter as Delegate);
         #endregion
     }

@@ -9,7 +9,7 @@ namespace MtconnectTranspiler.Xmi
     /// </summary>
     public abstract class XmiElement : IXmiElement
     {
-        private string _id;
+        private string? _id;
         /// <summary>
         /// <c>xmi:id</c> attribute
         /// </summary>
@@ -19,7 +19,8 @@ namespace MtconnectTranspiler.Xmi
             get { return _id; }
             set {
                 _id = value;
-                IdCacheContextHolder.Current?.AddToCache(_id, this);
+                if (!string.IsNullOrEmpty(_id))
+                    IdCacheContextHolder.Current?.AddToCache(_id!, this);
             }
         }
 

@@ -28,7 +28,16 @@ namespace MtconnectTranspiler.Xmi
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.header, Namespace = "")]
         public string? Header { get; set; }
 
+        /// <summary>
+        /// Child element not handled in deserialization.
+        /// </summary>
         [XmlAnyElement]
         public object[]? ChildElements { get; set; }
+
+        /// <summary>
+        /// Inner contents of the <c>&lt;filePart /&gt;</c> element.
+        /// </summary>
+        [XmlText]
+        public string? Contents { get; set; }
     }
 }
