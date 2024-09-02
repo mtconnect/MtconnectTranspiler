@@ -59,7 +59,22 @@ namespace MtconnectTranspiler.Xmi.UML
         /// </summary>
         [XmlAnyElement(XmlHelper.XmiStructure.DEFAULT_VALUE, Namespace = "")]
         public XmlElement? DefaultValueElement { get; set; }
+
         private DefaultValue? _defaultValue;
+        /// <summary>
+        /// Reference to the literal value for <see cref="DefaultValueElement"/>. For example, consider:<br/>
+        /// <example>
+        /// <pre><code>
+        /// &lt;defaultValue xmi:type='uml:InstanceValue' xmi:id='{SysML ID}' instance='_19_0_3_68e0225_1640604494524_915253_429' /&gt;<br/>
+        /// ...
+		///	&lt;packagedElement xmi:type='uml:Enumeration' xmi:id='{SysML ID}' name='MaintenanceListIntervalEnum'&gt;<br/>
+		///		&lt;ownedLiteral xmi:type='uml:EnumerationLiteral' xmi:id='_19_0_3_68e0225_1640604494524_915253_429' name='ABSOLUTE'/&gt;<br/>
+		///		&lt;ownedLiteral xmi:type='uml:EnumerationLiteral' xmi:id='{SysML ID}' name='INCREMENTAL'/&gt;<br/>
+		///	&lt;/packagedElement&gt;
+        /// </code></pre>
+        /// </example><br/>
+        /// In this case, <see cref="DefaultValue"/> would be equal to the element for <c>ABSOLUTE</c>.
+        /// </summary>
         public DefaultValue? DefaultValue
         {
             get
@@ -76,7 +91,6 @@ namespace MtconnectTranspiler.Xmi.UML
                     Namespace = ""
                 };
 
-                //XmlSerializer serial = new XmlSerializer(typeof(T), xRoot);
                 using var xReader = new XmlNodeReader(DefaultValueElement);
 
                 XmlSerializer? serial = null;

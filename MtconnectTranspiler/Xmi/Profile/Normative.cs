@@ -18,9 +18,21 @@ namespace MtconnectTranspiler.Xmi.Profile
         public string? BaseElement { get; set; }
 
         /// <summary>
-        /// <c>version</c> attribute
+        /// <c>introduced</c> attribute
         /// </summary>
-        [XmlAttribute(AttributeName = XmlHelper.XmiStructure.version, Namespace = "")]
-        public string? Version { get; set; }
+        [XmlAttribute(AttributeName = XmlHelper.XmiStructure.introduced, Namespace = "")]
+        public string? Introduced { get; set; }
+
+        /// <summary>
+        /// <c>&lt;updated /&gt;</c> element
+        /// </summary>
+        [XmlElement(ElementName = XmlHelper.ProfileStructure.UPDATED, Namespace = "")]
+        public string[]? Updated { get; set; }
+
+        /// <summary>
+        /// <c>deprecated</c> attribute
+        /// </summary>
+        [XmlAttribute(AttributeName = XmlHelper.ProfileStructure.DEPRECATED, Namespace = "")]
+        public string? Deprecated { get; set; }
     }
 }

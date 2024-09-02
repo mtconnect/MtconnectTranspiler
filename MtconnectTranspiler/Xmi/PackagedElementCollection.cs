@@ -6,6 +6,7 @@ using System.Xml;
 using MtconnectTranspiler.Contracts;
 using System.Xml.Serialization;
 using System.Xml.Linq;
+using MtconnectTranspiler.Contracts.Navigation;
 
 namespace MtconnectTranspiler.Xmi
 {
@@ -90,7 +91,10 @@ namespace MtconnectTranspiler.Xmi
                 NameCache.Add(item.Name!, index);
 
             if (!string.IsNullOrEmpty(item.Id) && !IdCache.ContainsKey(item.Id!))
+            {
                 IdCache.Add(item.Id!, index);
+                IdCacheContextHolder.Current?.AddToCache(item.Id!, item);
+            }
 
             if (!Cache.Contains(index))
                 Cache.Add(index);

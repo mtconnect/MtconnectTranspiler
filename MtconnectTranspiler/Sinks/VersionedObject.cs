@@ -40,7 +40,7 @@ namespace MtconnectTranspiler.Sinks.Models
             NormativeReference = MTConnectHelper.LookupNormative(model, Source.Id);
             if (NormativeReference != null)
             {
-                NormativeVersion = lookupMtconnectVersion(NormativeReference.Version);
+                NormativeVersion = lookupMtconnectVersion(NormativeReference.Introduced);
                 DeprecatedReference = MTConnectHelper.LookupDeprecated(model, Source.Id);
                 if (DeprecatedReference != null)
                 {

@@ -15,5 +15,17 @@ namespace MtconnectTranspiler.Xmi
         /// </summary>
         [XmlAttribute(XmlHelper.XmiStructure.extender, Namespace = "")]
         public string? Extender { get; set; }
+
+        /// <summary>
+        /// <c>filePart</c> elements
+        /// </summary>
+        [XmlElement(XmlHelper.XmiStructure.FILE_PART, Namespace = "")]
+        public FilePart[]? FileParts { get; set; }
+
+        /// <summary>
+        /// Child element not handled in deserialization.
+        /// </summary>
+        [XmlAnyElement]
+        public object[]? ChildElements { get; set; }
     }
 }

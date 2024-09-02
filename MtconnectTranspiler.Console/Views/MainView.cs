@@ -2,8 +2,10 @@
 using ConsoulLibrary.Views;
 using Microsoft.Extensions.Logging;
 using MtconnectTranspiler.Contracts;
+using MtconnectTranspiler.Interpreters;
 using MtconnectTranspiler.Xmi;
 using MtconnectTranspiler.Xmi.UML;
+using MtconnectTranspiler.XmiOptions;
 using System.Text;
 using System.Threading;
 
@@ -11,7 +13,7 @@ namespace MtconnectTranspiler.Console.Views
 {
     internal class MainView : StaticView
     {
-        private ILogger<TranspilerDispatcher> _logger;
+        private ILogger<XmiDeserializer> _logger;
 
         public MainView()
         {
@@ -19,7 +21,7 @@ namespace MtconnectTranspiler.Console.Views
 
             // Uses Microsoft.Extensions.Logging for the LoggerFactory and ILogger
             // Uses the Consoul library for color formatting
-            _logger = LoggerFactory.Create((o) => o.AddConsoulLogger()).CreateLogger<TranspilerDispatcher>();
+            _logger = LoggerFactory.Create((o) => o.AddConsoulLogger()).CreateLogger<XmiDeserializer>();
         }
 
         [ViewOption("Transpile From GitHub Latest")]
@@ -42,19 +44,97 @@ namespace MtconnectTranspiler.Console.Views
             options.Filepath = Consoul.PromptForFilepath("Please provide the filepath to the copy of the mtconnect_sysml_model XMI", true);
 
             Deserialize(options);
+            Consoul.Wait();
         }
 
+        [ViewOption("Transpile From model.MTConnect.org")]
+        public void TranspileFromMtconnectOrg()
+        {
+            var options = new FromMtconnectOrg();
+
+            Deserialize(options);
+            Consoul.Wait();
+        }
+
+        [ViewOption("Test Markdown Interpreter")]
+        public void TestMarkdownInterpreter()
+        {
+            string[] interpreterOptions = new string[]
+            {
+                typeof(CustomDslInterpreter)!.FullName!,
+                typeof(HtmlInterpreter)!.FullName!,
+                typeof(JavadocInterpreter)!.FullName!,
+                typeof(MediaWikiInterpreter)!.FullName!,
+                typeof(OpenDocumentTextInterpreter)!.FullName!,
+                typeof(PdfInterpreter)!.FullName!,
+                typeof(PlainTextInterpreter)!.FullName!,
+                typeof(RSTInterpreter)!.FullName!,
+                typeof(RtfInterpreter)!.FullName!,
+                typeof(SwaggerInterpreter)!.FullName!,
+                typeof(VisualStudioSummaryInterpreter)!.FullName!,
+                typeof(YamlInterpreter)!.FullName!
+            };
+            var chooseInterpreter = new Prompt("Choose an interpreter", true, interpreterOptions);
+            var interpreterName = interpreterOptions[chooseInterpreter.Run()];
+            var assembly = typeof(MarkdownInterpreter).Assembly;
+
+            var instance = Activator.CreateInstance(assembly.GetType(interpreterName)!) as MarkdownInterpreter;
+
+            var options = new FromGitHubOptions() { GitHubRelease = "latest" };
+            Consoul.Write("Getting model from GitHub...", ConsoleColor.Yellow, false);
+            var deserializer = options.GetDeserializer();
+            Consoul.Write("Done!", ConsoleColor.Green);
+            Consoul.Write("Deserializing XMI...", ConsoleColor.Yellow);
+            var result = deserializer.Deserialize(default);
+            Consoul.Write("Done!", ConsoleColor.Green);
+
+            var path = MTConnectHelper.PackageNavigationTree.ObservationInformationModel.ObservationTypes.EventTypes;
+            Consoul.Write("Path: " + path);
+            var package = MTConnectHelper.JumpToPackage(result!, path);
+
+            StringBuilder sb = new StringBuilder();
+            Consoul.Write("Interpreting...", ConsoleColor.Yellow, false);
+            foreach (var item in package!.Classes!)
+            {
+                foreach (var comment in item!.Comments!)
+                {
+                    sb.AppendLine(instance!.Interpret(comment));
+                }
+            }
+            Consoul.Write("Done!", ConsoleColor.Green);
+
+            if (Consoul.Ask("Would you like to save the output?"))
+            {
+                string filepath = Consoul.PromptForFilepath("Enter filepath", false);
+                Consoul.Write("Writing...", ConsoleColor.Yellow, false);
+                File.WriteAllText(filepath, sb.ToString(), Encoding.UTF8);
+                Consoul.Write("Done!", ConsoleColor.Green);
+                Consoul.Write("Saved to\r\n\t" + filepath);
+                Consoul.Write("Filepath saved to clipboard!", ConsoleColor.Gray);
+                TextCopy.ClipboardService.SetText(filepath);
+            }
+
+            Consoul.Wait();
+        }
 
         [ViewOption("Build Navigation Structure")]
         public void TranspilePackageNavigation()
         {
-            var options = new FromGitHubOptions() { GitHubRelease = "latest" };
+            XmiDeserializer? deserializer = null;
+            if (Consoul.Ask("Would you like to use GitHub's latest version?"))
+            {
+                var options = new FromGitHubOptions() { GitHubRelease = "latest" };
+                deserializer = options.GetDeserializer();
+            } else
+            {
+                var options = new FromFileOptions() { Filepath = Consoul.PromptForFilepath("Please enter path for SysML model", true) };
+                deserializer = options.GetDeserializer();
+            }
 
-            var deserializer = options.GetDeserializer();
             var result = deserializer.Deserialize(default);
             StringBuilder sb = new();
 
-            var profile = result!.Model!.Profiles.FirstOrDefault()!;
+            var profile = result!.Model!.Profiles!.FirstOrDefault()!;
             sb.AppendLine(BuildNavigationClass(null, profile, profile.Packages));
 
             sb.AppendLine(BuildNavigationStructure(result.Model.Packages));
@@ -77,9 +157,9 @@ namespace MtconnectTranspiler.Console.Views
             var path = MTConnectHelper.PackageNavigationTree.ObservationInformationModel.ObservationTypes.SampleTypes;
             Consoul.Write("Path: " + path);
             var package = MTConnectHelper.JumpToPackage(result!, path);
-            var type = package.Classes.FirstOrDefault();
-            var units = type.Properties.FirstOrDefault(o => o.Name == "units");
-            var defaultValue = units.DefaultValue;
+            var type = package!.Classes!.FirstOrDefault();
+            var units = type!.Properties!.FirstOrDefault(o => o.Name == "units");
+            var defaultValue = units!.DefaultValue;
             Consoul.Write("Package ID: " + (package?.Id ?? "Not found"));
             Consoul.Wait();
         }
@@ -92,7 +172,7 @@ namespace MtconnectTranspiler.Console.Views
 
             foreach (var package in packages)
             {
-                if (package.Packages.Count > 0)
+                if (package!.Packages!.Count > 0)
                 {
                     sb.AppendLine(BuildNavigationClass(parent, package, package.Packages));
                 } else
@@ -153,7 +233,8 @@ namespace MtconnectTranspiler.Console.Views
             return input
                 ?.Replace(" ", string.Empty)
                 ?.Replace("/", string.Empty)
-                ?.Replace("-", string.Empty);
+                ?.Replace("-", string.Empty)
+                ?.Replace(":", string.Empty);
         }
         private static string BuildNavigationItem(PackagedElement? package, bool hasParent)
         {
@@ -183,7 +264,7 @@ namespace MtconnectTranspiler.Console.Views
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             using var cancellationSource = new CancellationTokenSource();
-            var deserializer = options.GetDeserializer();
+            var deserializer = options.GetDeserializer(_logger);
 
             var task = Task.Run(() => Deserialize(deserializer, cancellationSource.Token)).ContinueWith((t) => cancellationSource.Cancel());
 
