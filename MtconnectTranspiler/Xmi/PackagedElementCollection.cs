@@ -6,6 +6,7 @@ using System.Xml;
 using MtconnectTranspiler.Contracts;
 using System.Xml.Serialization;
 using System.Xml.Linq;
+using MtconnectTranspiler.Contracts.Navigation;
 
 namespace MtconnectTranspiler.Xmi
 {
@@ -47,7 +48,7 @@ namespace MtconnectTranspiler.Xmi
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentNullException(nameof(id));
             int index = -1;
-            if (NameCache.TryGetValue(id!, out index))
+            if (IdCache.TryGetValue(id!, out index))
                 return Items.ElementAt(index);
 
             return Get((e) => e.Id!.Equals(id, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
@@ -90,7 +91,10 @@ namespace MtconnectTranspiler.Xmi
                 NameCache.Add(item.Name!, index);
 
             if (!string.IsNullOrEmpty(item.Id) && !IdCache.ContainsKey(item.Id!))
+            {
                 IdCache.Add(item.Id!, index);
+                IdCacheContextHolder.Current?.AddToCache(item.Id!, item);
+            }
 
             if (!Cache.Contains(index))
                 Cache.Add(index);

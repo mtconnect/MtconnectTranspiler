@@ -26,6 +26,7 @@ namespace MtconnectTranspiler.Xmi.UML
         [XmlElement(ElementName = XmlHelper.XmiStructure.PACKAGE_IMPORT, Namespace = "")]
         public UmlPackageImport[]? Imports { get; set; }
 
+        private XmlElement[]? _packagedElements;
         /// <summary>
         /// Represents <c>&lt;packagedElement /&gt;</c> element(s):
         /// <list type="bullet">
@@ -33,7 +34,15 @@ namespace MtconnectTranspiler.Xmi.UML
         /// </list>
         /// </summary>
         [XmlAnyElement(XmlHelper.XmiStructure.PACKAGED_ELEMENT, Namespace = "")]
-        public XmlElement[]? PackagedElements { get; set; }
+        public XmlElement[]? PackagedElements
+        {
+            get { return _packagedElements; }
+            set
+            {
+                _packagedElements = value;
+                _packages = PackagedElementCollection<UmlPackage>.Deserialize(PackagedElements, XmlHelper.UmlStructure.Package);
+            }
+        }
 
         /// <summary>
         /// Internal switch property for <see cref="Packages"/>.
@@ -44,7 +53,7 @@ namespace MtconnectTranspiler.Xmi.UML
         /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlPackage"/>
         /// </summary>
         [XmlIgnore]
-        public PackagedElementCollection<UmlPackage> Packages => _packages ??= PackagedElementCollection<UmlPackage>.Deserialize(PackagedElements, XmlHelper.UmlStructure.Package);
+        public PackagedElementCollection<UmlPackage>? Packages => _packages;
 
         /// <summary>
         /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.MetamodelReference"/>

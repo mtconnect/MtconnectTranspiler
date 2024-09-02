@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using MtconnectTranspiler.Contracts.Navigation;
 using MtconnectTranspiler.Xmi;
 using System.Threading;
 using System.Xml;
@@ -49,18 +50,25 @@ namespace MtconnectTranspiler.Contracts
         {
             XmiDocument? result = null;
 
-            XmlRootAttribute xRoot = new XmlRootAttribute();
-            xRoot.ElementName = xDoc.DocumentElement.LocalName;
-            xRoot.IsNullable = true;
-            xRoot.Namespace = XmlHelper.XmiNamespace;
-            XmlSerializer serial = new XmlSerializer(typeof(Xmi.XmiDocument), xRoot);
-            // Deserialize the XmlNode
-            using (XmlNodeReader xReader = new XmlNodeReader(xDoc.DocumentElement))
+            using(IdCacheContext cacheContext = new IdCacheContext())
             {
-                object? deserializedObject = serial.Deserialize(xReader);
+                XmlRootAttribute xRoot = new XmlRootAttribute();
+                xRoot.ElementName = xDoc.DocumentElement.LocalName;
+                xRoot.IsNullable = true;
+                xRoot.Namespace = XmlHelper.XmiNamespace;
+                XmlSerializer serial = new XmlSerializer(typeof(Xmi.XmiDocument), xRoot);
+                // Deserialize the XmlNode
+                using (XmlNodeReader xReader = new XmlNodeReader(xDoc.DocumentElement))
+                {
+                    object? deserializedObject = serial.Deserialize(xReader, new DeserializationHandlers(_logger).ToDeserializationEvents());
 
-                result = deserializedObject as XmiDocument;
-
+                    result = deserializedObject as XmiDocument;
+                    if (result != null)
+                    {
+                        result.SourceDocument = xDoc;
+                        result.IdCache = cacheContext.IdCache;
+                    }
+                }
             }
 
             return result;

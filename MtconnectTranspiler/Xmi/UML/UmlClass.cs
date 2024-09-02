@@ -29,9 +29,7 @@ namespace MtconnectTranspiler.Xmi.UML
         /// <c>isAbstract</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.isAbstract, Namespace = "")]
-        private bool _isAbstract { get; set; }
-        /// <inheritdoc cref="_isAbstract"/>
-        public bool IsAbstract => _isAbstract;
+        public bool IsAbstract { get; set; }
 
         /// <summary>
         /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlConstraint"/>

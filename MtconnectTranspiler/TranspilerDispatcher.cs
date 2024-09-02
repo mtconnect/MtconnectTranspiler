@@ -73,7 +73,7 @@ namespace MtconnectTranspiler
         /// <param name="cancellationToken">Optional reference to a cancellation token since this operation may be a long running method.</param>
         /// <returns>Task</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task DispatchAsync(XmiDocument model, CancellationToken cancellationToken = default)
+        private async Task DispatchAsync(XmiDocument model, CancellationToken cancellationToken = default)
         {
 
             if (model == null) throw new ArgumentNullException(nameof(model));

@@ -1,5 +1,7 @@
 ﻿using MtconnectTranspiler.Contracts;
 using System;
+using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace MtconnectTranspiler.Xmi.UML
@@ -17,9 +19,7 @@ namespace MtconnectTranspiler.Xmi.UML
         /// <c>association</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.association, Namespace = "")]
-        private string? _association { get; set; }
-        /// <inheritdoc cref="_association"/>
-        public string Association => _association ?? string.Empty;
+        public string? Association { get; set; }
 
         // TODO: Lookup the uml:Association[@name] to determine the expected Property Name
         // TODO: Figure out how to determine if the associated type is an array. Possibly just a reference to the lowerValue/upperValue elements
@@ -28,33 +28,25 @@ namespace MtconnectTranspiler.Xmi.UML
         /// <c>aggregation</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.aggregation, Namespace = "")]
-        private string? _aggregation { get; set; }
-        /// <inheritdoc cref="_aggregation"/>
-        public string Aggregation => _aggregation ?? string.Empty;
+        public string? Aggregation { get; set; }
 
         /// <summary>
         /// <c>type</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.type, Namespace = "")]
-        private string? _propertyType { get; set; }
-        /// <inheritdoc cref="_propertyType"/>
-        public string PropertyType => _propertyType ?? string.Empty;
+        public string? PropertyType { get; set; }
 
         /// <summary>
         /// <c>isStatic</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.isStatic, Namespace = "")]
-        private bool _isStatic { get; set; }
-        /// <inheritdoc cref="_isStatic"/>
-        public bool IsStatic => _isStatic;
+        public bool IsStatic { get; set; }
 
         /// <summary>
         /// <c>isReadOnly</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.isReadOnly, Namespace = "")]
-        private bool _isReadOnly { get; set; }
-        /// <inheritdoc cref="_isReadOnly"/>
-        public bool IsReadOnly => _isReadOnly;
+        public bool IsReadOnly { get; set; }
 
         /// <summary>
         /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.LowerValue"/>
@@ -63,10 +55,81 @@ namespace MtconnectTranspiler.Xmi.UML
         public LowerValue? LowerValue { get; set; }
 
         /// <summary>
-        /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlInstanceValue"/>
+        /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.DefaultValue"/>
         /// </summary>
-        [XmlElement(ElementName = XmlHelper.XmiStructure.DEFAULT_VALUE, Namespace = "")]
-        public UmlInstanceValue? DefaultValue { get; set; }
+        [XmlAnyElement(XmlHelper.XmiStructure.DEFAULT_VALUE, Namespace = "")]
+        public XmlElement? DefaultValueElement { get; set; }
+
+        private DefaultValue? _defaultValue;
+        /// <summary>
+        /// Reference to the literal value for <see cref="DefaultValueElement"/>. For example, consider:<br/>
+        /// <example>
+        /// <pre><code>
+        /// &lt;defaultValue xmi:type='uml:InstanceValue' xmi:id='{SysML ID}' instance='_19_0_3_68e0225_1640604494524_915253_429' /&gt;<br/>
+        /// ...
+		///	&lt;packagedElement xmi:type='uml:Enumeration' xmi:id='{SysML ID}' name='MaintenanceListIntervalEnum'&gt;<br/>
+		///		&lt;ownedLiteral xmi:type='uml:EnumerationLiteral' xmi:id='_19_0_3_68e0225_1640604494524_915253_429' name='ABSOLUTE'/&gt;<br/>
+		///		&lt;ownedLiteral xmi:type='uml:EnumerationLiteral' xmi:id='{SysML ID}' name='INCREMENTAL'/&gt;<br/>
+		///	&lt;/packagedElement&gt;
+        /// </code></pre>
+        /// </example><br/>
+        /// In this case, <see cref="DefaultValue"/> would be equal to the element for <c>ABSOLUTE</c>.
+        /// </summary>
+        public DefaultValue? DefaultValue
+        {
+            get
+            {
+                if (_defaultValue != null)
+                    return _defaultValue;
+                if (DefaultValueElement == null)
+                    return null;
+
+                XmlRootAttribute xRoot = new XmlRootAttribute
+                {
+                    ElementName = XmlHelper.XmiStructure.DEFAULT_VALUE,
+                    IsNullable = true,
+                    Namespace = ""
+                };
+
+                using var xReader = new XmlNodeReader(DefaultValueElement);
+
+                XmlSerializer? serial = null;
+                string umlType = DefaultValueElement.GetAttribute(XmlHelper.XmiStructure.type, XmlHelper.XmiNamespace);
+                switch (umlType)
+                {
+                    case XmlHelper.UmlStructure.InstanceValue:
+                        serial = new XmlSerializer(typeof(UmlInstanceValue), xRoot);
+                        break;
+                    case XmlHelper.UmlStructure.LiteralString:
+                        serial = new XmlSerializer(typeof(UmlLiteralString), xRoot);
+                        break;
+                    default:
+                        break;
+                }
+
+                if (serial != null)
+                {
+                    object? deserializedObject = serial.Deserialize(xReader);
+
+                    if (deserializedObject != null)
+                    {
+                        switch (umlType)
+                        {
+                            case XmlHelper.UmlStructure.InstanceValue:
+                                _defaultValue = deserializedObject as UmlInstanceValue;
+                                break;
+                            case XmlHelper.UmlStructure.LiteralString:
+                                _defaultValue = deserializedObject as UmlLiteralString;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                return _defaultValue;
+            }
+        }
 
         /// <summary>
         /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.XmiExtension"/>
@@ -78,9 +141,7 @@ namespace MtconnectTranspiler.Xmi.UML
         /// <c>visibility</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.visibility, Namespace = "")]
-        private string _visibility { get; set; } = "public";
-        /// <inheritdoc cref="_visibility"/>
-        public string Visibility => _visibility;
+        public string Visibility { get; set; } = "public";
 
         /// <summary>
         /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlComment"/>

@@ -20,9 +20,7 @@ namespace MtconnectTranspiler.Xmi
         /// <c>isQuery</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.isQuery, Namespace = "")]
-        internal bool _isQuery { get; set; }
-        /// <inheritdoc cref="_isQuery"/>
-        public bool isQuery => _isQuery;
+        public bool isQuery { get; set; }
 
         /// <summary>
         /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlComment"/>
