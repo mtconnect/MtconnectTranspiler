@@ -10,7 +10,7 @@ namespace MtconnectTranspiler.Xmi.MagicDrawProfile
     /// </summary>
     public abstract class ProfileElement
     {
-        private string _id;
+        private string? _id;
         /// <summary>
         /// <c>xmi:id</c> attribute
         /// </summary>
@@ -21,7 +21,8 @@ namespace MtconnectTranspiler.Xmi.MagicDrawProfile
             set
             {
                 _id = value;
-                IdCacheContextHolder.Current?.AddToCache(_id, this);
+                if (!string.IsNullOrEmpty(_id))
+                    IdCacheContextHolder.Current?.AddToCache(_id!, this);
             }
         }
     }

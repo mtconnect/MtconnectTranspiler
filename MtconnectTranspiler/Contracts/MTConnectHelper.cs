@@ -39,6 +39,8 @@ namespace MtconnectTranspiler.Contracts
             { MTConnectVersion.v2_1, "v2.1" },
             { MTConnectVersion.v2_2, "v2.2" },
             { MTConnectVersion.v2_3, "v2.3" },
+            { MTConnectVersion.v2_4, "v2.4" },
+            { MTConnectVersion.v2_5, "v2.5" },
         };
 
         /// <summary>
@@ -111,7 +113,7 @@ namespace MtconnectTranspiler.Contracts
             if (string.IsNullOrEmpty(id))
                 return null;
 
-            return model.JumpToPackage(PackageNavigationTree.Profile.DataTypes)?.DataTypes.GetById(id);
+            return model.JumpToPackage(PackageNavigationTree.Profile.DataTypes)?.DataTypes?.GetById(id);
         }
 
         /// <summary>
@@ -134,10 +136,10 @@ namespace MtconnectTranspiler.Contracts
                 if (paths.Length <= 1)
                     throw new ArgumentException(nameof(navigationPath), "Navigation path must contain more than a reference to 'Profile'");
 
-                packages = model.Model?.Profiles.GetByName("Profile").Packages;
+                packages = model.Model?.Profiles?.GetByName("Profile").Packages;
             } else
             {
-                package = model.Model?.Packages.GetByName(paths[0]);
+                package = model.Model?.Packages?.GetByName(paths[0]);
                 packages = package?.Packages;
             }
 
@@ -146,7 +148,7 @@ namespace MtconnectTranspiler.Contracts
                 // model.Model.Packages;
                 for (int i = 1; i < paths.Length; i++)
                 {
-                    UmlPackage? pathResult = packages.GetByName(paths[i]);
+                    UmlPackage? pathResult = packages!.GetByName(paths[i]);
                     if (pathResult != null)
                     {
                         packages = pathResult.Packages;

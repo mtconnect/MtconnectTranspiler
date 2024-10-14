@@ -25,5 +25,11 @@ namespace MtconnectTranspiler.Xmi.SysML
         /// <remarks>Foreign key to the <see cref="XmiElement.Id"/> of the object this applies to.</remarks>
         [XmlAttribute(AttributeName = XmlHelper.SysMLStructure.baseClass, Namespace = "")]
         public string? BaseClass { get; set; }
+
+        /// <summary>
+        /// <c>isEncapsulated</c> attribute
+        /// </summary>
+        [XmlAttribute(AttributeName = XmlHelper.SysMLStructure.isEncapsulated, Namespace = "")]
+        public string? IsEncapsulated { get; set; }
     }
 }

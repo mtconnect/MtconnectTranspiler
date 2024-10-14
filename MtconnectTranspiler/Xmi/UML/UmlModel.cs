@@ -55,7 +55,7 @@ namespace MtconnectTranspiler.Xmi.UML
         /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlProfile"/>
         /// </summary>
         [XmlIgnore]
-        public PackagedElementCollection<UmlProfile> Profiles => _profiles;// ??= PackagedElementCollection<UmlProfile>.Deserialize(PackagedElements, XmlHelper.UmlStructure.Profile);
+        public PackagedElementCollection<UmlProfile>? Profiles => _profiles;
 
         /// <summary>
         /// Internal switch property for <see cref="Packages"/>.
@@ -66,6 +66,10 @@ namespace MtconnectTranspiler.Xmi.UML
         /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlPackage"/>
         /// </summary>
         [XmlIgnore]
-        public PackagedElementCollection<UmlPackage> Packages => _packages;// ??= PackagedElementCollection<UmlPackage>.Deserialize(PackagedElements, XmlHelper.UmlStructure.Package);
+        public PackagedElementCollection<UmlPackage>? Packages => _packages;
+
+        /// <inheritdoc cref="UmlProfileApplication"/>
+        [XmlElement(XmlHelper.XmiStructure.PROFILE_APPLICATION, Namespace = "")]
+        public UmlProfileApplication? ProfileApplication { get; set; }
     }
 }

@@ -96,6 +96,22 @@
         /// <summary>
         /// Refers to Version 2.3.1 of MTConnect
         /// </summary>
-        v2_3_1
+        v2_3_1,
+        /// <summary>
+        /// Refers to Version 2.4.0 of MTConnect
+        /// </summary>
+        v2_4,
+        /// <summary>
+        /// Refers to Version 2.4.1 of MTConnect
+        /// </summary>
+        v2_4_1,
+        /// <summary>
+        /// Refers to Version 2.5.0 of MTConnect
+        /// </summary>
+        v2_5,
+        /// <summary>
+        /// Refers to Version 2.5.1 of MTConnect
+        /// </summary>
+        v2_5_1
     }
 }

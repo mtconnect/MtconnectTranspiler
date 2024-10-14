@@ -46,6 +46,10 @@ namespace MtconnectTranspiler.Contracts
             _logger?.LogWarning("Unreferenced Object: {Id} = {Object}", e.UnreferencedId, e.UnreferencedObject);
         }
 
+        /// <summary>
+        /// Constructs deserialization event configuration.
+        /// </summary>
+        /// <returns>Configuration for all Unknown node events</returns>
         public XmlDeserializationEvents ToDeserializationEvents()
             => new XmlDeserializationEvents()
             {

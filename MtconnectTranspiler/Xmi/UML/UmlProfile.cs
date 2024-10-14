@@ -53,7 +53,7 @@ namespace MtconnectTranspiler.Xmi.UML
         /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlPackage"/>
         /// </summary>
         [XmlIgnore]
-        public PackagedElementCollection<UmlPackage> Packages => _packages;// ??= PackagedElementCollection<UmlPackage>.Deserialize(PackagedElements, XmlHelper.UmlStructure.Package);
+        public PackagedElementCollection<UmlPackage>? Packages => _packages;
 
         /// <summary>
         /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.MetamodelReference"/>

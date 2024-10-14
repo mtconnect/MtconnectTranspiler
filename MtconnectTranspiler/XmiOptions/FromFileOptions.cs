@@ -2,10 +2,10 @@
 using MtconnectTranspiler.Contracts;
 using System.IO;
 
-namespace MtconnectTranspiler
+namespace MtconnectTranspiler.XmiOptions
 {
     /// <summary>
-    /// Options for constructing an instance of <see cref="TranspilerDispatcher"/> by retrieving the <see cref="XmiDeserializer"/> using the <see cref="FromFileOptions.Filepath"/> as a reference to the <c>.xmi</c> of the MTConnect Standard SysML model.
+    /// Options for constructing an instance of <see cref="TranspilerDispatcher"/> by retrieving the <see cref="XmiDeserializer"/> using the <see cref="Filepath"/> as a reference to the <c>.xmi</c> of the MTConnect Standard SysML model.
     /// </summary>
     public class FromFileOptions : TranspilerDispatcherOptions
     {
@@ -16,7 +16,7 @@ namespace MtconnectTranspiler
 
         /// <inheritdoc />
         /// <exception cref="FileNotFoundException"></exception>
-        public override XmiDeserializer GetDeserializer(ILogger<XmiDeserializer> logger = null)
+        public override XmiDeserializer GetDeserializer(ILogger<XmiDeserializer>? logger = null)
         {
             if (!File.Exists(Filepath))
                 throw new FileNotFoundException("Could not find specified XMI file", Filepath);

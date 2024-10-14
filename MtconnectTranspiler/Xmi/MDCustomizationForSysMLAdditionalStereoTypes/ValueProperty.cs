@@ -14,7 +14,7 @@ namespace MtconnectTranspiler.Xmi.MDCustomizationForSysMLAdditionalStereoTypes
         /// <c>base_Property</c> attribute
         /// </summary>
         /// <remarks>Foreign key to the <see cref="XmiElement.Id"/> of the object this applies to.</remarks>
-        [XmlAttribute(AttributeName = XmlHelper.MDCustomizationForSysMLAdditionalStereoTypes.baseProperty, Namespace = "")]
+        [XmlAttribute(AttributeName = XmlHelper.MDCustomizationForSysMLAdditionalStereoTypes.baseProperty, Namespace = XmlHelper.Md_Customization_for_SysML__additional_stereotypesNamespace)]
         public string? BaseProperty { get; set; }
     }
 }

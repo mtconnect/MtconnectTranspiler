@@ -9,7 +9,7 @@ namespace MtconnectTranspiler.Xmi.SysML
     /// </summary>
     public abstract class ProfileElement
     {
-        private string _id;
+        private string? _id;
         /// <summary>
         /// <c>xmi:id</c> attribute
         /// </summary>
@@ -20,7 +20,8 @@ namespace MtconnectTranspiler.Xmi.SysML
             set
             {
                 _id = value;
-                IdCacheContextHolder.Current?.AddToCache(_id, this);
+                if (!string.IsNullOrEmpty(_id))
+                    IdCacheContextHolder.Current?.AddToCache(_id!, this);
             }
         }
     }

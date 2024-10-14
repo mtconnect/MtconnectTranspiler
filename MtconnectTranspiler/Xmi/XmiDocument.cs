@@ -23,6 +23,17 @@ namespace MtconnectTranspiler.Xmi
         public XmlDocument SourceDocument { get; set; }
 
         /// <summary>
+        /// Cache of <c>xmi:id</c> attribute links to entities.
+        /// </summary>
+        [XmlIgnore]
+        public Dictionary<string, object> IdCache { get; set; } = new Dictionary<string, object>();
+
+        /// <summary>
+        /// Reference to the underlying XML document for deserialization.
+        /// </summary>
+        public XmlDocument? SourceDocument { get; set; }
+
+        /// <summary>
         /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.XmiDocumentation"/>
         /// </summary>
         public XmiDocumentation? Documentation { get; set; }
@@ -211,6 +222,9 @@ namespace MtconnectTranspiler.Xmi
         public SysMLNestedConnectorEnd[]? SysMLNestedConnectorEnds { get; set; }
         #endregion
 
+        /// <summary>
+        /// Child element not handled in deserialization.
+        /// </summary>
         [XmlAnyElement]
         public object[]? AllChildElements { get; set; }
     }

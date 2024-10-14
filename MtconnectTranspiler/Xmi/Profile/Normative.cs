@@ -24,15 +24,15 @@ namespace MtconnectTranspiler.Xmi.Profile
         public string? Introduced { get; set; }
 
         /// <summary>
-        /// <c>deprecated</c> attribute
+        /// <c>&lt;updated /&gt;</c> element
         /// </summary>
-        [XmlAttribute(AttributeName = XmlHelper.XmiStructure.deprecated, Namespace = "")]
-        public string? Deprecated { get; set; }
+        [XmlElement(ElementName = XmlHelper.ProfileStructure.UPDATED, Namespace = "")]
+        public string[]? Updated { get; set; }
 
         /// <summary>
-        /// <c>updated</c> elements
+        /// <c>deprecated</c> attribute
         /// </summary>
-        [XmlElement(ElementName = XmlHelper.XmiStructure.updated, Namespace = "")]
-        public string[]? Updated { get; set; }
+        [XmlAttribute(AttributeName = XmlHelper.ProfileStructure.DEPRECATED, Namespace = "")]
+        public string? Deprecated { get; set; }
     }
 }

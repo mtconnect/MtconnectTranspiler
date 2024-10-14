@@ -11,7 +11,8 @@ namespace MtconnectTranspiler
         /// <summary>
         /// Returns an instance of <see cref="XmiDeserializer"/> that has a copy of the SysML model in memory.
         /// </summary>
+        /// <param name="logger">Reference to dependency injected logger.</param>
         /// <returns>Instance of <see cref="XmiDeserializer"/></returns>
-        public abstract XmiDeserializer GetDeserializer(ILogger<XmiDeserializer> logger = null);
+        public abstract XmiDeserializer GetDeserializer(ILogger<XmiDeserializer>? logger = null);
     }
 }
