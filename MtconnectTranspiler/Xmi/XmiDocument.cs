@@ -17,11 +17,6 @@ namespace MtconnectTranspiler.Xmi
     [Serializable, XmlRoot(ElementName = "XMI", Namespace = XmlHelper.XmiNamespace)]
     public class XmiDocument
     {
-        [XmlIgnore]
-        public Dictionary<string, object> IdCache { get; set; }
-
-        public XmlDocument SourceDocument { get; set; }
-
         /// <summary>
         /// Cache of <c>xmi:id</c> attribute links to entities.
         /// </summary>

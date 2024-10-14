@@ -202,25 +202,6 @@
             #endregion
         }
 
-        public static class SysMLStructure
-        {
-            #region XML Tags
-            public const string BLOCK = "Block";
-            public const string VALUE_TYPE = "ValueType";
-            public const string BINDING_CONNECTOR = "BindingConnector";
-            public const string NESTED_CONNECTOR_END = "NestedConnectorEnd";
-            #endregion
-
-            #region XML Attributes
-            public const string baseClass = "base_Class";
-            public const string baseElement = "base_Element";
-            public const string baseDataType = "base_DataType";
-            public const string baseConnector = "base_Connector";
-            public const string baseConnectorEnd = "base_ConnectorEnd";
-            public const string propertyPath = "propertyPath";
-            #endregion
-        }
-
         public class UmlStructure
         {
             #region UML xmi:type options
