@@ -22,5 +22,17 @@ namespace MtconnectTranspiler.Xmi.Profile
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.introduced, Namespace = "")]
         public string? Introduced { get; set; }
+
+        /// <summary>
+        /// <c>deprecated</c> attribute
+        /// </summary>
+        [XmlAttribute(AttributeName = XmlHelper.XmiStructure.deprecated, Namespace = "")]
+        public string? Deprecated { get; set; }
+
+        /// <summary>
+        /// <c>updated</c> elements
+        /// </summary>
+        [XmlElement(ElementName = XmlHelper.XmiStructure.updated, Namespace = "")]
+        public string[]? Updated { get; set; }
     }
 }

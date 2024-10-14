@@ -40,6 +40,7 @@
             public const string EQUIVALENT_CLASS = "Equivalent_Class";
             public const string FUNCTIONAL = "Functional";
             public const string RESOURCE = "Resource";
+            public const string TRANSITIVE = "Transitive";
             public const string DISJOINT_WITH = "Disjoint_With";
             public const string ANYTHING = "Anything";
             #endregion
@@ -152,6 +153,8 @@
             public const string name = "name";
             public const string version = "version";
             public const string introduced = "introduced";
+            public const string deprecated = "deprecated";
+            public const string updated = "updated";
             public const string baseElement = "base_Element";
             public const string baseClass = "base_Class";
             public const string baseComment = "base_Comment";
