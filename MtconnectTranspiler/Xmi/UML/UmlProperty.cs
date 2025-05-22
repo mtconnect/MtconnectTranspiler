@@ -55,6 +55,12 @@ namespace MtconnectTranspiler.Xmi.UML
         public LowerValue? LowerValue { get; set; }
 
         /// <summary>
+        /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.UpperValue"/>
+        /// </summary>
+        [XmlElement(ElementName = XmlHelper.XmiStructure.UPPER_VALUE, Namespace = "")]
+        public UpperValue? UpperValue { get; set; }
+
+        /// <summary>
         /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.DefaultValue"/>
         /// </summary>
         [XmlAnyElement(XmlHelper.XmiStructure.DEFAULT_VALUE, Namespace = "")]
@@ -132,10 +138,24 @@ namespace MtconnectTranspiler.Xmi.UML
         }
 
         /// <summary>
-        /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.XmiExtension"/>
+        /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.XmiExtension"/> and may contain lower and upper value limits. For example, multiplicitiy of <c>1</c> may look like this:<br/>
+        /// <example>
+        /// <pre><code>
+        /// &lt;xmi:Extension&gt;
+        ///     &lt;modelExtension&gt;
+        ///         &lt;lowerValue xmi:type='uml:LiteralInteger' xmi:id='...' value='1'/&gt;
+        ///     &lt;/modelExtension&gt;
+        /// &lt;/xmi:Extension&gt;
+        /// &lt;xmi:Extension&gt;
+        ///     &lt;modelExtension&gt;
+        ///         &lt;upperValue xmi:type='uml:LiteralInteger' xmi:id='...' value='1'/&gt;
+        ///     &lt;/modelExtension&gt;
+        /// &lt;/xmi:Extension&gt;
+        /// </code></pre>
+        /// </example>
         /// </summary>
         [XmlElement(ElementName = XmlHelper.XmiStructure.EXTENSION, Namespace = XmlHelper.XmiNamespace)]
-        public XmiExtension? Extension { get; set; }
+        public XmiExtension[]? Extensions { get; set; }
 
         /// <summary>
         /// <c>visibility</c> attribute
