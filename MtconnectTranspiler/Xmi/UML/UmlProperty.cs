@@ -55,6 +55,12 @@ namespace MtconnectTranspiler.Xmi.UML
         public LowerValue? LowerValue { get; set; }
 
         /// <summary>
+        /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.UpperValue"/>
+        /// </summary>
+        [XmlElement(ElementName = XmlHelper.XmiStructure.UPPER_VALUE, Namespace = "")]
+        public UpperValue? UpperValue { get; set; }
+
+        /// <summary>
         /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.DefaultValue"/>
         /// </summary>
         [XmlAnyElement(XmlHelper.XmiStructure.DEFAULT_VALUE, Namespace = "")]
