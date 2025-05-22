@@ -22,6 +22,9 @@ namespace MtconnectTranspiler.Xmi
         [XmlElement(XmlHelper.XmiStructure.FILE_PART, Namespace = "")]
         public FilePart[]? FileParts { get; set; }
 
+        [XmlElement(XmlHelper.XmiStructure.MODEL_EXTENSION, Namespace = "")]
+        public ModelExtension? ModelExtension { get; set; }
+
         /// <summary>
         /// Child element not handled in deserialization.
         /// </summary>
