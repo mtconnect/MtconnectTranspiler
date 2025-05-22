@@ -133,6 +133,38 @@ namespace MtconnectTranspiler.Contracts.Navigation
             public NavigationItem ComponentConfigurationParameters => _ComponentConfigurationParameters ??= (this, "Component Configuration Parameters");
 
 
+            private NavigationItem? _Fixture;
+            /// <summary>
+            /// <inheritdoc cref="NavigationItem" /> to <c>Fixture</c>
+            /// </summary>
+            public NavigationItem Fixture => _Fixture ??= (this, "Fixture");
+
+
+            private PalletNavigation? _Pallet;
+            /// <summary>
+            /// <inheritdoc cref="Pallet" /> to <c>Pallet</c>
+            /// </summary>
+            public PalletNavigation Pallet => _Pallet ??= new PalletNavigation(this);
+            /// <summary>
+            /// <inheritdoc cref="NavigationItem" /> to <c>Pallet</c>
+            /// </summary>
+            public class PalletNavigation : NavigationItem
+            {
+                private NavigationItem? _Measurements;
+                /// <summary>
+                /// <inheritdoc cref="NavigationItem" /> to <c>Measurements</c>
+                /// </summary>
+                public NavigationItem Measurements => _Measurements ??= (this, "Measurements");
+
+
+
+                /// <summary>
+                /// Constructs a new <see cref="PalletNavigation" /> navigation tree.
+                /// </summary>
+                /// <param name="parent">Reference to the parent branch <see cref="AssetInformationModelNavigation"/></param>
+                public PalletNavigation(AssetInformationModelNavigation parent) : base("Pallet", parent) { }
+            }
+
 
             /// <summary>
             /// Constructs a new <see cref="AssetInformationModelNavigation" /> navigation tree.
@@ -1133,5 +1165,8 @@ namespace MtconnectTranspiler.Contracts.Navigation
             /// </summary>
             public WIPUseCasesNavigation() : base("WIP: Use Cases") { }
         }
+
+
+
     }
 }
