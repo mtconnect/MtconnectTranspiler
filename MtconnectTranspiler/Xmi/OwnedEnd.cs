@@ -11,12 +11,6 @@ namespace MtconnectTranspiler.Xmi
     public class OwnedEnd : XmiElement
     {
         /// <summary>
-        /// <c>visibility</c> attribute
-        /// </summary>
-        [XmlAttribute(AttributeName = XmlHelper.XmiStructure.visibility, Namespace = "")]
-        public string? Visibility { get; set; }
-
-        /// <summary>
         /// <c>aggregation</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.aggregation, Namespace = "")]

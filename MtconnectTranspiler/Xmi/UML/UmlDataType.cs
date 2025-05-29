@@ -20,12 +20,6 @@ namespace MtconnectTranspiler.Xmi.UML
         public bool IsAbstract { get; set; }
 
         /// <summary>
-        /// <c>visibility</c> attribute
-        /// </summary>
-        [XmlAttribute(AttributeName = XmlHelper.XmiStructure.visibility, Namespace = "")]
-        public string Visibility { get; set; } = "public";
-
-        /// <summary>
         /// Collection of <inheritdoc cref="UmlComment"/>
         /// </summary>
         [XmlElement(ElementName = XmlHelper.XmiStructure.OWNED_COMMENT, Namespace = "")]

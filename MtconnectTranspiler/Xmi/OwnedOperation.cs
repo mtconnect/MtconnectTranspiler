@@ -11,12 +11,6 @@ namespace MtconnectTranspiler.Xmi
     public class OwnedOperation : XmiElement
     {
         /// <summary>
-        /// <c>visibility</c> attribute
-        /// </summary>
-        [XmlAttribute(AttributeName = XmlHelper.XmiStructure.visibility, Namespace = "")]
-        public string? Visibility { get; set; }
-
-        /// <summary>
         /// <c>isQuery</c> attribute
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.isQuery, Namespace = "")]
