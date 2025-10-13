@@ -3,6 +3,7 @@
     /// <summary>
     /// Options for released versions of MTConnect. See also <seealso cref="SemanticVersions.Versions"/> for semantic structures and release dates
     /// </summary>
+    // TODO: Keep this enum up-to-date with each release.
     public enum MTConnectVersion
     {
         /// <summary>
@@ -112,6 +113,14 @@
         /// <summary>
         /// Refers to Version 2.5.1 of MTConnect
         /// </summary>
-        v2_5_1
+        v2_5_1,
+        /// <summary>
+        /// Refers to Version 2.6.0 of MTConnect
+        /// </summary>
+        v2_6,
+        /// <summary>
+        /// Refers to Version 2.6.1 of MTConnect
+        /// </summary>
+        v2_6_1
     }
 }
