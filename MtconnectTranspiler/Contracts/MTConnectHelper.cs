@@ -23,7 +23,7 @@ namespace MtconnectTranspiler.Contracts
         /// <summary>
         /// Lookup table for each released version of MTConnect and the respective GitHub tags in the SysML model repository.
         /// </summary>
-        /// <remarks>TODO: Keep this dictionary up-to-date with each release. <see href="https://api.github.com/repos/mtconnect/mtconnect_sysml_model/releases"/>.</remarks>
+        // TODO: Keep this dictionary up-to-date with each release. <see href="https://api.github.com/repos/mtconnect/mtconnect_sysml_model/releases"/>.
         public static Dictionary<MTConnectVersion, string> VersionGitTags { get; } = new Dictionary<MTConnectVersion, string>()
         {
             { MTConnectVersion.v1_0_1, "v1.5" },
@@ -41,6 +41,7 @@ namespace MtconnectTranspiler.Contracts
             { MTConnectVersion.v2_3, "v2.3" },
             { MTConnectVersion.v2_4, "v2.4" },
             { MTConnectVersion.v2_5, "v2.5" },
+            { MTConnectVersion.v2_6, "v2.6" },
         };
 
         /// <summary>

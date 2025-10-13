@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using static System.Net.WebRequestMethods;
 
 namespace MtconnectTranspiler.Contracts
 {
@@ -9,8 +10,9 @@ namespace MtconnectTranspiler.Contracts
     public static class SemanticVersions
     {
         /// <summary>
-        /// Collection of semantic versions of the MTConnect Standard
+        /// Collection of semantic versions of the MTConnect Standard. Release date refers to the "Adoption" date listed on the projects site: <see href="https://projects.mtconnect.org/"/>
         /// </summary>
+        // TODO: Keep this dictionary up-to-date with each release. Refer to "Adoption" date in the projects site: https://projects.mtconnect.org/
         public readonly static Dictionary<MTConnectVersion, SemanticVersion> Versions = new Dictionary<MTConnectVersion, SemanticVersion>()
         {
             { MTConnectVersion.v1_0_1, new SemanticVersion(1, 0, 1, new DateTime(2009, 10, 02)) },
@@ -34,7 +36,14 @@ namespace MtconnectTranspiler.Contracts
             { MTConnectVersion.v2_1_1, new SemanticVersion(2, 1, 1, new DateTime(2023, 01, 14)) },
             { MTConnectVersion.v2_2, new SemanticVersion(2, 2, 0, new DateTime(2023, 07,26)) },
             { MTConnectVersion.v2_2_1, new SemanticVersion(2, 2, 1, new DateTime(2023,07, 26)) },
-            { MTConnectVersion.v2_3, new SemanticVersion(2,3,0, new DateTime(2024, 02, 11)) }
+            { MTConnectVersion.v2_3, new SemanticVersion(2,3,0, new DateTime(2024, 02, 11)) },
+            { MTConnectVersion.v2_3_1, new SemanticVersion(2,3,1, new DateTime(2024, 02, 11)) },
+            { MTConnectVersion.v2_4, new SemanticVersion(2,4,0, new DateTime(2024, 09, 10)) },
+            { MTConnectVersion.v2_4_1, new SemanticVersion(2,4,1, new DateTime(2024, 09, 10)) },
+            { MTConnectVersion.v2_5, new SemanticVersion(2,5,0, new DateTime(2025, 02, 06)) },
+            { MTConnectVersion.v2_5_1, new SemanticVersion(2,5,1, new DateTime(2025, 02, 06)) },
+            { MTConnectVersion.v2_6, new SemanticVersion(2,6,0, new DateTime(2025, 09, 01)) },
+            { MTConnectVersion.v2_6_1, new SemanticVersion(2,6,1, new DateTime(2025, 09, 01)) }
         };
 
         /// <summary>
