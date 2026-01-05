@@ -1,5 +1,6 @@
 ﻿using MtconnectTranspiler.Contracts;
 using System;
+using System.Diagnostics;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -109,7 +110,17 @@ namespace MtconnectTranspiler.Xmi.UML
                     case XmlHelper.UmlStructure.LiteralString:
                         serial = new XmlSerializer(typeof(UmlLiteralString), xRoot);
                         break;
+                    case XmlHelper.UmlStructure.LiteralInteger:
+                        serial = new XmlSerializer(typeof(UmlLiteralInteger), xRoot);
+                        break;
+                    case XmlHelper.UmlStructure.LiteralBoolean:
+                        serial = new XmlSerializer(typeof(UmlLiteralBoolean), xRoot);
+                        break;
+                    case XmlHelper.UmlStructure.LiteralReal:
+                        serial = new XmlSerializer(typeof(UmlLiteralReal), xRoot);
+                        break;
                     default:
+                        Debug.WriteLine($"UmlProperty.DefaultValue: Unhandled xmi:type '{umlType}'");
                         break;
                 }
 
@@ -127,7 +138,17 @@ namespace MtconnectTranspiler.Xmi.UML
                             case XmlHelper.UmlStructure.LiteralString:
                                 _defaultValue = deserializedObject as UmlLiteralString;
                                 break;
+                            case XmlHelper.UmlStructure.LiteralInteger:
+                                _defaultValue = deserializedObject as UmlLiteralInteger;
+                                break;
+                            case XmlHelper.UmlStructure.LiteralBoolean:
+                                _defaultValue = deserializedObject as UmlLiteralBoolean;
+                                break;
+                            case XmlHelper.UmlStructure.LiteralReal:
+                                _defaultValue = deserializedObject as UmlLiteralReal;
+                                break;
                             default:
+                                Debug.WriteLine($"UmlProperty.DefaultValue: Unhandled xmi:type '{umlType}'");
                                 break;
                         }
                     }

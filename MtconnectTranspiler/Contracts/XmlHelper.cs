@@ -258,6 +258,18 @@
             /// </summary>
             public const string LiteralString = "uml:LiteralString";
             /// <summary>
+            /// <c>&lt;defaultValue xmi:type='uml:LiteralInteger' /&gt;</c>
+            /// </summary>
+            public const string LiteralInteger = "uml:LiteralInteger";
+            /// <summary>
+            /// <c>&lt;defaultValue xmi:type='uml:LiteralBoolean' /&gt;</c>
+            /// </summary>
+            public const string LiteralBoolean = "uml:LiteralBoolean";
+            /// <summary>
+            /// <c>&lt;defaultValue xmi:type='uml:LiteralReal' /&gt;</c>
+            /// </summary>
+            public const string LiteralReal = "uml:LiteralReal";
+            /// <summary>
             /// <c>&lt;uml:Model xmi:type='uml:Model' /&gt;</c>
             /// </summary>
             public const string Model = "uml:Model";
