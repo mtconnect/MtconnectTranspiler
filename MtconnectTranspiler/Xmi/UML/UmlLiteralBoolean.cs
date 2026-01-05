@@ -16,7 +16,20 @@ namespace MtconnectTranspiler.Xmi.UML
         /// <summary>
         /// <c>value</c> attribute
         /// </summary>
-        [XmlAttribute(AttributeName = XmlHelper.XmiStructure.value, Namespace = "")]
+        [XmlIgnore]
         public bool? Value { get; set; }
+
+        // Serializer uses this; returns null if Value is null, which omits the attribute
+        [XmlAttribute(AttributeName = XmlHelper.XmiStructure.value, Namespace = "")]
+        public string ValueSerializable
+        {
+            get => Value?.ToString().ToLower(); // UML expects lowercase "true"/"false"
+            set {
+                if (!string.IsNullOrEmpty(value) && bool.TryParse(value, out bool result))
+                    Value = result;
+                else
+                    Value = null;
+            }
+        }
     }
 }

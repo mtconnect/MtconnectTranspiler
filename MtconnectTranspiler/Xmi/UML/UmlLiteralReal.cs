@@ -16,7 +16,20 @@ namespace MtconnectTranspiler.Xmi.UML
         /// <summary>
         /// <c>value</c> attribute
         /// </summary>
-        [XmlAttribute(AttributeName = XmlHelper.XmiStructure.value, Namespace = "")]
+        [XmlIgnore]
         public float? Value { get; set; }
+
+        [XmlAttribute(AttributeName = XmlHelper.XmiStructure.value, Namespace = "")]
+        public string? ValueSerializable
+        {
+            get => Value?.ToString();
+            set
+            {
+                if (!string.IsNullOrEmpty(value) && float.TryParse(value, out var result))
+                    Value = result;
+                else
+                    Value = null;
+            }
+        }
     }
 }
