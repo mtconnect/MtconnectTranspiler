@@ -6,7 +6,7 @@
 	  <Nullable>enable</Nullable>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <Title>MTConnect Transpiler</Title>
-	  <Version>2.7.0</Version>
+	  <Version>2.7.0-voting</Version>
 	  <Authors>mtconnect, tbm0115</Authors>
 	  <Company>MTConnect Institute; TAMS;</Company>
 	  <Description>A library capable of parsing an XMI for the MTConnect Standard and passing it to an implemented transpiler.</Description>
