@@ -1193,5 +1193,57 @@ namespace MtconnectTranspiler.Contracts.Navigation
 
 
 
+                /// <summary>
+                /// Constructs a new <see cref="MachineMonitoringNavigation" /> navigation tree.
+                /// </summary>
+                /// <param name="parent">Reference to the parent branch <see cref="WIPUseCasesNavigation"/></param>
+                public MachineMonitoringNavigation(WIPUseCasesNavigation parent) : base("Machine Monitoring", parent) { }
+            }
+
+            private NavigationItem? _Actors;
+            /// <summary>
+            /// <inheritdoc cref="NavigationItem" /> to <c>Actors</c>
+            /// </summary>
+            public NavigationItem Actors => _Actors ??= (this, "Actors");
+
+
+            private PowerSourceNavigation? _PowerSource;
+            /// <summary>
+            /// <inheritdoc cref="PowerSource" /> to <c>Power Source</c>
+            /// </summary>
+            public PowerSourceNavigation PowerSource => _PowerSource ??= new PowerSourceNavigation(this);
+            /// <summary>
+            /// <inheritdoc cref="NavigationItem" /> to <c>Power Source</c>
+            /// </summary>
+            public class PowerSourceNavigation : NavigationItem
+            {
+                private NavigationItem? _Requirements;
+                /// <summary>
+                /// <inheritdoc cref="NavigationItem" /> to <c>Requirements</c>
+                /// </summary>
+                public NavigationItem Requirements => _Requirements ??= (this, "Requirements");
+
+
+                private NavigationItem? _UseCases;
+                /// <summary>
+                /// <inheritdoc cref="NavigationItem" /> to <c>UseCases</c>
+                /// </summary>
+                public NavigationItem UseCases => _UseCases ??= (this, "UseCases");
+
+
+
+                /// <summary>
+                /// Constructs a new <see cref="PowerSourceNavigation" /> navigation tree.
+                /// </summary>
+                /// <param name="parent">Reference to the parent branch <see cref="WIPUseCasesNavigation"/></param>
+                public PowerSourceNavigation(WIPUseCasesNavigation parent) : base("Power Source", parent) { }
+            }
+
+
+            /// <summary>
+            /// Constructs a new <see cref="WIPUseCasesNavigation" /> navigation tree.
+            /// </summary>
+            public WIPUseCasesNavigation() : base("WIP: Use Cases") { }
+        }
     }
 }
