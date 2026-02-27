@@ -106,5 +106,11 @@ namespace MtconnectTranspiler.Xmi.MagicDrawProfile
         /// </summary>
         [XmlElement(ElementName = XmlHelper.MagicDrawProfileStructure.CUSTOM_COLUMNS, Namespace = "")]
         public string? CustomColumns { get; set; }
+
+        /// <summary>
+        /// <c>includeSubtypesOfRowTypes</c> attribute
+        /// </summary>
+        [XmlAttribute(AttributeName = XmlHelper.MagicDrawProfileStructure.includeSubtypesOfRowTypes, Namespace = "")]
+        public string? IncludeSubtypesOfRowTypes { get; set; }
     }
 }
