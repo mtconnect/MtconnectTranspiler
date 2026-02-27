@@ -123,7 +123,7 @@
         /// </summary>
         v2_6_1,
         /// <summary>
-        /// Refers to Version 2.76.0 of MTConnect
+        /// Refers to Version 2.7.0 of MTConnect
         /// </summary>
         v2_7,
         /// <summary>

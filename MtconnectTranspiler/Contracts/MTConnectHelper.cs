@@ -42,6 +42,7 @@ namespace MtconnectTranspiler.Contracts
             { MTConnectVersion.v2_4, "v2.4" },
             { MTConnectVersion.v2_5, "v2.5" },
             { MTConnectVersion.v2_6, "v2.6" },
+            { MTConnectVersion.v2_7, "v2.7" },
         };
 
         /// <summary>
