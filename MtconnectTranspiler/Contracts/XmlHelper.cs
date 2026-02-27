@@ -24,11 +24,13 @@
             public const string REFERENCE_PROPERTY = "ReferenceProperty";
             public const string CONSTRAINT_PROPERTY = "ConstraintProperty";
             public const string CONSTRAINT_PARAMETER = "ConstraintParameter";
+            public const string EXTERNAL_MODEL = "ExternalModel";
             #endregion
 
             #region XML Attributes
             public const string baseProperty = "base_Property";
             public const string basePort = "base_Port";
+            public const string baseElement = "base_Element";
             #endregion
         }
 
@@ -62,8 +64,11 @@
             public const string ADDITIONAL_PACKAGE_IMPORT = "additionalPackageImport";
             public const string DIAGRAM_INFO = "DiagramInfo";
             public const string DIAGRAM_TABLE = "DiagramTable";
+            public const string INSTANCE_TABLE = "InstanceTable";
             public const string CUSTOM_SORT = "CustomSort";
             public const string ROW_ELEMENTS = "rowElements";
+            public const string HIDE_COLUMNS = "hideColumns";
+            public const string EXPANDED_ROWS = "expandedRows";
             public const string SORT = "sort";
             public const string COLUMN_IDS = "columnIds";
             public const string COLUMN_WIDTH = "columnWidth";
@@ -77,6 +82,12 @@
             public const string baseDiagram = "base_Diagram";
             public const string author = "Author";
             public const string creationDate = "Creation_date";
+            public const string classifiers = "classifiers";
+            public const string scope = "scope";
+            public const string includeSubtypesOfRowTypes = "includeSubtypesOfRowTypes";
+            public const string showUnitsOnValues = "showUnitsOnValues";
+            public const string rowsOrder = "rowsOrder";
+            public const string includeCustomTypesOfRowTypes = "includeCustomTypesOfRowTypes";
             public const string modificationDate = "Modification_date";
             public const string lastModifiedBy = "Last_modified_by";
             public const string baseElement = "base_Element";
