@@ -1,5 +1,6 @@
 ﻿using MtconnectTranspiler.Contracts;
 using System;
+using System.Diagnostics;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -55,6 +56,12 @@ namespace MtconnectTranspiler.Xmi.UML
         public LowerValue? LowerValue { get; set; }
 
         /// <summary>
+        /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.UpperValue"/>
+        /// </summary>
+        [XmlElement(ElementName = XmlHelper.XmiStructure.UPPER_VALUE, Namespace = "")]
+        public UpperValue? UpperValue { get; set; }
+
+        /// <summary>
         /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.DefaultValue"/>
         /// </summary>
         [XmlAnyElement(XmlHelper.XmiStructure.DEFAULT_VALUE, Namespace = "")]
@@ -103,7 +110,17 @@ namespace MtconnectTranspiler.Xmi.UML
                     case XmlHelper.UmlStructure.LiteralString:
                         serial = new XmlSerializer(typeof(UmlLiteralString), xRoot);
                         break;
+                    case XmlHelper.UmlStructure.LiteralInteger:
+                        serial = new XmlSerializer(typeof(UmlLiteralInteger), xRoot);
+                        break;
+                    case XmlHelper.UmlStructure.LiteralBoolean:
+                        serial = new XmlSerializer(typeof(UmlLiteralBoolean), xRoot);
+                        break;
+                    case XmlHelper.UmlStructure.LiteralReal:
+                        serial = new XmlSerializer(typeof(UmlLiteralReal), xRoot);
+                        break;
                     default:
+                        Debug.WriteLine($"UmlProperty.DefaultValue: Unhandled xmi:type '{umlType}'");
                         break;
                 }
 
@@ -121,7 +138,17 @@ namespace MtconnectTranspiler.Xmi.UML
                             case XmlHelper.UmlStructure.LiteralString:
                                 _defaultValue = deserializedObject as UmlLiteralString;
                                 break;
+                            case XmlHelper.UmlStructure.LiteralInteger:
+                                _defaultValue = deserializedObject as UmlLiteralInteger;
+                                break;
+                            case XmlHelper.UmlStructure.LiteralBoolean:
+                                _defaultValue = deserializedObject as UmlLiteralBoolean;
+                                break;
+                            case XmlHelper.UmlStructure.LiteralReal:
+                                _defaultValue = deserializedObject as UmlLiteralReal;
+                                break;
                             default:
+                                Debug.WriteLine($"UmlProperty.DefaultValue: Unhandled xmi:type '{umlType}'");
                                 break;
                         }
                     }
@@ -132,16 +159,24 @@ namespace MtconnectTranspiler.Xmi.UML
         }
 
         /// <summary>
-        /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.XmiExtension"/>
+        /// Child <inheritdoc cref="MtconnectTranspiler.Xmi.XmiExtension"/> and may contain lower and upper value limits. For example, multiplicitiy of <c>1</c> may look like this:<br/>
+        /// <example>
+        /// <pre><code>
+        /// &lt;xmi:Extension&gt;
+        ///     &lt;modelExtension&gt;
+        ///         &lt;lowerValue xmi:type='uml:LiteralInteger' xmi:id='...' value='1'/&gt;
+        ///     &lt;/modelExtension&gt;
+        /// &lt;/xmi:Extension&gt;
+        /// &lt;xmi:Extension&gt;
+        ///     &lt;modelExtension&gt;
+        ///         &lt;upperValue xmi:type='uml:LiteralInteger' xmi:id='...' value='1'/&gt;
+        ///     &lt;/modelExtension&gt;
+        /// &lt;/xmi:Extension&gt;
+        /// </code></pre>
+        /// </example>
         /// </summary>
         [XmlElement(ElementName = XmlHelper.XmiStructure.EXTENSION, Namespace = XmlHelper.XmiNamespace)]
-        public XmiExtension? Extension { get; set; }
-
-        /// <summary>
-        /// <c>visibility</c> attribute
-        /// </summary>
-        [XmlAttribute(AttributeName = XmlHelper.XmiStructure.visibility, Namespace = "")]
-        public string Visibility { get; set; } = "public";
+        public XmiExtension[]? Extensions { get; set; }
 
         /// <summary>
         /// Collection of <inheritdoc cref="MtconnectTranspiler.Xmi.UML.UmlComment"/>

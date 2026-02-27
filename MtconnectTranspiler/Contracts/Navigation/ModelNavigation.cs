@@ -133,6 +133,95 @@ namespace MtconnectTranspiler.Contracts.Navigation
             public NavigationItem ComponentConfigurationParameters => _ComponentConfigurationParameters ??= (this, "Component Configuration Parameters");
 
 
+            private NavigationItem? _Fixture;
+            /// <summary>
+            /// <inheritdoc cref="NavigationItem" /> to <c>Fixture</c>
+            /// </summary>
+            public NavigationItem Fixture => _Fixture ??= (this, "Fixture");
+
+
+            private PalletNavigation? _Pallet;
+            /// <summary>
+            /// <inheritdoc cref="Pallet" /> to <c>Pallet</c>
+            /// </summary>
+            public PalletNavigation Pallet => _Pallet ??= new PalletNavigation(this);
+            /// <summary>
+            /// <inheritdoc cref="NavigationItem" /> to <c>Pallet</c>
+            /// </summary>
+            public class PalletNavigation : NavigationItem
+            {
+                private NavigationItem? _Measurements;
+                /// <summary>
+                /// <inheritdoc cref="NavigationItem" /> to <c>Measurements</c>
+                /// </summary>
+                public NavigationItem Measurements => _Measurements ??= (this, "Measurements");
+
+
+
+                /// <summary>
+                /// Constructs a new <see cref="PalletNavigation" /> navigation tree.
+                /// </summary>
+                /// <param name="parent">Reference to the parent branch <see cref="AssetInformationModelNavigation"/></param>
+                public PalletNavigation(AssetInformationModelNavigation parent) : base("Pallet", parent) { }
+            }
+
+            private ProcessNavigation? _Process;
+            /// <summary>
+            /// <inheritdoc cref="Process" /> to <c>Process</c>
+            /// </summary>
+            public ProcessNavigation Process => _Process ??= new ProcessNavigation(this);
+            /// <summary>
+            /// <inheritdoc cref="NavigationItem" /> to <c>Process</c>
+            /// </summary>
+            public class ProcessNavigation : NavigationItem
+            {
+                private NavigationItem? _Target;
+                /// <summary>
+                /// <inheritdoc cref="NavigationItem" /> to <c>Target</c>
+                /// </summary>
+                public NavigationItem Target => _Target ??= (this, "Target");
+
+
+
+                /// <summary>
+                /// Constructs a new <see cref="ProcessNavigation" /> navigation tree.
+                /// </summary>
+                /// <param name="parent">Reference to the parent branch <see cref="AssetInformationModelNavigation"/></param>
+                public ProcessNavigation(AssetInformationModelNavigation parent) : base("Process", parent) { }
+            }
+
+            private NavigationItem? _Part;
+            /// <summary>
+            /// <inheritdoc cref="NavigationItem" /> to <c>Part</c>
+            /// </summary>
+            public NavigationItem Part => _Part ??= (this, "Part");
+
+
+            private TaskNavigation? _Task;
+            /// <summary>
+            /// <inheritdoc cref="Task" /> to <c>Task</c>
+            /// </summary>
+            public TaskNavigation Task => _Task ??= new TaskNavigation(this);
+            /// <summary>
+            /// <inheritdoc cref="NavigationItem" /> to <c>Task</c>
+            /// </summary>
+            public class TaskNavigation : NavigationItem
+            {
+                private NavigationItem? _TaskArchetype;
+                /// <summary>
+                /// <inheritdoc cref="NavigationItem" /> to <c>Task Archetype</c>
+                /// </summary>
+                public NavigationItem TaskArchetype => _TaskArchetype ??= (this, "Task Archetype");
+
+
+
+                /// <summary>
+                /// Constructs a new <see cref="TaskNavigation" /> navigation tree.
+                /// </summary>
+                /// <param name="parent">Reference to the parent branch <see cref="AssetInformationModelNavigation"/></param>
+                public TaskNavigation(AssetInformationModelNavigation parent) : base("Task", parent) { }
+            }
+
 
             /// <summary>
             /// Constructs a new <see cref="AssetInformationModelNavigation" /> navigation tree.
@@ -181,18 +270,43 @@ namespace MtconnectTranspiler.Contracts.Navigation
                 public NavigationItem MTConnectStreamsResponseDocument => _MTConnectStreamsResponseDocument ??= (this, "MTConnectStreams Response Document");
 
 
-                private NavigationItem? _MTConnectErrorsResponseDocument;
+                private MTConnectErrorsResponseDocumentNavigation? _MTConnectErrorsResponseDocument;
+                /// <summary>
+                /// <inheritdoc cref="MTConnectErrorsResponseDocument" /> to <c>MTConnectErrors Response Document</c>
+                /// </summary>
+                public MTConnectErrorsResponseDocumentNavigation MTConnectErrorsResponseDocument => _MTConnectErrorsResponseDocument ??= new MTConnectErrorsResponseDocumentNavigation(this);
                 /// <summary>
                 /// <inheritdoc cref="NavigationItem" /> to <c>MTConnectErrors Response Document</c>
                 /// </summary>
-                public NavigationItem MTConnectErrorsResponseDocument => _MTConnectErrorsResponseDocument ??= (this, "MTConnectErrors Response Document");
+                public class MTConnectErrorsResponseDocumentNavigation : NavigationItem
+                {
+                    private NavigationItem? _ErrorTypes;
+                    /// <summary>
+                    /// <inheritdoc cref="NavigationItem" /> to <c>Error Types</c>
+                    /// </summary>
+                    public NavigationItem ErrorTypes => _ErrorTypes ??= (this, "Error Types");
 
+
+
+                    /// <summary>
+                    /// Constructs a new <see cref="MTConnectErrorsResponseDocumentNavigation" /> navigation tree.
+                    /// </summary>
+                    /// <param name="parent">Reference to the parent branch <see cref="MTConnectProtocolNavigation"/></param>
+                    public MTConnectErrorsResponseDocumentNavigation(MTConnectProtocolNavigation parent) : base("MTConnectErrors Response Document", parent) { }
+                }
 
                 private NavigationItem? _RESTProtocol;
                 /// <summary>
                 /// <inheritdoc cref="NavigationItem" /> to <c>REST Protocol</c>
                 /// </summary>
                 public NavigationItem RESTProtocol => _RESTProtocol ??= (this, "REST Protocol");
+
+
+                private NavigationItem? _MTConnectExceptionsReportResponseDocument;
+                /// <summary>
+                /// <inheritdoc cref="NavigationItem" /> to <c>MTConnectExceptionsReport Response Document</c>
+                /// </summary>
+                public NavigationItem MTConnectExceptionsReportResponseDocument => _MTConnectExceptionsReportResponseDocument ??= (this, "MTConnectExceptionsReport Response Document");
 
 
 
@@ -220,12 +334,30 @@ namespace MtconnectTranspiler.Contracts.Navigation
         /// </summary>
         public class ObservationInformationModelNavigation : NavigationItem
         {
-            private NavigationItem? _Representations;
+            private RepresentationsNavigation? _Representations;
+            /// <summary>
+            /// <inheritdoc cref="Representations" /> to <c>Representations</c>
+            /// </summary>
+            public RepresentationsNavigation Representations => _Representations ??= new RepresentationsNavigation(this);
             /// <summary>
             /// <inheritdoc cref="NavigationItem" /> to <c>Representations</c>
             /// </summary>
-            public NavigationItem Representations => _Representations ??= (this, "Representations");
+            public class RepresentationsNavigation : NavigationItem
+            {
+                private NavigationItem? _Table;
+                /// <summary>
+                /// <inheritdoc cref="NavigationItem" /> to <c>Table</c>
+                /// </summary>
+                public NavigationItem Table => _Table ??= (this, "Table");
 
+
+
+                /// <summary>
+                /// Constructs a new <see cref="RepresentationsNavigation" /> navigation tree.
+                /// </summary>
+                /// <param name="parent">Reference to the parent branch <see cref="ObservationInformationModelNavigation"/></param>
+                public RepresentationsNavigation(ObservationInformationModelNavigation parent) : base("Representations", parent) { }
+            }
 
             private ObservationTypesNavigation? _ObservationTypes;
             /// <summary>
@@ -590,31 +722,6 @@ namespace MtconnectTranspiler.Contracts.Navigation
             /// </summary>
             public NavigationItem InterfaceTypes => _InterfaceTypes ??= (this, "Interface Types");
 
-
-            private MultiDeviceInteractionModelNavigation? _MultiDeviceInteractionModel;
-            /// <summary>
-            /// <inheritdoc cref="MultiDeviceInteractionModel" /> to <c>Multi-Device Interaction Model</c>
-            /// </summary>
-            public MultiDeviceInteractionModelNavigation MultiDeviceInteractionModel => _MultiDeviceInteractionModel ??= new MultiDeviceInteractionModelNavigation(this);
-            /// <summary>
-            /// <inheritdoc cref="NavigationItem" /> to <c>Multi-Device Interaction Model</c>
-            /// </summary>
-            public class MultiDeviceInteractionModelNavigation : NavigationItem
-            {
-                private NavigationItem? _TasksInformationModel;
-                /// <summary>
-                /// <inheritdoc cref="NavigationItem" /> to <c>Tasks Information Model</c>
-                /// </summary>
-                public NavigationItem TasksInformationModel => _TasksInformationModel ??= (this, "Tasks Information Model");
-
-
-
-                /// <summary>
-                /// Constructs a new <see cref="MultiDeviceInteractionModelNavigation" /> navigation tree.
-                /// </summary>
-                /// <param name="parent">Reference to the parent branch <see cref="InterfaceInteractionModelNavigation"/></param>
-                public MultiDeviceInteractionModelNavigation(InterfaceInteractionModelNavigation parent) : base("Multi-Device Interaction Model", parent) { }
-            }
 
             private OperationandErrorRecoveryNavigation? _OperationandErrorRecovery;
             /// <summary>
@@ -1056,28 +1163,33 @@ namespace MtconnectTranspiler.Contracts.Navigation
         /// </summary>
         public class WIPUseCasesNavigation : NavigationItem
         {
-            private MachineMonitoringNavigation? _MachineMonitoring;
-            /// <summary>
-            /// <inheritdoc cref="MachineMonitoring" /> to <c>Machine Monitoring</c>
-            /// </summary>
-            public MachineMonitoringNavigation MachineMonitoring => _MachineMonitoring ??= new MachineMonitoringNavigation(this);
+            private NavigationItem? _MachineMonitoring;
             /// <summary>
             /// <inheritdoc cref="NavigationItem" /> to <c>Machine Monitoring</c>
             /// </summary>
-            public class MachineMonitoringNavigation : NavigationItem
-            {
-                private NavigationItem? _Requirements;
-                /// <summary>
-                /// <inheritdoc cref="NavigationItem" /> to <c>Requirements</c>
-                /// </summary>
-                public NavigationItem Requirements => _Requirements ??= (this, "Requirements");
+            public NavigationItem MachineMonitoring => _MachineMonitoring ??= (this, "Machine Monitoring");
 
 
-                private NavigationItem? _UseCases;
-                /// <summary>
-                /// <inheritdoc cref="NavigationItem" /> to <c>UseCases</c>
-                /// </summary>
-                public NavigationItem UseCases => _UseCases ??= (this, "UseCases");
+            private NavigationItem? _Actors;
+            /// <summary>
+            /// <inheritdoc cref="NavigationItem" /> to <c>Actors</c>
+            /// </summary>
+            public NavigationItem Actors => _Actors ??= (this, "Actors");
+
+
+            private NavigationItem? _PowerSource;
+            /// <summary>
+            /// <inheritdoc cref="NavigationItem" /> to <c>Power Source</c>
+            /// </summary>
+            public NavigationItem PowerSource => _PowerSource ??= (this, "Power Source");
+
+
+
+            /// <summary>
+            /// Constructs a new <see cref="WIPUseCasesNavigation" /> navigation tree.
+            /// </summary>
+            public WIPUseCasesNavigation() : base("WIP: Use Cases") { }
+        }
 
 
 

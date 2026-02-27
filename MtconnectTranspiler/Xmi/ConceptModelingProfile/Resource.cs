@@ -18,7 +18,7 @@ namespace MtconnectTranspiler.Xmi.ConceptModelingProfile
         public string? BaseClass { get; set; }
 
         /// <summary>
-        /// <c>base_Class</c> attribute
+        /// <c>base_Property</c> attribute
         /// </summary>
         /// <remarks>Foreign key to the <see cref="XmiElement.Id"/> of the object this applies to.</remarks>
         [XmlAttribute(AttributeName = XmlHelper.ConceptModelingProfileStructure.baseProperty, Namespace = "")]

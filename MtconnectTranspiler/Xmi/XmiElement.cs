@@ -35,5 +35,11 @@ namespace MtconnectTranspiler.Xmi
         /// </summary>
         [XmlAttribute(AttributeName = XmlHelper.XmiStructure.type, Namespace = XmlHelper.XmiNamespace)]
         public virtual string? Type { get; set; }
+
+        /// <summary>
+        /// <c>visibility</c> attribute
+        /// </summary>
+        [XmlAttribute(AttributeName = XmlHelper.XmiStructure.visibility, Namespace = "")]
+        public virtual string? Visibility { get; set; }
     }
 }

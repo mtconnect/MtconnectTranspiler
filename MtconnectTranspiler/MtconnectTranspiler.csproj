@@ -6,7 +6,7 @@
 	  <Nullable>enable</Nullable>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <Title>MTConnect Transpiler</Title>
-	  <Version>2.4.0</Version>
+	  <Version>2.7.0</Version>
 	  <Authors>mtconnect, tbm0115</Authors>
 	  <Company>MTConnect Institute; TAMS;</Company>
 	  <Description>A library capable of parsing an XMI for the MTConnect Standard and passing it to an implemented transpiler.</Description>
@@ -14,7 +14,7 @@
 	  <RepositoryUrl>https://github.com/mtconnect/MtconnectTranspiler</RepositoryUrl>
 	  <RepositoryType>git</RepositoryType>
 	  <PackageTags>MTConnect;Transpiler;CI;</PackageTags>
-	  <PackageReleaseNotes>This is a pre-release version.</PackageReleaseNotes>
+	  <PackageReleaseNotes>Release of v2.7 of the MTConnect Standard.</PackageReleaseNotes>
 	  <IncludeSymbols>True</IncludeSymbols>
 	  <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	  <PackageIcon>icon.png</PackageIcon>
