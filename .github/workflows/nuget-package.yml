@@ -10,27 +10,56 @@ env:
   NUGET_REGISTRY: https://nuget.org/
   NUGET_NAMESPACE: mtconnect
   NUGET_API_KEY: ${{ secrets.NUGET_TOKEN }}
-  VS_PROJECT: MtconnectTranspiler
+  VS_PROJECT_FOLDER: MtconnectTranspiler
+  VS_PROJECT: MtconnectTranspiler.csproj
+  PACKAGE_ARTIFACT_NAME: MtconnectTranspiler-nupkg
 
 jobs:
   build:
-    name: Build + Publish to GitHub Packages
+    name: Build Packages
     runs-on: windows-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
+      
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '5.0.x'
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+      
     - name: Build with dotnet
-      run: dotnet build "${{ env.VS_PROJECT }}\${{ env.VS_PROJECT }}.csproj" --configuration Release
+      run: dotnet build "${{ env.VS_PROJECT_FOLDER }}\${{ env.VS_PROJECT }}" --configuration Release
+
     - name: Pack NuGet package
-      run: dotnet pack "${{ env.VS_PROJECT }}\${{ env.VS_PROJECT }}.csproj" -c Release -o artifacts --no-build
-    - name: Publish Artifact
-      uses: actions/upload-artifact@master
+      run: dotnet pack "${{ env.VS_PROJECT_FOLDER }}\${{ env.VS_PROJECT }}" -c Release -o "NuGet_Package" --no-build
+
+    - name: Upload NuGet Artifact
+      uses: actions/upload-artifact@v4
       with:
-        name: nupkg
-        path: artifacts
+        name: ${{ env.PACKAGE_ARTIFACT_NAME }}
+        path: NuGet_Package
+        
+  deploy:
+    needs: build
+    if: github.event_name != 'pull_request'
+    name: Push NuGet Package
+    runs-on: windows-latest
+
+    steps:
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v2
+      with:
+        nuget-version: latest
+      
+    - name: Download Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ env.PACKAGE_ARTIFACT_NAME }}
+
     - name: Publish NuGet package to GitHub Packages
-      run: dotnet nuget push artifacts\*.nupkg -k ${{ env.NUGET_API_KEY }} -s ${{ env.NUGET_REGISTRY }}
+      run: dotnet nuget push **\*.nupkg -k ${{ env.NUGET_API_KEY }} -s ${{ env.NUGET_REGISTRY }} --skip-duplicate
